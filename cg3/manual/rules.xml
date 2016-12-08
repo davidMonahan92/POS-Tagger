@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="rules">
+  <title>Rules</title>
+
+  <para>
+    Firstly, the CG-2 optional seperation keywords IF and TARGET are completely ignored by VISL CG-3,
+    so only use them for readability. The definitions are given in the following format:
+    <screen>
+      KEYWORD &lt;required_element&gt; [optional_element] ;
+      ...and | separates mutually exclusive choices.
+    </screen>
+  </para>
+
+  <section id="rules-cheatsheet">
+    <title>Cheat Sheet</title>
+    <para>
+      All rules can take an optional wordform tag before the rule keyword.
+    </para>
+    <screen>
+  Reading &amp; Tag manipulations:
+      ADD &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+      MAP &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+      SUBSTITUTE &lt;locate tags&gt; &lt;replacement tags&gt; &lt;target&gt; [contextual_tests] ;
+      UNMAP &lt;target&gt; [contextual_tests] ;
+
+      REPLACE &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+      APPEND &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+      COPY &lt;extra tags&gt; [EXCEPT &lt;except tags&gt;] &lt;target&gt; [contextual_tests] ;
+
+      SELECT &lt;target&gt; [contextual_tests] ;
+      REMOVE &lt;target&gt; [contextual_tests] ;
+      IFF &lt;target&gt; [contextual_tests] ;
+
+  Dependency manipulation:
+      SETPARENT &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      SETCHILD &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+
+  Relation manipulation:
+      ADDRELATION &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      ADDRELATIONS &lt;name&gt; &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      SETRELATION &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      SETRELATIONS &lt;name&gt; &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      REMRELATION &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      REMRELATIONS &lt;name&gt; &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+
+  Cohort manipulation:
+      ADDCOHORT &lt;cohort tags&gt; BEFORE|AFTER &lt;target&gt; [contextual_tests] ;
+      REMCOHORT &lt;target&gt; [contextual_tests] ;
+
+      MOVE [WITHCHILD &lt;child_set&gt;|NOCHILD] &lt;target&gt; [contextual_tests]
+          BEFORE|AFTER [WITHCHILD &lt;child_set&gt;|NOCHILD] &lt;contextual_target&gt; [contextual_tests] ;
+      SWITCH &lt;target&gt; [contextual_tests] WITH &lt;contextual_target&gt; [contextual_tests] ;
+
+  Window manipulation:
+      DELIMIT &lt;target&gt; [contextual_tests] ;
+      EXTERNAL ONCE|ALWAYS &lt;program&gt; &lt;target&gt; [contextual_tests] ;
+
+  Variable manipulation:
+      SETVARIABLE [OUTPUT] &lt;name&gt; &lt;value&gt; &lt;target&gt; [contextual_tests] ;
+      REMVARIABLE [OUTPUT] &lt;name&gt; &lt;target&gt; [contextual_tests] ;
+
+  Flow control:
+      JUMP &lt;anchor_name&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+  </section>
+
+  <section id="add">
+    <title>ADD</title>
+    <indexterm>
+      <primary>ADD</primary>
+    </indexterm>
+    <screen>
+      [wordform] ADD &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Appends tags to matching readings. Will not block for adding further tags, but can be blocked if a reading
+      is considered mapped either via rule type MAP or from input.
+    </para>
+    <screen>
+      ADD (@func £other) TARGET (target) IF (-1 KC) ;
+    </screen>
+  </section>
+
+  <section id="copy">
+    <title>COPY</title>
+    <indexterm>
+      <primary>COPY</primary>
+    </indexterm>
+    <screen>
+      [wordform] COPY &lt;extra tags&gt; [EXCEPT &lt;except tags&gt;] &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Duplicates a reading and adds tags to it. If you don't want to copy previously copied readings,
+      you will have to keep track of that yourself by adding a marker tag.
+      Optionally excludes certain tags from the copy.
+    </para>
+    <screen>
+      COPY (¤copy tags) TARGET (target) - (¤copy) ;
+      COPY (¤copy tags) EXCEPT (not these tags) TARGET (target) - (¤copy) ;
+    </screen>
+  </section>
+
+  <section id="delimit">
+    <title>DELIMIT</title>
+    <indexterm>
+      <primary>DELIMIT</primary>
+    </indexterm>
+    <screen>
+      [wordform] DELIMIT &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      This will work as an on-the-fly sentence (disambiguation window) delimiter.
+      When a reading matches a DELIMIT rule's context it will cut off all subsequent
+      cohorts in the current window immediately restart disambiguating with the new
+      window size. This is not and must not be used as a substitute for the DELIMITERS
+      list, but can be useful for cases where the delimiter has to be decided from context.
+    </para>
+  </section>
+
+  <section id="external">
+    <title>EXTERNAL</title>
+    <indexterm>
+      <primary>EXTERNAL</primary>
+    </indexterm>
+    <indexterm>
+      <primary>EXTERNAL ONCE</primary>
+    </indexterm>
+    <indexterm>
+      <primary>EXTERNAL ALWAYS</primary>
+    </indexterm>
+    <screen>
+      [wordform] EXTERNAL ONCE &lt;program&gt; &lt;target&gt; [contextual_tests] ;
+      [wordform] EXTERNAL ALWAYS &lt;program&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Opens up a persistent pipe to the program and passes it the current window.
+      The ONCE version will only be run once per window, while ALWAYS will be run every time the rule is seen.
+      See the <link linkend="externals">Externals chapter</link> for technical and protocol information.
+    </para>
+    <screen>
+      EXTERNAL ONCE /usr/local/bin/waffles (V) (-1 N) ;
+      EXTERNAL ALWAYS program-in-path (V) (-1 N) ;
+      EXTERNAL ONCE "program with spaces" (V) (-1 N) ;
+    </screen>
+  </section>
+
+  <section id="addcohort">
+    <title>ADDCOHORT</title>
+    <indexterm>
+      <primary>ADDCOHORT</primary>
+    </indexterm>
+    <screen>
+      [wordform] ADDCOHORT &lt;cohort tags&gt; BEFORE|AFTER &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Inserts a new cohort before or after the target.
+    </para>
+    <para>
+      Caveat: This does NOT affect the rule application order as that is tied to the input order of the cohorts,
+      so inserted cohorts are always last.
+    </para>
+    <screen>
+      ADDCOHORT ("&lt;wordform&gt;" "baseform" tags) BEFORE (@waffles) ;
+      ADDCOHORT ("&lt;wordform&gt;" "baseform" tags) AFTER (@waffles) ;
+    </screen>
+  </section>
+
+  <section id="remcohort">
+    <title>REMCOHORT</title>
+    <indexterm>
+      <primary>REMCOHORT</primary>
+    </indexterm>
+    <screen>
+      [wordform] REMCOHORT &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      This will entirely remove a cohort with all its readings from the window.
+    </para>
+  </section>
+
+   <section id="move-switch">
+    <title>MOVE, SWITCH</title>
+    <indexterm>
+      <primary>MOVE</primary>
+    </indexterm>
+    <indexterm>
+      <primary>SWITCH</primary>
+    </indexterm>
+    <screen>
+      [wordform] MOVE [WITHCHILD &lt;child_set&gt;|NOCHILD] &lt;target&gt; [contextual_tests]
+          AFTER [WITHCHILD &lt;child_set&gt;|NOCHILD] &lt;contextual_target&gt; [contextual_tests] ;
+      [wordform] MOVE [WITHCHILD &lt;child_set&gt;|NOCHILD] &lt;target&gt; [contextual_tests]
+          BEFORE [WITHCHILD &lt;child_set&gt;|NOCHILD] &lt;contextual_target&gt; [contextual_tests] ;
+      [wordform] SWITCH &lt;target&gt; [contextual_tests] WITH &lt;contextual_target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Allows re-arranging of cohorts. The option WITHCHILD will cause the movement of the cohort plus all children
+      of the cohort, maintaining their internal order. Default is NOCHILD which moves only the one cohort.
+      SWITCH does not take options.
+    </para>
+    <para>
+      If you specify WITHCHILD you will need to provide a set that the children you want to apply must match.
+      The (*) set will match all children.
+    </para>
+    <para>
+      The first WITHCHILD specifies which children you want moved.
+      The second WITHCHILD uses the children of the cohort you're moving to as edges so you can avoid moving into
+      another dependency group.
+    </para>
+    <para>
+      Caveat: This does NOT affect the rule application order as that is tied to the input order of the cohorts,
+      so after movement you may see some rules touching later cohorts than you'd expect.
+    </para>
+  </section>
+
+  <section id="replace">
+    <title>REPLACE</title>
+    <indexterm>
+      <primary>REPLACE</primary>
+    </indexterm>
+    <screen>
+      [wordform] REPLACE &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Removes all tags from a reading except the base form, then appends the given tags.
+      Cannot target readings that are considered mapped due to earlier MAP rules or from input.
+    </para>
+    <screen>
+      REPLACE (&lt;v-act&gt; V INF @func) TARGET (target);
+    </screen>
+  </section>
+
+  <section id="append">
+    <title>APPEND</title>
+    <indexterm>
+      <primary>APPEND</primary>
+    </indexterm>
+    <screen>
+      [wordform] APPEND &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Appends a reading to the matched cohort, so be sure the tags include a baseform.
+    </para>
+    <screen>
+      APPEND ("jump" &lt;v-act&gt; V INF @func) TARGET (target);
+    </screen>
+  </section>
+
+  <section id="substitute">
+    <title>SUBSTITUTE</title>
+    <indexterm>
+      <primary>SUBSTITUTE</primary>
+    </indexterm>
+    <screen>
+      [wordform] SUBSTITUTE &lt;locate tags&gt; &lt;replacement tags&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Replaces the tags in the first list with the tags in the second list.
+      If none of the tags in the first list are found, the insertion tags are simply appended.
+      To prevent this, also have important tags as part of the target.
+      This works as in VISLCG, but the replacement tags may be the * tag to signify a nil replacement,
+      allowing for clean removal of tags in a reading. For example, to remove TAG do:
+    </para>
+    <screen>
+      SUBSTITUTE (TAG) (*) TARGET (TAG) ;
+    </screen>
+  </section>
+
+  <section id="setvariable">
+    <title>SETVARIABLE</title>
+    <indexterm>
+      <primary>SETVARIABLE</primary>
+      <secondary>OUTPUT</secondary>
+    </indexterm>
+    <screen>
+      [wordform] SETVARIABLE [OUTPUT] &lt;name&gt; &lt;value&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Sets a <link linkend="global-variables">global variable</link> to a given value.
+      If you don't care about the value you can just set it to 1 or *.
+    </para>
+    <para>
+      If you provide the optional OUTPUT flag, then an equivalent <link linkend="cmd-setvar">STREAMCMD:SETVAR</link>
+      will be output before the currently active window.
+    </para>
+    <screen>
+      SETVARIABLE (news) (*) (@headline) ;
+      SETVARIABLE (year) (1764) ("Jozef") (-2 ("Arch") LINK 1 ("Duke")) ;
+    </screen>
+  </section>
+
+  <section id="remvariable">
+    <title>REMVARIABLE</title>
+    <indexterm>
+      <primary>REMVARIABLE</primary>
+      <secondary>OUTPUT</secondary>
+    </indexterm>
+    <screen>
+      [wordform] REMVARIABLE [OUTPUT] &lt;name&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Unsets a <link linkend="global-variables">global variable</link>.
+    </para>
+    <para>
+      If you provide the optional OUTPUT flag, then an equivalent <link linkend="cmd-remvar">STREAMCMD:REMVAR</link>
+      will be output before the currently active window.
+    </para>
+    <screen>
+      REMVARIABLE (news) (@stanza) ;
+      REMVARIABLE (year) (@timeless) ;
+    </screen>
+  </section>
+
+  <section id="map">
+    <title>MAP</title>
+    <indexterm>
+      <primary>MAP</primary>
+    </indexterm>
+    <screen>
+      [wordform] MAP &lt;tags&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Appends tags to matching readings, and blocks other MAP, ADD, and REPLACE rules from targetting those readings.
+      Cannot target readings that are considered mapped due to earlier MAP rules or from input.
+    </para>
+    <screen>
+      MAP (@func £other) TARGET (target) IF (-1 KC) ;
+    </screen>
+  </section>
+
+  <section id="unmap">
+    <title>UNMAP</title>
+    <indexterm>
+      <primary>UNMAP</primary>
+    </indexterm>
+    <screen>
+      [wordform] UNMAP &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Removes the mapping tag of a reading and lets ADD and MAP target the reading again.
+      By default it will only act if the cohort has exactly one reading, but marking the rule UNSAFE
+      lets it act on multiple readings.
+    </para>
+    <screen>
+      UNMAP (TAG) ;
+      UNMAP UNSAFE (TAG) ;
+    </screen>
+  </section>
+
+  <section id="taglists-sets">
+    <title>Tag Lists Can Be Sets</title>
+    <para>
+      For the rule types MAP, ADD, REPLACE, APPEND, COPY, SUBSTITUTE, ADDRELATION(S), SETRELATION(S), and REMRELATION(S),
+      the tag lists can be sets instead, including <link linkend="set-unification-tag">$$sets</link>
+      and <link linkend="set-unification-set">&amp;&amp;sets</link>.
+      This is useful for manipulating tags that you want to pull in from a context.
+    </para>
+    <para>
+      The sets are resolved and reduced to a list of tags during rule application. If the set reduces to multiple tags
+      where only one is required (such as for the Relation rules), only the first tag is used.
+    </para>
+    <screen>
+      LIST ROLE = &lt;human&gt; &lt;anim&gt; &lt;inanim&gt; (&lt;bench&gt; &lt;table&gt;) ;
+      MAP $$ROLE (target tags) (-1 KC) (-2C $$ROLE) ;
+    </screen>
+  </section>
+
+  <section id="named-rules">
+    <title>Named Rules</title>
+    <indexterm>
+      <primary>rule name</primary>
+    </indexterm>
+    <indexterm>
+      <primary>named rules</primary>
+    </indexterm>
+    <screen>
+      [wordform] MAP:rule_name &lt;tag&gt; &lt;target&gt; [contextual_tests] ;
+      [wordform] SELECT:rule_name &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      In certain cases you may want to name a rule to be able to refer to the same
+      rule across grammar revisions, as otherwise the rule line number may change.
+      It is optional to name rules, and names do not have to be unique which makes it easier to group
+      rules for statistics or tracing purposes.
+      The name of a rule is used in tracing and debug output in addition to the line number.
+    </para>
+  </section>
+
+  <section id="flow-control">
+    <title>Flow Control: JUMP, ANCHOR</title>
+    <indexterm>
+      <primary>JUMP</primary>
+    </indexterm>
+    <indexterm>
+      <primary>ANCHOR</primary>
+    </indexterm>
+    <para>
+      JUMP will allow you to mark named anchors and jump to them based on a context.
+      In this manner you can skip or repeat certain rules.
+    </para>
+    <screen>
+      ANCHOR &lt;anchor_name&gt; ;
+      SECTION [anchor_name ;]
+      [wordform] JUMP &lt;anchor_name&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      An anchor can be created explicitly with keyword ANCHOR. Sections can optionally be given a name which will make
+      them explicit anchor points. All named rules are also anchor points, but with lower precedence than explicit anchors,
+      and in the case of multiple rules with the same name the first such named rule is the anchor point for that name.
+      There are also two special anchors <code>START</code> and <code>END</code> which represent line 0 and infinity
+      respectively; jumping to START will re-run all currently active rules, while jumping to END will skip all remaining
+      rules.
+    </para>
+  </section>
+
+  <section id="rule-options">
+    <title>Rule Options</title>
+    <para>
+      Rules can have options that affect their behavior.
+      Multiple options can be combined per rule and the order is not important, just separate them with space.
+    </para>
+    <screen>
+      # Remove readings with (unwanted) even if it is the last reading.
+      REMOVE UNSAFE (unwanted) ;
+
+      # Attach daughter to mother, even if doing so would cause a loop.
+      SETPARENT ALLOWLOOP (daughter) TO (-1* (mother)) ;
+    </screen>
+
+    <section id="rule-options-nearest">
+      <title>NEAREST</title>
+      <indexterm>
+        <primary>NEAREST</primary>
+      </indexterm>
+      <para>
+        Applicable for rules SETPARENT and SETCHILD.
+        Not compatible with option ALLOWLOOP.
+      </para>
+      <para>
+        Normally, if SETPARENT or SETCHILD cannot attach because doing so would cause a loop, they will seek
+        onwards from that position until a valid target is found that does not cause a loop.
+        Setting NEAREST forces them to stop at the first found candidate.
+      </para>
+    </section>
+
+    <section id="rule-options-allowloop">
+      <title>ALLOWLOOP</title>
+      <indexterm>
+        <primary>ALLOWLOOP</primary>
+      </indexterm>
+      <para>
+        Applicable for rules SETPARENT and SETCHILD.
+        Not compatible with option NEAREST.
+      </para>
+      <para>
+        Normally, SETPARENT and SETCHILD cannot attach if doing so would cause a loop.
+        Setting ALLOWLOOP forces the attachment even in such a case.
+      </para>
+    </section>
+
+    <section id="rule-options-allowcross">
+      <title>ALLOWCROSS</title>
+      <indexterm>
+        <primary>ALLOWCROSS</primary>
+      </indexterm>
+      <para>
+        Applicable for rules SETPARENT and SETCHILD.
+      </para>
+      <para>
+        If command line flag --dep-no-crossing is on,
+        SETPARENT and SETCHILD cannot attach if doing so would cause crossing branches.
+        Setting ALLOWCROSS forces the attachment even in such a case.
+      </para>
+    </section>
+
+    <section id="rule-options-delayed">
+      <title>DELAYED</title>
+      <indexterm>
+        <primary>DELAYED</primary>
+      </indexterm>
+      <para>
+        Applicable for rules SELECT, REMOVE, and IFF.
+        Not compatible with option IMMEDIATE.
+      </para>
+      <para>
+        Option DELAYED causes readings that otherwise would have been put in the deleted buffer to be put in
+        a special delayed buffer, in the grey zone between living and dead.
+      </para>
+      <para>
+        Delayed readings can be looked at by contextual tests of rules that have option LOOKDELAYED,
+        or if the contextual test has position 'd'.
+      </para>
+    </section>
+
+    <section id="rule-options-immediate">
+      <title>IMMEDIATE</title>
+      <indexterm>
+        <primary>IMMEDIATE</primary>
+      </indexterm>
+      <para>
+        Applicable for rules SELECT, REMOVE, and IFF.
+        Not compatible with option DELAYED.
+      </para>
+      <para>
+        Option IMMEDIATE causes readings that otherwise would have been put in the special delayed buffer to be put in
+        the delayed buffer. This is mainly used to selectively override a global DELAYED flag
+        as rules are by default immediate.
+      </para>
+    </section>
+
+    <section id="rule-options-lookdelayed">
+      <title>LOOKDELAYED</title>
+      <indexterm>
+        <primary>LOOKDELAYED</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+      </para>
+      <para>
+        Option LOOKDELAYED puts <link linkend="test-deleted-delayed">contextual position 'd'</link> on all tests done by that rule,
+        allowing them all to see delayed readings.
+      </para>
+    </section>
+
+    <section id="rule-options-lookdeleted">
+      <title>LOOKDELETED</title>
+      <indexterm>
+        <primary>LOOKDELETED</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+      </para>
+      <para>
+        Option LOOKDELETED puts <link linkend="test-deleted-deleted">contextual position 'D'</link> on all tests done by that rule,
+        allowing them all to see deleted readings.
+      </para>
+    </section>
+
+    <section id="rule-options-unmaplast">
+      <title>UNMAPLAST</title>
+      <indexterm>
+        <primary>UNMAPLAST</primary>
+      </indexterm>
+      <para>
+        Applicable for rules REMOVE and IFF.
+        Not compatible with option SAFE.
+      </para>
+      <para>
+        Normally, REMOVE and IFF will consider mapping tags as separate readings, and attempting to remove the last
+        mapping is the same as removing the last reading which requires UNSAFE. Setting flag UNMAPLAST causes it to
+        instead remove the final mapping tag but leave the reading otherwise untouched.
+      </para>
+      <para>
+        A rule <code>REMOVE UNMAPLAST @MappingList ;</code> is logically equivalent to
+        <code>REMOVE @MappingList ; UNMAP @MappingList ;</code>
+      </para>
+    </section>
+
+    <section id="rule-options-unsafe">
+      <title>UNSAFE</title>
+      <indexterm>
+        <primary>UNSAFE</primary>
+      </indexterm>
+      <para>
+        Applicable for rules REMOVE and IFF and UNMAP.
+        Not compatible with option SAFE.
+      </para>
+      <para>
+        Normally, REMOVE and IFF cannot remove the last reading of a cohort.
+        Setting option UNSAFE allows them to do so.
+      </para>
+      <para>
+        For UNMAP, marking it UNSAFE allows it to work on more than the last reading in the cohort.
+      </para>
+    </section>
+
+    <section id="rule-options-safe">
+      <title>SAFE</title>
+      <indexterm>
+        <primary>SAFE</primary>
+      </indexterm>
+      <para>
+        Applicable for rules REMOVE and IFF and UNMAP.
+        Not compatible with option UNSAFE.
+      </para>
+      <para>
+        SAFE prevents REMOVE and IFF from removing the last reading of a cohort.
+        Mainly used to selectively override global --unsafe mode.
+      </para>
+      <para>
+        For UNMAP, marking it SAFE only lets it act if the cohort has exactly one reading.
+      </para>
+    </section>
+
+    <section id="rule-options-rememberx">
+      <title>REMEMBERX</title>
+      <indexterm>
+        <primary>REMEMBERX</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with option RESETX.
+      </para>
+      <para>
+        Makes the contextual option X carry over to subsequent tests in the rule, as opposed to resetting itself
+        to the rule's target per test. Useful for complex jumps with the X and x options.
+      </para>
+    </section>
+
+    <section id="rule-options-resetx">
+      <title>RESETX</title>
+      <indexterm>
+        <primary>RESETX</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with option REMEMBERX.
+      </para>
+      <para>
+        Default behavior.
+        Resets the mark for contextual option x to the rule's target on each test.
+        Used to counter a global REMEMBERX.
+      </para>
+    </section>
+
+    <section id="rule-options-keeporder">
+      <title>KEEPORDER</title>
+      <indexterm>
+        <primary>KEEPORDER</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with option VARYORDER.
+      </para>
+      <para>
+        Prevents the re-ordering of contextual tests.
+        Useful in cases where a unifying set is not in the target of the rule.
+      </para>
+    </section>
+
+    <section id="rule-options-varyorder">
+      <title>VARYORDER</title>
+      <indexterm>
+        <primary>VARYORDER</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with option KEEPORDER.
+      </para>
+      <para>
+        Allows the re-ordering of contextual tests.
+        Used to selectively override a global KEEPORDER flag as test order is by default fluid.
+      </para>
+    </section>
+
+    <section id="rule-options-encl-inner">
+      <title>ENCL_INNER</title>
+      <indexterm>
+        <primary>ENCL_INNER</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with other ENCL_* options.
+      </para>
+      <para>
+        Rules with ENCL_INNER will only be run inside the currently active parantheses enclosure.
+        If the current window has no enclosures, the rule will not be run.
+      </para>
+    </section>
+
+    <section id="rule-options-encl-outer">
+      <title>ENCL_OUTER</title>
+      <indexterm>
+        <primary>ENCL_OUTER</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with other ENCL_* options.
+      </para>
+      <para>
+        Rules with ENCL_OUTER will only be run outside the currently active parentheses enclosure.
+        Previously expanded enclosures will be seen as outside on subsequent runs.
+        If the current window has no enclosures, the rule will be run as normal.
+      </para>
+    </section>
+
+    <section id="rule-options-encl-final">
+      <title>ENCL_FINAL</title>
+      <indexterm>
+        <primary>ENCL_FINAL</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with other ENCL_* options.
+      </para>
+      <para>
+        Rules with ENCL_FINAL will only be run once all parentheses enclosures have been expanded.
+        If the current window has no enclosures, the rule will be run as normal.
+      </para>
+    </section>
+
+    <section id="rule-options-encl-any">
+      <title>ENCL_ANY</title>
+      <indexterm>
+        <primary>ENCL_ANY</primary>
+      </indexterm>
+      <para>
+        Applicable for all rules.
+        Not compatible with other ENCL_* options.
+      </para>
+      <para>
+        The default behavior.
+        Used to counter other glocal ENCL_* flags.
+      </para>
+    </section>
+
+    <section id="rule-options-withchild">
+      <title>WITHCHILD</title>
+      <indexterm>
+        <primary>WITHCHILD</primary>
+      </indexterm>
+      <para>
+        Applicable for rule type MOVE.
+        Not compatible with option NOCHILD.
+      </para>
+      <para>
+        Normally, MOVE only moves a single cohort. Setting option WITHCHILD moves all its children along with it.
+      </para>
+    </section>
+
+    <section id="rule-options-nochild">
+      <title>NOCHILD</title>
+      <indexterm>
+        <primary>NOCHILD</primary>
+      </indexterm>
+      <para>
+        Applicable for rule type MOVE.
+        Not compatible with option WITHCHILD.
+      </para>
+      <para>
+        If the global option WITHCHILD is on, NOCHILD will turn it off for a single MOVE rule.
+      </para>
+    </section>
+
+    <section id="rule-options-iterate">
+      <title>ITERATE</title>
+      <indexterm>
+        <primary>ITERATE</primary>
+      </indexterm>
+      <para>
+        Applicable for all rule types.
+        Not compatible with option NOITERATE.
+      </para>
+      <para>
+        If the rule does anything that changes the state of the window, ITERATE forces a reiteration of the sections.
+        Normally, only changes caused by rule types SELECT, REMOVE, IFF, DELIMIT, REMCOHORT, MOVE, and SWITCH will rerun the sections.
+      </para>
+    </section>
+
+    <section id="rule-options-noiterate">
+      <title>NOITERATE</title>
+      <indexterm>
+        <primary>NOITERATE</primary>
+      </indexterm>
+      <para>
+        Applicable for all rule types.
+        Not compatible with option ITERATE.
+      </para>
+      <para>
+        Even if the rule does change the state of the window, NOITERATE prevents the rule from causing a reiteration of the sections.
+      </para>
+    </section>
+
+    <section id="rule-options-reverse">
+      <title>REVERSE</title>
+      <indexterm>
+        <primary>REVERSE</primary>
+      </indexterm>
+      <para>
+        Applicable for rule types SETPARENT, SETCHILD, MOVE, SWITCH, ADDRELATION(S), SETRELATION(S), REMRELATION(S).
+      </para>
+      <para>
+        Reverses the active cohorts. E.g., effectively turns a SETPARENT into a SETCHILD.
+      </para>
+    </section>
+
+    <section id="rule-options-subn">
+      <title>SUB:N</title>
+      <para>
+        See the <link linkend="sub-grammar-subn">Sub-Readings SUB:N section</link>.
+      </para>
+    </section>
+
+    <section id="rule-options-output">
+      <title>OUTPUT</title>
+      <indexterm>
+        <primary>OUTPUT</primary>
+      </indexterm>
+      <para>
+        Applicable for rule types SETVARIABLE and REMVARIABLE.
+      </para>
+      <para>
+        Causes a <link linkend="cmd-setvar">STREAMCMD</link> to be output for the given action.
+      </para>
+    </section>
+  </section>
+
+</chapter>

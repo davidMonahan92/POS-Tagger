@@ -1,0 +1,34 @@
+DELIMITERS = "<$.>" ;
+PARENTHESES = ("<$(>" "<$)>") ("<$[>" "<$]>") ("<${>" "<$}>") ("<$<>" "<$>>") ("<$«>" "<$»>") (<pleft> <pright>) ;
+
+# Special sets _ENCL_, _LEFT_, _RIGHT_, and _PAREN_
+ADD (@encl) _ENCL_ ;
+ADD (@left) _LEFT_ ;
+ADD (@right) _RIGHT_ ;
+ADD (@left-or-right) _PAREN_ ;
+
+# Special tags _LEFT_ and _RIGHT_
+ADD (@left-paren) (_LEFT_) + ("<$(>") ;
+ADD (@right-sqbrck) (_RIGHT_) + ("<$]>") ;
+
+# The special positions L and R which are only valid inside an enclosure
+ADD (@enclosed) (*) (L (*)) ;
+ADD (@sqbrck) (*) (L ("<$[>")) ;
+ADD (@paren) (*) (R ("<$)>")) ;
+ADD (@clbrck) (*) (R ("<$}>")) ;
+
+# Rule options
+# In this case, they have to be substitute since the reading may already be mapped
+SUBSTITUTE ENCL_INNER (word) (word @inner) (*) ;
+SUBSTITUTE ENCL_OUTER (word) (word @outer) (*) ;
+SUBSTITUTE ENCL_FINAL (word) (word @final) (*) ;
+
+END
+# Marking the order of application
+MAP (@sixth) (*) (0** (@fifth)) ;
+MAP (@fifth) (*) (0** (@fourth)) ;
+MAP (@fourth) (*) (0** (@third)) ;
+MAP (@third) (*) (0** (@second)) ;
+MAP (@second) (*) (0** (@first)) ;
+MAP (@first) (*) ;
+

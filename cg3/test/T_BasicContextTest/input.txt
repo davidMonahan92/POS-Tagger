@@ -1,0 +1,8 @@
+"<word>" untouchable static tags
+	"word" notwanted
+	"word" wanted
+	"word" notmeeither
+"<word>"
+	"word" notwanted
+	"word" maybe
+	"word" notmeeither

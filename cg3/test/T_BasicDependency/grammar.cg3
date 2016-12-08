@@ -1,0 +1,65 @@
+DELIMITERS = "<$.>" ;
+
+MAPPING-PREFIX = § ;
+
+LIST @ACC = @<ACC @ACC> ;
+LIST @PIV = @<PIV @PIV> ;
+LIST @P< = @P< ;
+LIST N-ANIM = <H> <Hfam> <Hprof> <Hattr> <A> ;
+LIST PRP = PRP ;
+
+ADD (@parent-deep) ("o") (p* ("bater")) ;
+ADD (@parent-deep-error) ("o") (p ("bater")) ;
+
+ADD (@child-deep) ("bater") (c* ("o")) ;
+ADD (@child-deep-error) ("bater") (c* ("o") BARRIER (N)) ;
+ADD (@child-deep-error) ("bater") (c ("o")) ;
+
+ADD (@self-or-child-S) ("em") (cS (PRP)) ;
+ADD (@self-or-child-c) ("em") (cS (S)) ;
+ADD (@self-or-child-error) ("em") (c (PRP)) ;
+
+ADD (@self-or-parent-S) ("em") (pS (PRP)) ;
+ADD (@self-or-parent-p) ("em") (pS (IND)) ;
+ADD (@self-or-parent-error) ("em") (p (PRP)) ;
+
+MAP (§DES) TARGET @P< (*-1 PRP LINK 0 ("em") LINK 0 @PIV LINK p ("bater")) (NOT 0 N-ANIM) ;
+MAP (§PAT) TARGET @P< (*-1 PRP LINK 0 ("em") LINK p ("bater") LINK NONE c @ACC) ;
+MAP (§PAT §EXP) TARGET @ACC (p ("bater")) ;
+
+ADDRELATION (left-child) ("two") FROM (lc ("three")) ;
+ADDRELATION (right-child) ("two") FROM (rc ("three")) ;
+ADDRELATION (left-descendent) ("two") FROM (lcc ("three")) ;
+ADDRELATION (right-descendent) ("two") FROM (rcc ("three")) ;
+ADDRELATION (leftmost-direct-child) ("two") FROM (llc (*)) ;
+ADDRELATION (rightmost-direct-child) ("two") FROM (rrc (*)) ;
+ADDRELATION (leftmost-left-direct-child) ("two") FROM (lllc (*)) ;
+ADDRELATION (rightmost-right-direct-child) ("two") FROM (rrrc (*)) ;
+ADDRELATION (leftmost-deepest-child) ("two") FROM (ll*c (*) LINK NEGATE llc (*)) ;
+ADDRELATION (rightmost-deepest-child) ("two") FROM (rr*c (*) LINK NEGATE rrc (*)) ;
+ADDRELATION (leftmost-left-deepest-child) ("two") FROM (lll*c (*) LINK NEGATE lllc (*)) ;
+ADDRELATION (rightmost-right-deepest-child) ("two") FROM (rrr*c (*) LINK NEGATE rrrc (*)) ;
+ADDRELATION (leftmost-descendent) ("two") FROM (llcc (*)) ;
+ADDRELATION (rightmost-descendent) ("two") FROM (rrcc (*)) ;
+ADDRELATION (leftmost-left-descendent) ("two") FROM (lllcc (*)) ;
+ADDRELATION (rightmost-right-descendent) ("two") FROM (rrrcc (*)) ;
+ADDRELATION (leftmost-self-or-descendent) ("two") FROM (llccS (*)) ;
+ADDRELATION (rightmost-self-or-descendent) ("two") FROM (rrccS (*)) ;
+
+ADDRELATION (leftmost-sibling) ("two") FROM (lls (*)) ;
+ADDRELATION (rightmost-sibling) ("two") FROM (rrs (*)) ;
+
+ADDRELATION (left-parent) ("four") TO (lp (*)) ;
+ADDRELATION (right-parent) ("four") TO (rp (*)) ;
+ADDRELATION (left-self-or-parent) ("four") TO (lpS ("four")) ;
+ADDRELATION (right-self-or-parent) ("four") TO (rpS ("four")) ;
+ADDRELATION (left-ancestor) ("four") TO (lpp (*)) ;
+ADDRELATION (right-ancestor) ("four") TO (rpp (*)) ;
+ADDRELATION (leftmost-deepest-parent) ("four") TO (l*p (*) LINK NEGATE lp (*)) ;
+ADDRELATION (rightmost-deepest-parent) ("four") TO (r*p (*) LINK NEGATE rp (*)) ;
+ADDRELATION (leftmost-ancestor) ("four") TO (llpp (*)) ;
+ADDRELATION (rightmost-ancestor) ("four") TO (rrpp (*)) ;
+ADDRELATION (leftmost-left-ancestor) ("four") TO (lllpp (*)) ;
+ADDRELATION (rightmost-right-ancestor) ("four") TO (rrrpp (*)) ;
+ADDRELATION (leftmost-self-or-ancestor) ("four") TO (llppS (*)) ;
+ADDRELATION (rightmost-self-or-ancestor) ("four") TO (rrppS (*)) ;

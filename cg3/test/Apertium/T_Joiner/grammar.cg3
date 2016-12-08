@@ -1,0 +1,7 @@
+DELIMITERS = "<$.>" ;
+
+LIST ASet = (det def);
+
+SECTION
+
+SELECT ASet ;

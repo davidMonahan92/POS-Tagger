@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="streamcmds">
+  <title>Input Stream Commands</title>
+
+  <para>
+    These are commands that exist in the input stream. They must be alone and at the beginning
+    of the line to be respected. They will also be passed along to the output stream.
+  </para>
+
+  <section id="cmd-exit">
+    <title>Exit</title>
+    <indexterm>
+      <primary>Exit</primary>
+    </indexterm>
+    <para>
+      When encountered, this command will halt input. No further input will be read,
+      no output will be written, and the existing buffers will be silently discarded.
+      After that, the process will exit. If you were considering using Exit, take a look
+      at whether Ignore would suit your needs better.
+      <emphasis>It is strongly recommended to precede an Exit with a Flush.</emphasis>
+    </para>
+    <screen>
+      &lt;STREAMCMD:EXIT&gt;
+    </screen>
+  </section>
+
+  <section id="cmd-flush">
+    <title>Flush</title>
+    <indexterm>
+      <primary>Flush</primary>
+    </indexterm>
+    <para>
+      When encountered, this command will process all windows in the current buffer before continuing.
+      This means that any window spanning contextual tests would not be able to see beyond a
+      FLUSH point.
+    </para>
+    <screen>
+      &lt;STREAMCMD:FLUSH&gt;
+    </screen>
+  </section>
+
+  <section id="cmd-ignore">
+    <title>Ignore</title>
+    <indexterm>
+      <primary>Ignore</primary>
+    </indexterm>
+    <para>
+      When encountered, this command will cause all subsequent input to be passed along to the output
+      stream without any disambiguation, until it finds a Resume command. Useful for excluding parts
+      of the input if it differs in e.g. genre or language.
+      <emphasis>It is strongly recommended to precede an Ignore with a Flush.</emphasis>
+    </para>
+    <screen>
+      &lt;STREAMCMD:IGNORE&gt;
+    </screen>
+  </section>
+
+  <section id="cmd-resume">
+    <title>Resume</title>
+    <indexterm>
+      <primary>Resume</primary>
+    </indexterm>
+    <para>
+      When encountered, this command resume disambiguation. If disambiguation is already in progress,
+      it has no effect.
+    </para>
+    <screen>
+      &lt;STREAMCMD:RESUME&gt;
+    </screen>
+  </section>
+
+  <section id="cmd-setvar">
+    <title>Set Variable</title>
+    <indexterm>
+      <primary>Set Variable</primary>
+    </indexterm>
+    <para>
+      Sets <link linkend="global-variables">global variables</link>. Same effect as the
+      <link linkend="setvariable">SETVARIABLE</link> rule type, but applicable for a whole parsing chain.
+      Takes a comma-separated list of variables to set, where each variable may have a value.
+    </para>
+    <screen>
+      &lt;STREAMCMD:SETVAR:poetry,year=1764&gt;
+      &lt;STREAMCMD:SETVAR:news&gt;
+      &lt;STREAMCMD:SETVAR:greek=ancient&gt;
+    </screen>
+  </section>
+
+  <section id="cmd-remvar">
+    <title>Unset Variable</title>
+    <indexterm>
+      <primary>Unset Variable</primary>
+    </indexterm>
+    <para>
+      Unsets <link linkend="global-variables">global variables</link>. Same effect as the
+      <link linkend="remvariable">REMVARIABLE</link> rule type, but applicable for a whole parsing chain.
+      Takes a comma-separated list of variables to unset.
+    </para>
+    <screen>
+      &lt;STREAMCMD:REMVAR:poetry,year&gt;
+      &lt;STREAMCMD:REMVAR:news&gt;
+      &lt;STREAMCMD:REMVAR:greek&gt;
+    </screen>
+  </section>
+
+</chapter>

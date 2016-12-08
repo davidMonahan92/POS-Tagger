@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="tags">
+  <title>Tags</title>
+
+  <para>
+    First some example tags as we know them from CG-2 and VISLCG:
+    <screen>
+    "&lt;wordform&gt;"
+    "baseform"
+    &lt;W-max&gt;
+    ADV
+    @error
+    (&lt;civ&gt; N)
+  </screen>
+  </para>
+  <para>
+    Now some example tags as they may look in VISL CG-3:
+    <screen>
+    "&lt;Wordform&gt;"i
+    "^[Bb]ase.*"r
+    /^@&lt;?ADV&gt;?$/r
+    &lt;W&gt;65&gt;
+    (&lt;F&gt;=15&gt; &lt;F&lt;=30&gt;)
+    !ADV
+    ^&lt;dem&gt;
+    (N &lt;civ&gt;)
+  </screen>
+  </para>
+
+  <section id="tag-order">
+    <title>Tag Order</title>
+    <para>
+      Starting with the latter, (N &lt;civ&gt;), as this merely signifies that tags
+      with multiple parts do not have to match in-order; (N &lt;civ&gt;) is the same
+      as (&lt;civ&gt; N). This is different from previous versions of CG, but I deemed
+      it unncecessary to spend extra time checking the tag order when hash lookups can
+      verify the existance so fast. A side effect of this means there is no intersection
+      set operator, nor need of one.
+    </para>
+  </section>
+
+  <section id="literal-string-modifiers">
+    <title>Literal String Modifiers</title>
+    <para>
+      The first two additions to the feature sheet all display what I refer to as
+      literal string modifiers, and there are two of such: 'i' for case-insensitive,
+      and 'r' for a regular expression match.
+      Using these modifiers will significantly slow down the matching as a hash lookup will no
+      longer be enough. You can combine 'ir' for case-insensitive regular expressions.
+      Regular expressions are evaluated via ICU, so
+      <ulink url="http://icu-project.org/userguide/regexp.html">their documentation</ulink> is a good source.
+      Regular expressions may also contain groupings that can later be used in variable string tags (see below).
+    </para>
+    <para>
+      Due to tags themselves needing the occasional escaping, regular expressions need double-escaping of
+      some special symbols. E.g. grouping with () needs to be written as "a\(b|c\)d"r, while literal non-grouping ()
+      need to be written as "a\\(b\\)c"r. Metacharacters also need double-escaping, so \w needs to be written as \\w.
+    </para>
+    <para>
+      This will not work for wordforms used as the first qualifier of a rule, e.g:
+      <screen>
+        "&lt;wordform&gt;"i SELECT (tag) ;
+      </screen>
+      but those can be rewritten in a form such as
+      <screen>
+        SELECT ("&lt;wordform&gt;"i) + (tag) ;
+      </screen>
+      which will work, but be slightly slower.
+    </para>
+  </section>
+
+  <section id="regex-icase">
+    <title>Regular Expressions</title>
+    <para>
+      Tags in the form //r and //i and //ri are general purpose regular expression and case insensitive matches
+      that may act on any tag type, and unlike Literal String Modifiers they can do partial matches. Thus a tag like
+      /^@&lt;?ADV&gt;?$/r will match any of @&lt;ADV, @&lt;ADV&gt;, @ADV&gt;, and plain @ADV.
+      A tag like /word/ri will match any tag containing a substring with any case-variation of the text 'word'.
+      Asides from that, the rules and gotchas are the same as for Literal String Modifiers.
+    </para>
+  </section>
+
+  <section id="variable-strings">
+    <title>Variable Strings</title>
+    <para>
+      Variable string tags contain markers that are replaced with matches from the previously run grouping regular expression tag.
+      Regular expression tags with no groupings will not have any effect on this behavior.
+      Time also has no effect, so one could theoretically perform a group match in a previous rule and use the results later,
+      though that would be highly unpredictable in practice.
+    </para>
+    <para>
+      Variable string tags are in the form of "string"v, "&lt;string&gt;"v, and &lt;string&gt;v, where variables matching
+      $1 through $9 will be replaced with the corresponding group from the regular expression match.
+      Multiple occurances of a single variable is allowed, so e.g. "$1$2$1"v would contain group 1 twice.
+    </para>
+    <para>
+      One can also manipulate the case of the resulting tag via %U, %u, %L, and %l.
+      %U upper-cases the entire following string.
+      %u upper-cases the following single letter.
+      %L lower-cases the entire following string.
+      %l lower-cases the following single letter.
+      The case folding is performed right-to-left one-by-one.
+    </para>
+    <para>
+      It is also possible to include references to unified $$sets or &amp;&amp;sets in {} where they will be replaced
+      with the tags that the unification resulted in. If there are multiple tags, they will be delimited by an underscore _.
+    </para>
+    <para>
+      It should be noted that you can use varstring tags anywhere, not just when manipulating tags.
+      When used in a contextual test they are fleshed out with the information available at the time and then attempted matched.
+    </para>
+    <para>
+      <screen>
+        # Adds a lower-case &lt;wordform&gt; to all readings.
+        ADD (&lt;%L$1&gt;v) TARGET ("&lt;(.*)&gt;"r) ;
+
+        # Adds a reading with a normalized baseform for all suspicious wordforms ending in 'ies'
+        APPEND ("$1y"v N P NOM) TARGET N + ("&lt;(.*)ies&gt;"r) IF (1 VFIN) ;
+
+        # Merge results from multiple unified $$sets into a single tag
+        LIST ROLE = human anim inanim (bench table) ;
+        LIST OTHER = crispy waffles butter ;
+        MAP (&lt;{$$ROLE}/{$$OTHER}&gt;v) (target tags) (-1 $$OTHER) (-2C $$ROLE) ;
+      </screen>
+    </para>
+  </section>
+
+  <section id="numerical-matches">
+    <title>Numerical Matches</title>
+    <para>
+      Then there are the numerical matches, e.g. &lt;W&gt;65&gt;.
+      This will match tags such as &lt;W:204&gt; and &lt;W=156&gt; but not &lt;W:32&gt;.
+      The second tag, (&lt;F&gt;15&gt; &lt;F&lt;30&gt;), matches values 15&gt;F&gt;30.
+      These constructs are also slower than simple hash lookups.
+    </para>
+    <para>
+      The two special values MIN and MAX (both case-sensitive) will scan the cohort for their respective minimum
+      or maximum value, and use that for the comparison.
+      Internally the value is stored in a 32bit signed integer, so usually MIN is equal to -2147483648 and MAX is 2147483647,
+      and using those values will also act such.
+      <screen>
+        # Select the maximum value of W. Readings with no W will also be removed.
+        SELECT (&lt;W=MAX&gt;) ;
+
+        # Remove the minimum F. Readings with no F will not be removed.
+        REMOVE (&lt;N=MIN&gt;) ;
+      </screen>
+    </para>
+    <para>
+      <table id="numeric-operators">
+        <title>Valid Operators</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Operator</entry>
+              <entry>Meaning</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>=</entry>
+              <entry>Equal to</entry>
+            </row>
+            <row>
+              <entry>!=</entry>
+              <entry>Not equal to</entry>
+            </row>
+            <row>
+              <entry>&lt;</entry>
+              <entry>Less than</entry>
+            </row>
+            <row>
+              <entry>&gt;</entry>
+              <entry>Greater than</entry>
+            </row>
+            <row>
+              <entry>&lt;=</entry>
+              <entry>Less than or equal to</entry>
+            </row>
+            <row>
+              <entry>&gt;=</entry>
+              <entry>Greater than or equal to</entry>
+            </row>
+            <row>
+              <entry>&lt;&gt;</entry>
+              <entry>Not equal to</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      Anywhere that an = is valid you can also use : for backwards compatibility.
+    </para>
+    <para>
+      <table id="numeric-truths">
+        <title>Comparison Truth Table</title>
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>A</entry>
+              <entry>B</entry>
+              <entry>Result</entry>
+            </row>
+          </thead>
+        <tbody>
+          <row>
+            <entry>= x</entry>
+            <entry>= y</entry>
+            <entry>True if x = y</entry>
+          </row>
+          <row>
+            <entry>= x</entry>
+            <entry>!= y</entry>
+            <entry>True if x != y</entry>
+          </row>
+          <row>
+            <entry>= x</entry>
+            <entry>&lt; y</entry>
+            <entry>True if x &lt; y</entry>
+          </row>
+          <row>
+            <entry>= x</entry>
+            <entry>&gt; y</entry>
+            <entry>True if x &gt; y</entry>
+          </row>
+          <row>
+            <entry>= x</entry>
+            <entry>&lt;= y</entry>
+            <entry>True if x &lt;= y</entry>
+          </row>
+          <row>
+            <entry>= x</entry>
+            <entry>&gt;= y</entry>
+            <entry>True if x &gt;= y</entry>
+          </row>
+
+          <row>
+            <entry>&lt; x</entry>
+            <entry>!= y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&lt; x</entry>
+            <entry>&lt; y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&lt; x</entry>
+            <entry>&gt; y</entry>
+            <entry>True if x &gt; y</entry>
+          </row>
+          <row>
+            <entry>&lt; x</entry>
+            <entry>&lt;= y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&lt; x</entry>
+            <entry>&gt;= y</entry>
+            <entry>True if x &gt; y</entry>
+          </row>
+
+          <row>
+            <entry>&gt; x</entry>
+            <entry>!= y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&gt; x</entry>
+            <entry>&gt; y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&gt; x</entry>
+            <entry>&lt;= y</entry>
+            <entry>True if x &lt; y</entry>
+          </row>
+          <row>
+            <entry>&gt; x</entry>
+            <entry>&gt;= y</entry>
+            <entry>Always true</entry>
+          </row>
+
+          <row>
+            <entry>&lt;= x</entry>
+            <entry>!= y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&lt;= x</entry>
+            <entry>&lt;= y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&lt;= x</entry>
+            <entry>&gt;= y</entry>
+            <entry>True if x &gt;= y</entry>
+          </row>
+
+          <row>
+            <entry>&gt;= x</entry>
+            <entry>!= y</entry>
+            <entry>Always true</entry>
+          </row>
+          <row>
+            <entry>&gt;= x</entry>
+            <entry>&gt;= y</entry>
+            <entry>Always true</entry>
+          </row>
+
+          <row>
+            <entry>!= x</entry>
+            <entry>!= y</entry>
+            <entry>True if x = y</entry>
+          </row>
+        </tbody>
+        </tgroup>
+      </table>
+    </para>
+  </section>
+
+  <section id="global-variables">
+    <title>Global Variables</title>
+    <para>
+      Global variables are manipulated with rule types <link linkend="setvariable">SETVARIABLE</link> and
+      <link linkend="remvariable">REMVARIABLE</link>, plus the stream commands <link linkend="cmd-setvar">SETVAR</link>
+      and <link linkend="cmd-remvar">REMVAR</link>.
+      Global variables persist until unset and are not bound to any window, cohort, or reading.
+    </para>
+    <para>
+      You can query a global variable with the form VAR:name (implemented) or query whether a variable has a
+      specific value with VAR:name=value (not implemented just yet).
+    </para>
+    <screen>
+      REMOVE (@poetry) IF (0 (VAR:news)) ;
+      SELECT (&lt;historical&gt;) IF (0 (VAR:year=1764)) ;
+    </screen>
+    <para>
+      I recommend keeping VAR tags in the contextual tests, since they cannot currently be cached and will be checked
+      every time.
+    </para>
+  </section>
+
+  <section id="fail-fast-tag">
+    <title>Fail-Fast Tag</title>
+    <para>
+      A Fail-Fast tag is the ^ prefix, such as ^&lt;dem&gt;.
+      This will be checked first of a set and if found will block the set from matching,
+      regardless of whether later independent tags could match.
+      It is mostly useful for sets such as LIST SetWithFail = (N &lt;bib&gt;) (V TR) ^&lt;dem&gt;.
+      This set will never match a reading with a &lt;dem&gt; tag, even if the reading matches (V TR).
+    </para>
+  </section>
+
+  <section id="strict-tags">
+    <title>STRICT-TAGS</title>
+    <para>
+      If you are worried about typos or need to otherwise enforce a strict tagset, <code>STRICT-TAGS</code> is your friend.
+      You can add tags to the list of allowed tags with <code>STRICT-TAGS += ... ;</code> where <code>...</code> is a list
+      of tags to allow. Any tag parsed while the STRICT-TAGS list is non-empty will be checked against the list, and an
+      error will be thrown if the tag is not on the list.
+    </para>
+    <para>
+      It is currently only possible to add to the list, hence <code>+=</code>.
+      Removing and assigning can be added if anyone needs those.
+    </para>
+    <screen>
+      STRICT-TAGS += N V ADJ etc ... ;
+    </screen>
+    <para>
+      By default, STRICT-TAGS always allows wordforms, baseforms, and VISL-style secondary tags
+      (<code>"&lt;…&gt;"</code>, <code>"…"</code>, <code>&lt;…&gt;</code>), since those are too prolific to list
+      individually. If you are extra paranoid, you can change that with <link linkend="grammar-options">OPTIONS</link>.
+    </para>
+    <para>
+      To get a list of unique used tags, pass --show-tags to CG-3. To filter this list to the default set of interesting tags,
+      something like this can be used:
+      <screen>
+        vislcg3 --show-tags -g grammar-goes-here | LC_ALL=C sort | egrep -v '^"' | egrep -v '^(/)?&lt;.*&gt;(/r|v)?$' | \
+        egrep -v '^\^' | egrep -v '^VSTR:' | egrep -v '^VAR:' | egrep -v '^_.*_$' | grep -v 'dummy string' | \
+        grep -v '^\*$' | grep -v '^&lt;&lt;&lt;$' | grep -v '^&gt;&gt;&gt;$' &gt; tags.txt
+      </screen>
+      <emphasis>For comparison, this yields 285 tags for VISL's 10000-rule Danish grammar.</emphasis>
+      Edit the resulting list to remove any tags you can see are typos or should otherwise not be allowed,
+      collapse the list to a line, stuff it at the top of the grammar with STRICT-TAGS, and recompile the grammar.
+      Any errors you get will be lines where forbidden tags are used, which can be whole sets if those sets aren't used in any rules.
+    </para>
+    <para>
+      Once you have a suitable STRICT-TAGS list, you can further trim the grammar by taking advantage the fact that any
+      tag listed in STRICT-TAGS may be used as an implicit set that contains only the tag itself.
+      No more need for <code>LIST N = N ;</code> constructs.
+    </para>
+  </section>
+</chapter>

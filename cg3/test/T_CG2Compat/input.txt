@@ -1,0 +1,16 @@
+"<word>"
+	"word" notwanted notwanted
+	"word" wanted wanted
+	"word" notmeeither notmeeither
+"<word>"
+	"word" notwanted notwanted
+	"word" maybe maybe
+	"word" notmeeither notmeeither
+"<word>"
+	"word" notwanted notwanted
+	"word" wanted wanted
+	"word" notmeeither notmeeither
+"<word>"
+	"word" notwanted notwanted
+	"word" wanted wanted
+	"word" notmeeither notmeeither

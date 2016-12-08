@@ -1,0 +1,4 @@
+"<word>"
+	"word" notwanted meme
+	"word" wanted wanted
+	"word" notmeeither meme

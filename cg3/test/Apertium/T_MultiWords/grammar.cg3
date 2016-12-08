@@ -1,0 +1,8 @@
+DELIMITERS = "<.>" "<!>" "<?>";
+
+LIST VblexInf = (vblex inf);
+LIST Prep_i = ("i" pr);
+
+SECTION
+
+SELECT Prep_i IF (1 VblexInf);

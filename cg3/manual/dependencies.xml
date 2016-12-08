@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="dependencies">
+  <title>Making use of Dependencies</title>
+
+  <para>
+    CG-3 can work with dependency trees in various ways. The input cohorts can have existing
+    dependencies; the grammar can create new attachments; or a combination of the two.
+  </para>
+
+  <section id="dep-setparent">
+    <title>SETPARENT</title>
+    <indexterm>
+      <primary>SETPARENT</primary>
+    </indexterm>
+    <screen>
+      [wordform] SETPARENT &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Attaches the matching reading to the contextually targetted cohort as a child.
+      The last link of the contextual test is used as target.
+    </para>
+    <para>
+      If the contextual target is a scanning test and the first found candidate cannot be attached
+      due to loop prevention, SETPARENT will look onwards for the next candidate.
+      This can be controlled with rule option <link linkend="rule-options-nearest">NEAREST</link>
+      and <link linkend="rule-options-allowloop">ALLOWLOOP</link>.
+    </para>
+    <screen>
+      SETPARENT targetset (-1* ("someword"))
+      &nbsp; TO (1* (step) LINK 1* (candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="dep-setchild">
+    <title>SETCHILD</title>
+    <indexterm>
+      <primary>SETCHILD</primary>
+    </indexterm>
+    <screen>
+      [wordform] SETCHILD &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Attaches the matching reading to the contextually targetted cohort as the parent.
+      The last link of the contextual test is used as target.
+    </para>
+    <para>
+      If the contextual target is a scanning test and the first found candidate cannot be attached
+      due to loop prevention, SETCHILD will look onwards for the next candidate.
+      This can be controlled with rule option <link linkend="rule-options-nearest">NEAREST</link>
+      and <link linkend="rule-options-allowloop">ALLOWLOOP</link>.
+    </para>
+    <screen>
+      SETCHILD targetset (-1* ("someword"))
+      &nbsp; TO (1* (step) LINK 1* (candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="dep-input">
+    <title>Existing Trees in Input</title>
+    <para>
+      Dependency attachments in input comes in the form of #X-&gt;Y or #X→Y tags where X is the number of the current
+      node and Y is the number of the parent node. The X must be unique positive integers and should
+      be sequentially enumerated. '0' is reserved and means the root of the tree, so no node may claim
+      to be '0', but nodes may attach to '0'.
+    </para>
+    <para>
+      <emphasis>If the Y of a reading cannot be located, it will be reattached to itself.</emphasis>
+      <emphasis>If a reading contains more than one attachment, only the last will be honored.</emphasis>
+      <emphasis>If a cohort has conflicting attachments in its readings, the result is undefined.</emphasis>
+    </para>
+    <para>
+      For example:
+      <screen>
+        "&lt;There&gt;"
+        &nbsp; "there" &lt;*&gt; ADV @F-SUBJ #1-&gt;0
+        "&lt;once&gt;"
+        &nbsp; "once" ADV @ADVL #2-&gt;0
+        "&lt;was&gt;"
+        &nbsp; "be" &lt;SVC/N&gt; &lt;SVC/A&gt; V PAST SG1/3 VFIN IMP @FMV #3-&gt;2
+        "&lt;a&gt;"
+        &nbsp; "a" &lt;Indef&gt; ART DET CENTRAL SG @&gt;N #4-&gt;5
+        "&lt;man&gt;"
+        &nbsp; "man" N NOM SG @SC #5-&gt;0
+        "&lt;$.&gt;"
+      </screen>
+    </para>
+  </section>
+
+  <section id="dep-delimit">
+    <title>Using Dependency as Delimiters</title>
+    <para>
+      Cmdline flag -D or --dep-delimit will enable the use of dependency information to delimit windows.
+      Enabling this will disable <link linkend="keyword-delimiters">DELIMITERS</link> entirely,
+      but will not affect the behavior of <link linkend="keyword-soft-delimiters">SOFT-DELIMITERS</link>
+      nor the hard/soft cohort limits.
+    </para>
+    <para>
+      Windows are delimited if a cohort has a node number less than or equal to
+      the highest previously seen node number, and also if a cohort has a node number that seems like a discontinuous
+      jump up in numbers.
+      The discontinuous limit is by default 10 but you can pass a number to -D/--dep-delimit to set it yourself.
+      Some systems do not output dependency numbers for punctuation, so setting it too low may break those;
+      the default 10 was chosen since it is unlikely any real text would have 10 sequential cohorts not part of the tree.
+    </para>
+    <para>
+      For example:
+      <emphasis>#4→5 followed by #3→4 will delimit.</emphasis>
+      <emphasis>#4→5 followed by #4→4 will delimit.</emphasis>
+      <emphasis>#4→5 followed by #15→4 will delimit.</emphasis>
+      <emphasis>#4→5 followed by #5→3 will not delimit.</emphasis>
+    </para>
+  </section>
+
+  <section id="dep-grammar">
+    <title>Creating Trees from Grammar</title>
+    <para>
+      It is also possible to create or modify the tree on-the-fly with rules.
+      See <link linkend="keyword-setparent">SETPARENT</link>
+      and <link linkend="keyword-setchild">SETCHILD</link>.
+      Dependencies created in this fashion will be output in the same format as above.
+    </para>
+    <para>
+      For example:
+      <screen>
+        SETPARENT (@&gt;N) (0 (ART DET))
+        &nbsp; TO (1* (N)) ;
+
+        SETPARENT (@&lt;P)
+        &nbsp; TO (-1* (PRP)) (NEGATE 1* (V)) ;
+      </screen>
+    </para>
+  </section>
+
+  <section id="dep-contextual-tests">
+    <title>Contextual Tests</title>
+    <para>
+      Either case, once you have a dependency tree to work with,
+      you can use that in subsequent contextual tests as seen below.
+      These positions can be combined with the window spanning options.
+    </para>
+
+    <section id="dep-ct-parent">
+      <title>Parent</title>
+      <indexterm>
+        <primary>p</primary>
+      </indexterm>
+      <para>
+        The 'p' position asks for the parent of the current position.
+      </para>
+      <screen>
+        (-1* (ADJ) LINK p (N))
+      </screen>
+    </section>
+
+    <section id="dep-ct-ancestors">
+      <title>Ancestors</title>
+      <indexterm>
+        <primary>pp</primary>
+      </indexterm>
+      <para>
+        The 'pp' position asks for an ancestor of the current position,
+        where ancestor is defined as any parent, grand-parent, great-grand-parent, etc...
+      </para>
+      <screen>
+        (-1* (N) LINK pp (ADJ))
+      </screen>
+      <para>
+        <emphasis>The analogue of <link linkend="gotcha-cc-vs-cstar">difference between cc and c*</link> applies to pp vs. p*</emphasis>
+      </para>
+    </section>
+
+    <section id="dep-ct-children">
+      <title>Children</title>
+      <indexterm>
+        <primary>c</primary>
+      </indexterm>
+      <para>
+        The 'c' position asks for a child of the current position.
+      </para>
+      <screen>
+        (-1* (N) LINK c (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-descendents">
+      <title>Descendents</title>
+      <indexterm>
+        <primary>cc</primary>
+      </indexterm>
+      <para>
+        The 'cc' position asks for a descendent of the current position,
+        where descendent is defined as any child, grand-child, great-grand-child, etc...
+      </para>
+      <screen>
+        (-1* (N) LINK cc (ADJ))
+      </screen>
+      <para>
+        <emphasis><link linkend="gotcha-cc-vs-cstar">Difference between cc and c*</link></emphasis>
+      </para>
+    </section>
+
+    <section id="dep-ct-siblings">
+      <title>Siblings</title>
+      <indexterm>
+        <primary>s</primary>
+      </indexterm>
+      <para>
+        The 's' position asks for a sibling of the current position.
+      </para>
+      <screen>
+        (-1* (ADJ) LINK s (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-self">
+      <title>Self</title>
+      <indexterm>
+        <primary>S</primary>
+      </indexterm>
+      <para>
+        The 'S' option allows the test to look at the current target as well.
+        Used in conjunction with p, c, cc, s, or r to test self and the relations.
+      </para>
+      <para>
+        Be aware that BARRIER and CBARRIER will check and thus possibly stop at the current target when 'S' is in effect.
+      </para>
+      <screen>
+        (cS (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-deep">
+      <title>Deep Scan</title>
+      <indexterm>
+        <primary>*</primary>
+      </indexterm>
+      <para>
+        The '*' option behaves differently when dealing with dependencies.
+        Here, the '*' option allows the test to perform a deep scan.
+        Used in conjunction with p, c, or s to continue until there are no deeper relations.
+        For example, position 'c*' tests the children, grand-children, great-grand-children, and so forth.
+      </para>
+      <screen>
+        (c* (ADJ))
+      </screen>
+      <para>
+        <emphasis><link linkend="gotcha-cc-vs-cstar">Difference between cc and c*</link></emphasis>
+      </para>
+    </section>
+
+    <section id="dep-ct-leftof">
+      <title>Left of</title>
+      <indexterm>
+        <primary>l</primary>
+      </indexterm>
+      <para>
+        The 'l' option limits the search to cohorts that are to the left of the current target.
+      </para>
+      <screen>
+        (lc (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-rightof">
+      <title>Right of</title>
+      <indexterm>
+        <primary>r</primary>
+      </indexterm>
+      <para>
+        The 'r' option limits the search to cohorts that are to the right of the current target.
+      </para>
+      <screen>
+        (rc (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-leftmost">
+      <title>Leftmost</title>
+      <indexterm>
+        <primary>ll</primary>
+      </indexterm>
+      <indexterm>
+        <primary>lll</primary>
+      </indexterm>
+      <indexterm>
+        <primary>llr</primary>
+      </indexterm>
+      <para>
+        The 'll' option limits the search to the leftmost cohort of the possible matches.
+        Note that this cohort may be to the right of the current target;
+        use 'lll' if you want the leftmost of the cohorts to the left of the current target,
+        or 'llr' if you want the leftmost of the cohorts to the right of the current target.
+      </para>
+      <screen>
+        (llc (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-rightmost">
+      <title>Rightmost</title>
+      <indexterm>
+        <primary>rr</primary>
+      </indexterm>
+      <indexterm>
+        <primary>rrr</primary>
+      </indexterm>
+      <indexterm>
+        <primary>rrl</primary>
+      </indexterm>
+      <para>
+        The 'rr' option limits the search to the rightmost cohort of the possible matches.
+        Note that this cohort may be to the left of the current target;
+        use 'rrr' if you want the rightmost of the cohorts to the right of the current target,
+        or 'rrl' if you want the rightmost of the cohorts to the left of the current target.
+      </para>
+      <screen>
+        (rrc (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-all">
+      <title>All Scan</title>
+      <indexterm>
+        <primary>ALL</primary>
+      </indexterm>
+      <para>
+        The 'ALL' option will require that all of the relations match the set.
+        For example, position 'ALL s' requires that all of the siblings match the set.
+      </para>
+      <screen>
+        (ALL s (ADJ))
+      </screen>
+    </section>
+
+    <section id="dep-ct-not">
+      <title>None Scan</title>
+      <indexterm>
+        <primary>NONE</primary>
+      </indexterm>
+      <para>
+        The 'NONE' option will require that none of the relations match the set.
+        For example, position 'NONE c' requires that none of the children match the set.
+      </para>
+      <screen>
+        (NONE c (ADJ))
+      </screen>
+    </section>
+  </section>
+
+</chapter>

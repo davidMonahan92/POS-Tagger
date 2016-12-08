@@ -1,0 +1,11 @@
+DELIMITERS = "<$.>" ;
+
+JUMP (named) (*) ;
+ADD (@jump-bad) (*) ;
+
+BEFORE-SECTIONS hubba ;
+ADD (@a) (*) ;
+ADD:named (@b) (*) ;
+JUMP (hubba) (*) (NOT 0 (@a)) ;
+ANCHOR bubba ;
+ADD:named (@c) (*) ;

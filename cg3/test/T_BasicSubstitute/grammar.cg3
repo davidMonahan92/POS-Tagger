@@ -1,0 +1,13 @@
+DELIMITERS = "<$.>" ;
+
+SUBSTITUTE (doesnotexist) (error) (notwanted) ;
+SUBSTITUTE (wanted) (substituted) (wanted) ;
+SUBSTITUTE (2) (4 2) (2) ;
+SUBSTITUTE (notmeeither) (*) (*) ;
+
+"<word>" ADD (@add-good) (*) ;
+"<WoRd>"i ADD (@add-mixcase-1) (*) ;
+SUBSTITUTE ("<.*>"r) (VSTR:"<$1ed>") ("<(.+)>"r) ;
+"<word>" ADD (@add-bad) (*) ;
+"<WoRdeD>"i ADD (@add-mixcase-2) (*) ;
+"<word.*>"r ADD (@add-regex) (*) ;

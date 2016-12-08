@@ -1,0 +1,65 @@
+1. You need foma installed and in your $PATH
+code and binaries here if needed:  http://code.google.com/p/foma/
+
+2. You also need vislcg3 installed and in your $PATH
+see http://beta.visl.sdu.dk/download/vislcg3/
+the version used by this distribution is vislcg3 0.9.7.7299
+
+3. Extract the tarfile irishfst.tgz
+it should create
+irishfst/Makefile
+irishfst/README
+irishfst/test.sh
+irishfst/src/*.txt, *.script
+irishfst/dis/gael-dis.rle, lookup2cg3.prl
+irishfst/int/ (empty)
+irishfst/bin/ (empty)
+
+4. run make in the irishfst directory
+the main transducer will be bin/lexguess.fst 
+
+5. test using ./test.sh
+
+Mar 2012 EUD
+
+
+********************
+
+The cg3 and foma folders must be in the class path for the POS Tagger to work otherwise you will get a flookup error!
+Just copy the file path and do the following export command to set it in your path!
+The below is only a temporary set!
+
+
+export PATH=$PATH:/home/apertium/Desktop/Tagger/cg3
+export PATH=$PATH:/home/apertium/Desktop/Tagger/foma
+
+If you are having anymore issues regarding these file look at their own Readme files!
+
+********************
+
+********************
+
+To run the pos.py script you write the following example command below!
+
+python pos.py test.txt
+
+********************
+
+********************
+
+To convert the outputted .pos file into the conll format you simply write
+
+python POS2conll_allMorph.py
+
+!!!Make sure to change the file path in the script!!!
+
+********************
+
+********************
+
+Make sure to use the runfst.sh file in the Checker file, It allows for Fadas to be recognised!
+It is used in the main method in the pos.py script, Make sure the path direction is correct!
+
+ subprocess.call(['sh', '/home/apertium/Desktop/Tagger/Checker/runfst.sh', current])
+
+********************

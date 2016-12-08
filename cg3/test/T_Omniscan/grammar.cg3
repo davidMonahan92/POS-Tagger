@@ -1,0 +1,13 @@
+DELIMITERS = "<$.>" ;
+
+SETPARENT (startfirst) TO (0** (first)) ;
+SETPARENT (startsecond) TO (0** (second)) ;
+
+SETPARENT (startthird) TO (0**W (third)) ;
+SETPARENT (startfourth) TO (0**W (fourth)) ;
+
+ADD (@self) (startfirst) (0*S (startfirst)) ;
+ADD (@neighbour-left) (startsecond) (0*S (startfirst)) ;
+ADD (@neighbour-right) (startfourth) (0*S (startfirst)) ;
+
+ADD (@error-not-first) (startthird) (NOT 0* (startfirst)) ;

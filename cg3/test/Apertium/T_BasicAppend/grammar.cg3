@@ -1,0 +1,5 @@
+DELIMITERS = "<$.>" ;
+
+SECTION
+
+"<word>" APPEND ("newword" appended) (*) (NOT 0 (appended)) ;

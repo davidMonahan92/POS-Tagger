@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="cmdreference">
+  <title>Command Line Reference</title>
+
+  <para>
+    A list of binaries available and their usage information.
+  </para>
+
+  <section id="vislcg3">
+    <title>vislcg3</title>
+    <para>
+      vislcg3 is the primary binary. It can run rules, compile grammars, and so on.
+    </para>
+    <screen>
+Usage: vislcg3 [OPTIONS]
+
+Options:
+ -h, --help                 shows this help
+ -?, --?                    shows this help
+ -V, --version              prints copyright and version information
+     --min-binary-revision  prints the minimum usable binary grammar revision
+ -g, --grammar              specifies the grammar file to use for disambiguation
+     --grammar-out          writes the compiled grammar in textual form to a file
+     --grammar-bin          writes the compiled grammar in binary form to a file
+     --grammar-only         only compiles the grammar; implies --verbose
+     --ordered              (will in future allow full ordered matching)
+ -u, --unsafe               allows the removal of all readings in a cohort, even the last one
+ -s, --sections             number or ranges of sections to run; defaults to all sections
+     --rules                number or ranges of rules to run; defaults to all rules
+     --rule                 a name or number of a single rule to run
+ -d, --debug                enables debug output (very noisy)
+ -v, --verbose              increases verbosity
+     --quiet                squelches warnings (same as -v 0)
+ -2, --vislcg-compat        enables compatibility mode for older CG-2 and vislcg grammars
+ -I, --stdin                file to read input from instead of stdin
+ -O, --stdout               file to print output to instead of stdout
+ -E, --stderr               file to print errors to instead of stderr
+ -C, --codepage-all         codepage to use for grammar, input, and output streams; defaults to UTF-8
+     --codepage-grammar     codepage to use for grammar; overrides --codepage-all
+     --codepage-input       codepage to use for input; overrides --codepage-all
+     --codepage-output      codepage to use for output and errors; overrides --codepage-all
+     --no-mappings          disables all MAP, ADD, and REPLACE rules
+     --no-corrections       disables all SUBSTITUTE and APPEND rules
+     --no-before-sections   disables all rules in BEFORE-SECTIONS parts
+     --no-sections          disables all rules in SECTION parts
+     --no-after-sections    disables all rules in AFTER-SECTIONS parts
+ -t, --trace                prints debug output alongside with normal output
+     --trace-name-only      if a rule is named, omit the line number; implies --trace
+     --trace-no-removed     does not print removed readings; implies --trace
+     --trace-encl           traces which enclosure pass is currently happening; implies --trace
+     --dry-run              make no actual changes to the input
+     --single-run           runs each section only once; same as --max-runs 1
+     --max-runs             runs each section max N times; defaults to unlimited (0)
+ -S, --statistics           gathers profiling statistics while applying grammar
+ -Z, --optimize-unsafe      destructively optimize the profiled grammar to be faster
+ -z, --optimize-safe        conservatively optimize the profiled grammar to be faster
+ -p, --prefix               sets the mapping prefix; defaults to @
+     --unicode-tags         outputs Unicode code points for things like -&gt;
+     --unique-tags          outputs unique tags only once per reading
+     --num-windows          number of windows to keep in before/ahead buffers; defaults to 2
+     --always-span          forces scanning tests to always span across window boundaries
+     --soft-limit           number of cohorts after which the SOFT-DELIMITERS kick in; defaults to 300
+     --hard-limit           number of cohorts after which the window is forcefully cut; defaults to 500
+ -D, --dep-delimit          delimit windows based on dependency instead of DELIMITERS; defaults to 10
+     --dep-original         outputs the original input dependency tag even if it is no longer valid
+     --dep-allow-loops      allows the creation of circular dependencies
+     --dep-no-crossing      prevents the creation of dependencies that would result in crossing branches
+     --no-magic-readings    prevents running rules on magic readings
+ -o, --no-pass-origin       prevents scanning tests from passing the point of origin
+ -e, --show-end-tags        allows the &lt;&lt;&lt; tags to appear in output
+     --show-unused-sets     prints a list of unused sets and their line numbers; implies --grammar-only
+     --show-tags            prints a list of unique tags; implies --grammar-only
+     --show-tag-hashes      prints a list of tags and their hashes as they are parsed during the run
+     --show-set-hashes      prints a list of sets and their hashes; implies --grammar-only
+    </screen>
+  </section>
+
+  <section id="cg-conv">
+    <title>cg-conv</title>
+    <para>
+      cg-conv converts between <link linkend="streamformats">stream formats</link>.
+      It can currently convert from any of CG, Niceline CG, Apertium, HFST/XFST, and plain text formats,
+      turning them into CG, Niceline CG, Apertium, or plain text formats.
+      By default it tries to auto-detect the input format and convert that to CG.
+      Currently only meant for use in a pipe.
+    </para>
+    <screen>
+Usage: cg-conv [OPTIONS]
+
+Options:
+ -h, --help          shows this help
+ -?, --?             shows this help
+ -p, --prefix        sets the mapping prefix; defaults to @
+ -u, --in-auto       auto-detect input format (default)
+ -c, --in-cg         sets input format to CG
+ -n, --in-niceline   sets input format to Niceline CG
+ -a, --in-apertium   sets input format to Apertium
+ -f, --in-fst        sets input format to HFST/XFST
+ -p, --in-plain      sets input format to plain text
+ -C, --out-cg        sets output format to CG (default)
+ -A, --out-apertium  sets output format to Apertium
+ -N, --out-niceline  sets output format to Niceline CG
+ -P, --out-plain     sets output format to plain text
+ -W, --wfactor       FST weight factor (defaults to 100.0)
+     --wtag          FST weight tag prefix (defaults to W)
+ -S, --sub-delim     FST sub-reading delimiters (defaults to #)
+ -r, --rtl           sets sub-reading direction to RTL (default)
+ -l, --ltr           sets sub-reading direction to LTR
+    </screen>
+  </section>
+
+  <section id="cg-comp">
+    <title>cg-comp</title>
+    <para>
+      cg-comp is a lighter tool that only compiles grammars to their binary form.
+      It requires grammars to be in Unicode (UTF-8) encoding.
+      Made for the Apertium toolchain.
+    </para>
+    <screen>
+USAGE: cg-comp grammar_file output_file
+    </screen>
+  </section>
+
+  <section id="cg-proc">
+    <title>cg-proc</title>
+    <para>
+      cg-proc is a grammar applicator which can handle the Apertium stream format.
+      It works with binary grammars only, hence the need for cg-comp.
+      It requires the input stream to be in Unicode (UTF-8) encoding.
+      Made for the Apertium toolchain.
+    </para>
+    <screen>
+USAGE: cg-proc [-t] [-s] [-d] grammar_file [input_file [output_file]]
+
+Options:
+ -d, --disambiguation:    morphological disambiguation
+ -s, --sections=NUM:      specify number of sections to process
+ -f, --stream-format=NUM: set the format of the I/O stream to NUM,
+                            where `0' is VISL format and `1' is
+                            Apertium format (default: 1)
+ -t, --trace:             print debug output on stderr
+ -v, --version:           version
+ -h, --help:              show this help
+    </screen>
+  </section>
+
+  <section id="cg3-autobin.pl">
+    <title>cg3-autobin.pl</title>
+    <para>
+      A thin Perl wrapper for vislcg3. It will compile the grammar to binary form the first time and re-use that on
+      subsequent runs for the speed boost. Accepts all command line options that vislcg3 does.
+    </para>
+  </section>
+</chapter>

@@ -1,0 +1,37 @@
+"<word>"
+	"word" one
+"<word>"
+	"word" two
+"<$.>"
+"<word>"
+	"word" three
+"<word>"
+	"word" four
+"<$soft>"
+"<word>"
+	"word" five
+"<word>"
+	"word" six
+"<word>"
+	"word" seven
+"<word>"
+	"word" eight
+"<word>"
+	"word" nine
+"<word>"
+	"word" ten
+"<word>"
+	"word" eleven
+"<word>"
+	"word" twelve
+"<word>"
+	"word" thirteen
+"<word>"
+	"word" fourteen
+"<word>"
+	"word" fifteen
+"<word>"
+	"word" sixteen
+"<word>"
+	"word" seventeen
+"<$.>"

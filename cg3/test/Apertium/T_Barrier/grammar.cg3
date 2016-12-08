@@ -1,0 +1,3 @@
+DELIMITERS = "<$.>" ;
+
+MAP (tag) ("word") (1* (findme) BARRIER ("blocker")) ;

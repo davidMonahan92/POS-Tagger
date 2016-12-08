@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="compatibility">
+  <title>Compatibility and Incompatibilities</title>
+
+  <para>
+    Things to be aware of.
+  </para>
+
+  <section id="gotchas">
+    <title>Gotcha's</title>
+
+    <section id="gotcha-magic-readings">
+      <title>Magic Readings</title>
+      <para>
+        In CG-3 all cohorts have at least one reading. If none are given in the input, one is generated
+        from the wordform. These magic readings can be the target of rules, which may not always be intended.
+      </para>
+      <para>
+        For example, given the input
+        <screen>
+          "&lt;word&gt;"
+          &nbsp; "word" N NOM SG
+          "&lt;$.&gt;"
+        </screen>
+        a magic reading is made so the cohorts internally looks like
+        <screen>
+          "&lt;word&gt;"
+          &nbsp; "word" N NOM SG
+          "&lt;$.&gt;"
+          &nbsp; "&lt;$.&gt;" &lt;&lt;&lt;
+        </screen>
+      </para>
+      <para>
+        The above input combined with a rule a'la
+        <screen>
+          MAP (@X) (*) ;
+        </screen>
+        will give the output
+        <screen>
+          "&lt;word&gt;"
+          &nbsp; "word" N NOM SG @X
+          "&lt;$.&gt;"
+          &nbsp; "&lt;$.&gt;" &lt;&lt;&lt; @X
+        </screen>
+        because MAP promoted the last magic reading to a real reading.
+      </para>
+      <para>
+        If you do not want these magic readings to be the possible target of rules, you can use the
+        cmdline option --no-magic-readings. Internally they will still be generated and contextual tests
+        can still reference them, but rules cannot touch or modify them directly.
+        <emphasis>
+          <link linkend="keyword-setchild">SETCHILD</link> is an exception.
+        </emphasis>
+      </para>
+    </section>
+
+    <section id="gotcha-not-negate">
+      <title>NOT and NEGATE</title>
+      <para>
+        In CG-2 and VISLCG the keyword NOT behaved differently depending on whether it was
+        in front of the first test or in front of a linked test. In the case of
+        <screen>
+          (NOT 1 LSet LINK 1 KSet LINK 1 JSet)
+        </screen>
+        the NOT would apply last, meaning it would invert the result of the entire chain,
+        but in the case of
+        <screen>
+          (1 LSet LINK NOT 1 KSet LINK 1 JSet)
+        </screen>
+        it only inverts the result of the immediately following test.
+      </para>
+
+      <para>
+        CG-3 implements the <link linkend="test-negate">NEGATE</link> keyword to make the distinction clearer.
+        This means that if you are converting grammars to CG-3 you must replace starting NOTs with NEGATEs
+        to get the same functionality. So the first test should instead be
+        <screen>
+          (NEGATE 1 LSet LINK 1 KSet LINK 1 JSet)
+        </screen>
+      </para>
+
+      <para>
+        Alternatively you can use the --vislcg-compat (short form -2) to work with older grammars that you
+        do not wish to permanently update to use NEGATE.
+      </para>
+    </section>
+
+    <section id="gotcha-preferred-targets">
+      <title>PREFERRED-TARGETS</title>
+      <indexterm>
+        <primary>PREFERRED-TARGETS</primary>
+      </indexterm>
+      <para>
+        <link linkend="keyword-preferred-targets">PREFERRED-TARGETS</link> is currently ignored in CG-3.
+        See <link linkend="keyword-preferred-targets">PREFERRED-TARGETS</link> for details.
+      </para>
+    </section>
+
+    <section id="gotcha-codepage">
+      <title>Default Codepage / Encoding</title>
+      <para>
+        CG-3 will auto-detect the codepage from the environment, which in some cases is not what you want.
+        It is not uncommon to work with UTF-8 data but have your environment set to US-ASCII which would
+        produce some unfortunate errors.
+        You can use the runtime option -C to override the default codepage, and you should always enforce
+        it if you plan on distributing packages that depend on a certain codepage.
+      </para>
+    </section>
+
+    <section id="gotcha-setop-minus">
+      <title>Set Operator -</title>
+      <para>
+        In CG-2 the - operator means set difference; in VISLCG it means set fail-fast; in CG-3 it means
+        set difference again, but the new operator ^ takes place of VISLCG's behavior.
+      </para>
+    </section>
+
+    <section id="gotcha-origin-passing">
+      <title>Scanning Past Point of Origin</title>
+      <para>
+        In CG-1 and some versions of CG-2, scanning tests could not pass the point of origin, but in CG-3
+        they can by default do so. The cmdline flag --no-pass-origin can set the default behavior to that of
+        CG-1. See <link linkend="test-origin">Scanning Past Point of Origin</link> for more details.
+      </para>
+    </section>
+
+    <section id="gotcha-first-last-tags">
+      <title>&gt;&gt;&gt; and &lt;&lt;&lt;</title>
+      <para>
+        In VISLCG the magic tags &gt;&gt;&gt; and &lt;&lt;&lt;,
+        denoting sentence start and end respectively, could sometimes wind up in the output.
+        In CG-3 they are never part of the output.
+      </para>
+    </section>
+
+    <section id="gotcha-application-order">
+      <title>Rule Application Order</title>
+      <para>
+        In CG-2 the order in which rules are applied on cohorts cannot be reliably predicted.
+      </para>
+      <para>
+        In VISLCG rules can be forced to be applied in the order they occur in the grammar, but
+        VISLCG will try to run all rules on the current cohort before trying next cohort:
+        <screen>
+          ForEach (Window)
+          &nbsp; ForEach (Cohort)
+          &nbsp;&nbsp; ForEach (Rule)
+          &nbsp;&nbsp;&nbsp; ApplyRule
+        </screen>
+      </para>
+      <para>
+        CG-3 always applies rules in the order they occur in the grammar, and will try the current
+        rule on all cohorts in the window before moving on to the next rule.
+        This yields a far more predictable result and cuts down on the need for many sections in the grammar.
+        <screen>
+          ForEach (Window)
+          &nbsp; ForEach (Rule)
+          &nbsp;&nbsp; ForEach (Cohort)
+          &nbsp;&nbsp;&nbsp; ApplyRule
+        </screen>
+      </para>
+    </section>
+
+    <section id="gotcha-endless-loops">
+      <title>Endless Loops</title>
+      <para>
+        Since any rule can be in any section, it is possible to write endless loops.
+      </para>
+      <para>
+        For example, this grammar will potentially loop forever:
+        <screen>
+          SECTION
+          ADD (@not-noun) (N) (0 (V)) ;
+          ADD (@noun) (N) ;
+
+          SECTION
+          REMOVE (@noun) IF (0 (V)) ;
+        </screen>
+        Since ADD is in a SECTION it will be run again after REMOVE, and since ADD does not block from further
+        appending of mapping tags it can re-add @noun each time, leading to REMOVE finding it and removing,
+        ad nauseum.
+      </para>
+      <para>
+        In order to prevent this, the REMOVE rule can in most cases be rewritten to:
+        <screen>
+          REMOVE (N) IF (0 (@noun) + (N)) (0 (V)) ;
+        </screen>
+        That is, the target of the REMOVE rule should be a non-mapping tag with the mapping tag as 0 context.
+        This will either remove the entire reading or nothing, as opposed to a single mapping tag, and will not
+        cause the grammar to rewind.
+      </para>
+      <para>
+        Similarly, it is possible to make loops with APPEND and SELECT/REMOVE/IFF combinations, and probably
+        many other to-be-discovered mixtures of rules. Something to be aware of.
+      </para>
+    </section>
+
+    <section id="gotcha-mapping-visibility">
+      <title>Visibility of Mapped Tags</title>
+      <para>
+        In CG-1, CG-2, and VISLCG it was not always clear when you could refer to a previously mapped in the same
+        grammar. In VISL CG-3 all changes to readings become visible to the rest of the grammar immediately.
+      </para>
+    </section>
+
+    <section id="gotcha-cc-vs-cstar">
+      <title>Contextual position 'cc' vs. 'c*'</title>
+      <para>
+        The contextual positions '<link linkend="dep-ct-descendents">cc</link>' and
+        '<link linkend="dep-ct-deep">c*</link>' may at first glance seem to behave exactly the same,
+        but there is a subtle difference when combined with the
+        <link linkend="dep-ct-leftof">left-of/right-of filters</link> that can lead to wildly different cohorts
+        being chosen in rules asking for TO/FROM contextual targets:
+      </para>
+      <para>
+        <emphasis>cc</emphasis> will first create a complete list of all children and grand-children, then apply
+        any left-of/right-of filters.
+      </para>
+      <para>
+        <emphasis>c*</emphasis> will apply left-of/right-of filters at each step down the child tree, not
+        following any branch which doesn't uphold the filter.
+      </para>
+    </section>
+  </section>
+
+  <section id="incompatibilites">
+    <title>Incompatibilites</title>
+
+    <section id="incompat-mapping">
+      <title>Mappings</title>
+      <para>
+        The CG-2 spec says that readings in the format
+        <screen>
+          "word" tag @MAP @MUP ntag @MIP
+        </screen>
+        should be equivalent to
+        <screen>
+          "word" tag @MAP
+          "word" tag @MUP
+          "word" tag ntag @MIP
+        </screen>
+      </para>
+
+      <para>
+        Since the tag order does not matter in CG-3, this is instead equivalent to
+        <screen>
+          "word" tag ntag @MAP
+          "word" tag ntag @MUP
+          "word" tag ntag @MIP
+        </screen>
+      </para>
+    </section>
+
+    <section id="incompat-baseforms">
+      <title>Baseforms &amp; Mixed Input</title>
+      <para>
+        The CG-2 spec says that the first tag of a reading is the baseform, whether it looks like
+        [baseform] or "baseform".
+        This is not true for CG-3; only "baseform" is valid.
+      </para>
+
+      <para>
+        The reason for this is that CG-3 has to ignore all meta text such as XML, and the only way I can be sure
+        what is a reading and what is meta text is to declare that a reading is only valid in the forms of
+        <screen>
+          "baseform" tag tags moretags
+          "base form" tag tags moretags
+        </screen>
+        and not in the forms of
+        <screen>
+          [baseform] tag tags moretags
+          baseform tag tags moretags
+        </screen>
+      </para>
+
+    </section>
+  </section>
+
+</chapter>

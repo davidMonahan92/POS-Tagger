@@ -1,0 +1,2325 @@
+2015-06-23  tino
+
+	* [r10799] src/GrammarApplicator_reflow.cpp: More removed cohort
+	  badness
+	* [r10798] src/inlines.hpp: Demote CR and NEL to just spaces
+	* [r10797] ChangeLog, src/ApertiumApplicator.cpp, src/Cohort.cpp,
+	  src/Cohort.hpp, src/FSTApplicator.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/NicelineApplicator.cpp,
+	  src/PlaintextApplicator.cpp, src/Reading.cpp, src/Reading.hpp,
+	  src/SingleWindow.cpp, src/inlines.hpp, src/libcg3.cpp,
+	  src/version.hpp: More pooling
+	* [r10796] src/CohortIterator.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp: Fix bad reaction
+	  between removed cohorts and dependency
+	* [r10793] ChangeLog, scripts/profile-revisions.php,
+	  src/Cohort.cpp, src/Cohort.hpp, src/Grammar.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/inlines.hpp,
+	  src/stdafx.hpp, src/version.hpp: Instead of using upwards 128KB
+	  per cohort possible_sets cache, use 2KB
+	* [r10791] ChangeLog, src/Grammar.hpp, src/Reading.cpp,
+	  src/flat_unordered_map.hpp, src/flat_unordered_set.hpp,
+	  src/sorted_vector.hpp, src/version.hpp: Let's ship a complete
+	  implementation of flat hash table, instead of the half-baked
+	  monster
+
+2015-06-21  tino
+
+	* [r10787] scripts/profile-revisions.php,
+	  src/flat_unordered_map.hpp, src/flat_unordered_set.hpp:
+	  Consistency
+	* [r10786] compile-profile.sh, scripts/profile-revisions.php,
+	  src/Cohort.cpp, src/Reading.cpp, src/all_cg_comp.cpp,
+	  src/all_cg_conv.cpp, src/all_cg_proc.cpp, src/all_vislcg3.cpp,
+	  src/flat_unordered_set.hpp, src/inlines.hpp, vapply.sh,
+	  vparse.sh: WIP memory pooling hacks
+
+2015-06-20  tino
+
+	* [r10784] src/Tag.cpp: Clone regexes to avoid double-free
+
+2015-06-19  tino
+
+	* [r10782] include/posix/popen_plus.c,
+	  src/GrammarApplicator_runContextualTest.cpp: scan-build fixes
+
+2015-06-11  tino
+
+	* [r10763] src/FSTApplicator.cpp: inf weight -> 2147483647
+
+2015-06-06  tino
+
+	* [r10754] ChangeLog, src/ApertiumApplicator.cpp,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/NicelineApplicator.cpp, src/main.cpp, src/options.hpp,
+	  src/version.hpp, test/T_MapAdd_Different/args.txt,
+	  test/T_MapAdd_Different/expected.txt: Add option --split-mappings
+
+2015-06-04  tino
+
+	* [r10749] include/posix/popen_plus.c, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runRules.cpp: Fix weirdness
+	* [r10748] src/process.hpp: CentOS 6, a plague upon thy house
+	* [r10746] CMakeLists.txt, ChangeLog, include/exec-stream,
+	  include/posix, include/win32, src/CMakeLists.txt,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runRules.cpp, src/inlines.hpp,
+	  src/process.hpp, src/version.hpp, win32: Switched from
+	  exec-stream to popen_plus/win32 for a 20x speedup in External
+	  processing
+	* [r10745] src/GrammarApplicator.hpp: Undo 2 lines
+	* [r10744] src/TextualParser.cpp: Throw on invalid options, rather
+	  than endless loop
+	* [r10742] ChangeLog, TODO, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runRules.cpp, src/Reading.cpp,
+	  src/Reading.hpp, src/TextualParser.cpp, src/version.hpp: Add
+	  SUB:* to make rule targets look at any sub-reading
+
+2015-05-30  tino
+
+	* [r10738] src/TextualParser.cpp: Don't parse SUB as flag
+
+2015-05-28  tino
+
+	* [r10734] src/GrammarApplicator_runRules.cpp: Fix sub-reading
+	  still being active bug; Minor optiization
+
+2015-05-26  tino
+
+	* [r10730] ChangeLog, src/version.hpp: STRICT-TAGS done, so far
+	* [r10729] manual/grammar.xml, manual/tags.xml: Document
+	  STRICT-TAGS and new options
+	* [r10728] src/TextualParser.hpp, src/parser_helpers.hpp,
+	  test/T_Dependency_Loops/grammar.cg3: Tags listed in Strict-Tags
+	  may now be used as implicit inline sets, where they are the only
+	  member
+	* [r10727] src/Grammar.cpp, src/Grammar.hpp, src/Set.cpp,
+	  src/TextualParser.cpp, src/TextualParser.hpp, src/main.cpp: Move
+	  --show-tags code to after grammar indexing, to only show used
+	  tags
+	* [r10725] src/TextualParser.cpp: Test the plain tag; Always allow
+	  >>> and <<<
+	* [r10724] src/TextualParser.cpp: Always allow many more special
+	  tag types
+	* [r10723] TODO, src/Strings.cpp, src/Strings.hpp,
+	  src/TextualParser.cpp, src/TextualParser.hpp,
+	  test/T_Dependency_Loops/grammar.cg3: Strict-Tags default allow
+	  wordforms, baseforms, secondary, and * tag
+
+2015-04-23  unhammer
+
+	* [r10651] emacs/cg.el: wordform-lines can have tags (lex.sel)
+
+2015-04-20  tino
+
+	* [r10649] CMakeLists.txt: Append to flags
+
+2015-04-17  unhammer
+
+	* [r10647] emacs/cg.el: todo
+	* [r10646] emacs/cg.el: "handle all the string
+	  modifiers"[irv]\{0,3\}
+	* [r10645] emacs/cg.el: "foo"i also possible, not just "foo"ri
+
+2015-04-13  tino
+
+	* [r10643] ChangeLog, src/Grammar.cpp, src/version.hpp: f branch
+	  empty sets turned into * instead of error
+
+2015-04-10  tino
+
+	* [r10640] ChangeLog, src/Grammar.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/Strings.cpp,
+	  src/Strings.hpp, src/version.hpp: Non-capturing unification is
+	  now done per reading
+	* [r10639] src/GrammarApplicator_runRules.cpp: Remove debug
+	* [r10638] vapply.sh: Keep old output
+	* [r10637] ChangeLog, TODO, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp: WIP to make
+	  unification truly per-reading
+
+2015-03-25  unhammer
+
+	* [r10629] emacs/cg.el: call it 0.1.7, since C-M-h now works, more
+	  keywords are matched, and we highlight symbol-at-point in output.
+	  
+	  +some nitpicking
+
+2015-03-25  tino
+
+	* [r10628] CMakeLists.txt: Don't rename cg.el to cg3-mode.el as it
+	  seems no current distro ships any package with a conflicting
+	  cg.el
+
+2015-03-24  tino
+
+	* [r10617] src/Grammar.cpp, src/Grammar.hpp, src/TextualParser.cpp:
+	  Don't report potentially used sets as unused. They might actually
+	  be unused, but that would take a lot more work to determine.
+
+2015-03-19  tino
+
+	* [r10601] CMakeLists.txt,
+	  include/exec-stream/posix/exec-stream-impl.cpp,
+	  src/BinaryGrammar_read.cpp, src/BinaryGrammar_read_10043.cpp,
+	  src/BinaryGrammar_write.cpp, src/Grammar.hpp, src/inlines.hpp:
+	  Remove -Wno-unused-result to help poor feeble GCC 4.2.1
+
+2015-03-09  tino
+
+	* [r10589] src/GrammarApplicator_reflow.cpp: Satisfy older
+	  compilers
+	* [r10588] src/Grammar.cpp: Respect empty sections
+	* [r10587] ChangeLog, src/GrammarApplicator.hpp, src/main.cpp,
+	  src/version.hpp: Enforce matching --prefix for binary grammars
+
+2015-03-06  tino
+
+	* [r10578] src/GrammarApplicator_runGrammar.cpp: Wordforms now
+	  search for >" instead of just "
+	* [r10577] ChangeLog, manual/sets.xml, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/Strings.cpp,
+	  src/Strings.hpp, src/Tag.hpp, src/TextualParser.cpp,
+	  src/parser_helpers.hpp, src/version.hpp: Added magic set/tag
+	  _SAME_BASIC_
+	* [r10576] ChangeLog, manual/grammar.xml,
+	  src/BinaryGrammar_read.cpp, src/BinaryGrammar_write.cpp,
+	  src/Grammar.hpp, src/GrammarApplicator_reflow.cpp,
+	  src/Strings.cpp, src/Strings.hpp, src/TextualParser.cpp,
+	  src/version.hpp: Added REOPEN-MAPPINGS
+	* [r10574] src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runRules.cpp: Regex captures are now
+	  per-reading
+	* [r10570] src/GrammarApplicator.cpp,
+	  src/GrammarApplicator_reflow.cpp, src/GrammarWriter.cpp: Readings
+	  that would be considered identical without --trace are now marked
+	  deleted under --trace. This is incorrect behavior, but being
+	  blessed because it makes things easier for grammarians.
+
+2015-03-05  tino
+
+	* [r10568] CMakeLists.txt, ChangeLog, manual/contexts.xml,
+	  src/BinaryGrammar_write.cpp, src/ContextualTest.cpp,
+	  src/ContextualTest.hpp, src/Grammar.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarWriter.cpp, src/Tag.hpp, src/TagTrie.hpp,
+	  src/TextualParser.cpp, src/inlines.hpp, src/stdafx.hpp,
+	  src/version.hpp, test/T_Templates/expected.txt,
+	  test/T_Templates/grammar.cg3,
+	  test/T_Templates/grammar.cg3b.10043, test/T_Templates/input.txt:
+	  New context modifier 'f'
+
+2015-02-24  tino
+
+	* [r10550] src/CMakeLists.txt: Actually install DLL
+	* [r10549] ChangeLog, manual/cmdreference.xml,
+	  src/FSTApplicator.cpp, src/FSTApplicator.hpp, src/cg_conv.cpp,
+	  src/options_conv.hpp, src/version.hpp: Added cg-conv --wfactor,-W
+	  --wtag --sub-delim,-S
+
+2015-02-23  tino
+
+	* [r10548] src/CMakeLists.txt: More MSVC vs WIN32
+	* [r10547] CMakeLists.txt, get-boost.sh, src/CMakeLists.txt,
+	  src/cg_comp.cpp, src/cg_proc.cpp, src/stdafx.hpp,
+	  src/uextras.cpp, src/uextras.hpp: Differentiate between MSVC and
+	  WIN32 to allow for cross-compiling
+
+2015-02-22  tino
+
+	* [r10543] ChangeLog, manual/grammar.xml,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp,
+	  test/T_RegExp/expected.txt, test/T_RegExp/grammar.cg3,
+	  test/T_RegExp/grammar.cg3b.10043: Fix regex capture groups
+	  remaining captured after a target match fail
+
+2015-02-20  tino
+
+	* [r10535] ChangeLog, src/Grammar.cpp, src/GrammarApplicator.cpp,
+	  src/version.hpp: Undo not checking tag[0] for regex/icase tags
+	* [r10534] src/TextualParser.cpp: no-isets allow (*)
+	* [r10533] src/TextualParser.cpp: Moved no-isets check to start of
+	  (
+	* [r10532] src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_read_10043.cpp, src/Grammar.hpp: Deduplicate
+	  code
+	* [r10531] src/all_cg_comp.cpp, src/all_cg_conv.cpp,
+	  src/all_cg_proc.cpp, src/all_vislcg3.cpp: Add #include
+	  BinaryGrammar_read_10043.cpp
+	* [r10530] manual/cgkeywords.xml, manual/grammar.xml: Documented
+	  OPTIONS += no-inline-sets no-inline-templates
+	* [r10529] src/parser_helpers.hpp: Include guard
+	* [r10528] manual/cgkeywords.xml, manual/cmdreference.xml,
+	  manual/tags.xml: Document STRICT-TAGS
+
+2015-02-19  tino
+
+	* [r10525] src/TextualParser.cpp: You don't know context
+	* [r10524] ChangeLog, src/Grammar.cpp, src/GrammarApplicator.cpp,
+	  src/Strings.cpp, src/Strings.hpp, src/Tag.cpp,
+	  src/TextualParser.cpp, src/TextualParser.hpp, src/inlines.hpp,
+	  src/main.cpp, src/options.hpp, src/parser_helpers.hpp,
+	  src/version.hpp: Implemented STRICT-TAGS += ... ; Implemented
+	  --show-tags ; Implemented OPTIONS += no-inline-templates
+	  no-inline-sets ;
+
+2015-02-18  tino
+
+	* [r10515] cg3.g: That comment is no longer true
+
+2015-02-17  tino
+
+	* [r10506] src/ApertiumApplicator.cpp, src/FSTApplicator.cpp,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runGrammar.cpp, src/NicelineApplicator.cpp,
+	  src/PlaintextApplicator.cpp, src/cg_conv.cpp: cg-conv less noisy
+	* [r10505] src/TextualParser.cpp: Missing -> Expected
+
+2015-02-16  tino
+
+	* [r10504] src/CMakeLists.txt, src/Grammar.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/IGrammarParser.hpp, src/Tag.cpp, src/Tag.hpp,
+	  src/TextualParser.cpp, src/TextualParser.hpp,
+	  src/parser_helpers.hpp, src/uextras.hpp: Spread basename and
+	  context to more diagnostics
+	* [r10502] src/TextualParser.cpp: Posix basename() takes by
+	  non-const char* - crazy people
+	* [r10501] TODO, src/CMakeLists.txt, src/TextualParser.cpp,
+	  src/TextualParser.hpp, src/cg_comp.cpp, src/cg_proc.cpp,
+	  src/uextras.hpp, win32/libgen.c, win32/libgen.h: Print basename
+	  of grammar before most parsing diagnostics
+	* [r10499] src/TextualParser.cpp, src/TextualParser.hpp,
+	  src/uextras.hpp: Show "near `...`" for many parsing diagnostics
+	* [r10497] src/main.cpp, src/options.hpp: Minor fix
+	* [r10496] scripts/cg3-autobin.pl.in: Synchronize with reality
+	* [r10495] src/main.cpp, src/options.hpp: Add option --quiet and
+	  allow -v0
+
+2015-02-08  tino
+
+	* [r10439] src/inlines.hpp: Forgot to change hash to avoid MAX and
+	  MAX-1 back in r10033
+
+2015-01-28  tino
+
+	* [r10391] test/runall.pl: ...and now with all the code that got
+	  deleted.
+	* [r10390] test/helper.pl, test/runall.pl: Whoops, wrong svn rm.
+	  Also, now tests old grammars.
+	* [r10389] test/T_AnyMinusSome/args.txt,
+	  test/T_AnyMinusSome/grammar.cg3b.10043,
+	  test/T_AnyMinusSome/run.pl, test/T_Barrier/grammar.cg3b.10043,
+	  test/T_Barrier/run.pl, test/T_BasicAppend/grammar.cg3b.10043,
+	  test/T_BasicAppend/run.pl,
+	  test/T_BasicContextTest/grammar.cg3b.10043,
+	  test/T_BasicContextTest/run.pl, test/T_BasicDelimit/args.txt,
+	  test/T_BasicDelimit/expected.txt,
+	  test/T_BasicDelimit/grammar.cg3b.10043,
+	  test/T_BasicDelimit/run.pl, test/T_BasicDependency/args.txt,
+	  test/T_BasicDependency/grammar.cg3b.10043,
+	  test/T_BasicDependency/run.pl,
+	  test/T_BasicIff/grammar.cg3b.10043, test/T_BasicIff/run.pl,
+	  test/T_BasicSelect/args.txt,
+	  test/T_BasicSelect/grammar.cg3b.10043, test/T_BasicSelect/run.pl,
+	  test/T_BasicSubstitute/args.txt,
+	  test/T_BasicSubstitute/grammar.cg3b.10043,
+	  test/T_BasicSubstitute/run.pl, test/T_CG2Compat/args.txt,
+	  test/T_CG2Compat/grammar.cg3b.10043, test/T_CG2Compat/run.pl,
+	  test/T_CarefulBarrier/grammar.cg3b.10043,
+	  test/T_CarefulBarrier/run.pl,
+	  test/T_DelayAndDelete/grammar.cg3b.10043,
+	  test/T_DelayAndDelete/run.pl, test/T_Dependency_Loops/args.txt,
+	  test/T_Dependency_Loops/grammar.cg3b.10043,
+	  test/T_Dependency_Loops/run.pl,
+	  test/T_Dependency_OutOfRange/expected.txt,
+	  test/T_Dependency_OutOfRange/grammar.cg3,
+	  test/T_Dependency_OutOfRange/grammar.cg3b.10043,
+	  test/T_Dependency_OutOfRange/run.pl,
+	  test/T_DontMatchEmptySet/grammar.cg3b.10043,
+	  test/T_DontMatchEmptySet/run.pl,
+	  test/T_EndlessSelect/grammar.cg3b.10043,
+	  test/T_EndlessSelect/run.pl, test/T_External/grammar.cg3b.10043,
+	  test/T_Include/grammar.cg3b.10043, test/T_Include/run.pl,
+	  test/T_InputCommands/grammar.cg3b.10043,
+	  test/T_InputCommands/run.pl,
+	  test/T_InputMarkup/grammar.cg3b.10043, test/T_InputMarkup/run.pl,
+	  test/T_JumpExecute/args.txt,
+	  test/T_JumpExecute/grammar.cg3b.10043, test/T_JumpExecute/run.pl,
+	  test/T_MapAdd_Different/args.txt,
+	  test/T_MapAdd_Different/expected.txt,
+	  test/T_MapAdd_Different/grammar.cg3,
+	  test/T_MapAdd_Different/grammar.cg3b.10043,
+	  test/T_MapAdd_Different/run.pl,
+	  test/T_MapThenRemove/grammar.cg3b.10043,
+	  test/T_MapThenRemove/run.pl,
+	  test/T_MapThenSelect/grammar.cg3b.10043,
+	  test/T_MapThenSelect/run.pl, test/T_MappingPrefix/args.txt,
+	  test/T_MappingPrefix/grammar.cg3b.10043,
+	  test/T_MappingPrefix/run.pl, test/T_Movement/grammar.cg3b.10043,
+	  test/T_Movement/run.pl,
+	  test/T_MultipleSections/grammar.cg3b.10043,
+	  test/T_MultipleSections/run.pl,
+	  test/T_NegatedContextTest/grammar.cg3b.10043,
+	  test/T_NegatedContextTest/run.pl,
+	  test/T_NotContextTest/grammar.cg3b.10043,
+	  test/T_NotContextTest/run.pl, test/T_NumericalTags/args.txt,
+	  test/T_NumericalTags/grammar.cg3b.10043,
+	  test/T_NumericalTags/run.pl,
+	  test/T_OmniWithBarrier/grammar.cg3b.10043,
+	  test/T_OmniWithBarrier/run.pl,
+	  test/T_Omniscan/grammar.cg3b.10043, test/T_Omniscan/run.pl,
+	  test/T_OriginPassing/args.txt,
+	  test/T_OriginPassing/grammar.cg3b.10043,
+	  test/T_OriginPassing/run.pl, test/T_Parentheses/args.txt,
+	  test/T_Parentheses/grammar.cg3b.10043, test/T_Parentheses/run.pl,
+	  test/T_RegExp/grammar.cg3b.10043, test/T_RegExp/run.pl,
+	  test/T_Relations/args.txt, test/T_Relations/grammar.cg3b.10043,
+	  test/T_Relations/run.pl, test/T_RemCohort/args.txt,
+	  test/T_RemCohort/grammar.cg3b.10043, test/T_RemCohort/run.pl,
+	  test/T_RemoveSingleTag/grammar.cg3b.10043,
+	  test/T_RemoveSingleTag/run.pl,
+	  test/T_ScanningTests/grammar.cg3b.10043,
+	  test/T_ScanningTests/run.pl, test/T_SectionRanges/args.txt,
+	  test/T_SectionRanges/grammar.cg3b.10043,
+	  test/T_SectionRanges/run.pl, test/T_Sections/args.txt,
+	  test/T_Sections/grammar.cg3b.10043, test/T_Sections/run.pl,
+	  test/T_SetOp_FailFast/args.txt,
+	  test/T_SetOp_FailFast/grammar.cg3b.10043,
+	  test/T_SetOp_FailFast/run.pl, test/T_SetOps/grammar.cg3b.10043,
+	  test/T_SetOps/run.pl, test/T_SetParentChild/grammar.cg3b.10043,
+	  test/T_SetParentChild/run.pl, test/T_SoftDelimiters/args.txt,
+	  test/T_SoftDelimiters/grammar.cg3b.10043,
+	  test/T_SoftDelimiters/run.pl, test/T_SpaceInForms/args.txt,
+	  test/T_SpaceInForms/grammar.cg3b.10043,
+	  test/T_SpaceInForms/run.pl,
+	  test/T_SubReadings_Apertium/grammar.cg3b.10043,
+	  test/T_SubReadings_CG/args.txt,
+	  test/T_SubReadings_CG/grammar.cg3b.10043,
+	  test/T_SubReadings_CG/run.pl,
+	  test/T_SubstituteNil/grammar.cg3b.10043,
+	  test/T_SubstituteNil/run.pl, test/T_Templates/grammar.cg3b.10043,
+	  test/T_Templates/run.pl, test/T_Trace/args.txt,
+	  test/T_Trace/grammar.cg3b.10043, test/T_Trace/run.pl,
+	  test/T_Unification/args.txt,
+	  test/T_Unification/grammar.cg3b.10043, test/T_Unification/run.pl,
+	  test/T_Variables/grammar.cg3b.10043, test/T_Variables/run.pl,
+	  test/helper.pl, test/runall.pl: Tests now share run code where
+	  possible
+	* [r10388] src/Grammar.cpp: Let's not overwrite a random set when
+	  loading old grammars
+	* [r10387] src/Grammar.cpp: Remember old static sets
+	* [r10386] src/BinaryGrammar_read_10043.cpp, src/Grammar.cpp,
+	  src/Grammar.hpp, src/TextualParser.cpp, src/cg_conv.cpp: cg-conv
+	  also needs to create the dummy set
+
+2015-01-27  tino
+
+	* [r10384] src/BinaryGrammar.cpp, src/BinaryGrammar_read.cpp,
+	  src/IGrammarParser.hpp: Only warn about old grammars when -v is
+	  on
+
+2015-01-24  tino
+
+	* [r10379] ChangeLog, src/BinaryGrammar_read_10043.cpp,
+	  src/version.hpp: Old loader seems to work now
+	* [r10378] ChangeLog, src/BinaryGrammar.hpp,
+	  src/BinaryGrammar_read.cpp, src/BinaryGrammar_read_10043.cpp,
+	  src/CMakeLists.txt, src/version.hpp: Add support for loading
+	  grammars from revision 10043 upwards
+	* [r10377] compile-profile.sh, scripts/profile-revisions.php,
+	  src/ApertiumApplicator.cpp, src/ApertiumApplicator.hpp,
+	  src/BinaryGrammar.cpp, src/BinaryGrammar.hpp,
+	  src/BinaryGrammar_read.cpp, src/BinaryGrammar_write.cpp,
+	  src/Cohort.cpp, src/Cohort.hpp, src/CohortIterator.cpp,
+	  src/CohortIterator.hpp, src/ContextualTest.cpp,
+	  src/ContextualTest.hpp, src/FSTApplicator.cpp,
+	  src/FSTApplicator.hpp, src/FormatConverter.cpp,
+	  src/FormatConverter.hpp, src/Grammar.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/GrammarWriter.hpp, src/IGrammarParser.hpp,
+	  src/NicelineApplicator.cpp, src/NicelineApplicator.hpp,
+	  src/PlaintextApplicator.cpp, src/PlaintextApplicator.hpp,
+	  src/Reading.cpp, src/Reading.hpp, src/Rule.cpp, src/Rule.hpp,
+	  src/Set.cpp, src/Set.hpp, src/SingleWindow.cpp,
+	  src/SingleWindow.hpp, src/Strings.cpp, src/Strings.hpp,
+	  src/Tag.cpp, src/Tag.hpp, src/TagTrie.hpp, src/TextualParser.cpp,
+	  src/TextualParser.hpp, src/Window.cpp, src/Window.hpp,
+	  src/bloomish.hpp, src/cg3.h, src/cg_comp.cpp, src/cg_conv.cpp,
+	  src/cg_proc.cpp, src/flat_unordered_map.hpp,
+	  src/flat_unordered_set.hpp, src/inlines.hpp,
+	  src/interval_vector.hpp, src/istream.hpp, src/libcg3.cpp,
+	  src/macros.hpp, src/main.cpp, src/options.hpp,
+	  src/options_conv.hpp, src/sorted_vector.hpp, src/stdafx.hpp,
+	  src/test_libcg3.c, src/uextras.cpp, src/uextras.hpp,
+	  src/version.hpp, vapply.sh, vparse.sh: Bump copyright to 2015;
+	  Fix profiling scripts
+	* [r10373] src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp, src/flat_unordered_map.hpp:
+	  Take advantage of known set numbers to speed up set-reading cache
+	  to r10297 levels
+	* [r10372] src/ApertiumApplicator.cpp, src/BinaryGrammar.hpp,
+	  src/BinaryGrammar_read.cpp, src/BinaryGrammar_write.cpp,
+	  src/ContextualTest.cpp, src/ContextualTest.hpp,
+	  src/FSTApplicator.cpp, src/Grammar.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/NicelineApplicator.cpp, src/PlaintextApplicator.cpp,
+	  src/Rule.cpp, src/TextualParser.cpp, src/cg_comp.cpp,
+	  src/flat_unordered_set.hpp, src/interval_vector.hpp,
+	  src/main.cpp, src/sorted_vector.hpp: Use set number instead of
+	  hash at runtime; Eliminat some data members and part of the
+	  binary format
+
+2015-01-20  tino
+
+	* [r10367] src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp: ...but don't spend 32% extra
+	  time on it.
+	* [r10366] src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp, src/flat_unordered_set.hpp:
+	  32bit hash collision seen in the wild - bump cache to 64bit
+
+2014-12-01  tino
+
+	* [r10297] ChangeLog, TODO, src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp: Handle
+	  mapping tags coming from varstrings
+
+2014-11-11  tino
+
+	* [r10272] ChangeLog, src/GrammarApplicator_runRules.cpp,
+	  src/version.hpp: Fixed Substitute in non-input-order segfault -
+	  how has nobody triggered this before?
+
+2014-11-06  unhammer
+
+	* [r10256] emacs/cg.el: cg--file now buffer-local everywhere, so
+	  grab it before burying buffer
+
+2014-11-05  unhammer
+
+	* [r10255] emacs/cg.el: more keywords; hl symbol-at-point in the
+	  output
+	  
+	  would be nice to highlight any members of LIST-at-point, but
+	  probably need to cache all lists then :-/
+
+2014-11-05  tino
+
+	* [r10254] src/BinaryGrammar_read.cpp: varint branch that reduces
+	  binary filesize by at least 25%; Fix tiny thing in ctest->name
+
+2014-10-29  tino
+
+	* [r10242] manual/installation.xml, src/BinaryGrammar_write.cpp,
+	  src/Grammar.hpp, src/GrammarApplicator_runRules.cpp,
+	  src/stdafx.hpp: Eliminate more std::map; Tell Debians to use
+	  Apertium Nightly; Tell RPMians to use OBS
+
+2014-10-29  unhammer
+
+	* [r10241] emacs/cg.el: beg/end-of-defun fn's; C-M-h now selects a
+	  rule/set
+	  
+	  and C-M-a / C-M-e works as expected
+
+2014-10-21  tino
+
+	* [r10235] src/Grammar.cpp, src/TextualParser.cpp: Error out when
+	  parsing empty ()
+
+2014-10-09  tino
+
+	* [r10218] CMakeLists.txt: Accidentally -fPIC
+	* [r10217] CMake/FindBoost.cmake, CMakeLists.txt,
+	  src/CMakeLists.txt: Mac RPATH and Threads fixes; If C++11 is
+	  possible, require it; Seperate C++ and C flags
+
+2014-10-07  tino
+
+	* [r10195] ChangeLog, src/GrammarApplicator_matchSet.cpp,
+	  src/version.hpp: Forgot the other half
+	* [r10194] ChangeLog, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/TagTrie.hpp,
+	  src/version.hpp: Fix tag unification to actually work with new
+	  trie storage
+
+2014-10-06  tino
+
+	* [r10190] src/version.hpp: Version bump & change
+
+2014-10-03  tino
+
+	* [r10184] src/CMakeLists.txt: No need to explicitly set rpath any
+	  longer
+
+2014-09-30  tino
+
+	* [r10157] TODO, src/CMakeLists.txt: Eliminate private library
+	  split
+
+2014-09-08  tino
+
+	* [r10134] src/FSTApplicator.cpp: cg-conv FST: Copy wordform ->
+	  baseform when missing
+
+2014-09-05  tino
+
+	* [r10125] src/FSTApplicator.cpp: cg-conv FST input < fix
+	* [r10123] CMakeLists.txt: RPM building fixes
+	* [r10122] CMakeLists.txt, get-boost.sh, src/CMakeLists.txt: RPM
+	  building fixes
+
+2014-09-01  tino
+
+	* [r10105] TODO, src/FSTApplicator.cpp, src/TextualParser.cpp,
+	  src/inlines.hpp: cg-conv FST input now handles trailing
+	  whitespace and \
+
+2014-08-27  tino
+
+	* [r10100] src/cg_conv.cpp: cg-conv: add dummy tag to delimiters to
+	  silence warning
+
+2014-08-23  tino
+
+	* [r10098] TODO, manual/tags.xml: ToDos; Undocument !tag
+
+2014-08-23  unhammer
+
+	* [r10097] emacs/cg.el: highlight SETVARIABLE
+
+2014-08-14  tino
+
+	* [r10080] TODO, manual/installation.xml, manual/probabilistic.xml,
+	  manual/tags.xml, src/GrammarApplicator_matchSet.cpp,
+	  src/NicelineApplicator.cpp, src/Tag.cpp, src/Tag.hpp: Tag prefix
+	  ! is now an alias for ^; cg-conv better handling of niceline
+	  format
+
+2014-08-11  tino
+
+	* [r10072] src/cg_conv.cpp: Better Apertium format detection
+
+2014-08-07  tino
+
+	* [r10065] newsletters/2014-08-07.txt: Newsletter
+	* [r10063] ChangeLog, src/GrammarApplicator_runRules.cpp,
+	  src/version.hpp: Fix setting parent to 0 and later testing for
+	  parent; Release 0.9.8.10063
+	* [r10054] src/TextualParser.cpp: VC10 needs a cast here
+
+2014-07-20  tino
+
+	* [r10051] src/Grammar.cpp, src/GrammarWriter.cpp, src/TagTrie.hpp,
+	  src/all_cg_comp.cpp, src/all_cg_conv.cpp, src/all_cg_proc.cpp:
+	  Remove more CompositeTag references; Fix GrammarWriter for new
+	  tag store
+
+2014-07-18  tino
+
+	* [r10049] src/main.cpp, src/options.hpp: Add --min-binary-revision
+	  to programatically determine if a grammar needs rebuilding
+
+2014-07-15  tino
+
+	* [r10048] cg3.magic: Add file(1) magic definition
+
+2014-07-15  unhammer
+
+	* [r10047] emacs/cg.el: more rule flags to highlight
+	* [r10046] emacs/cg.el: hl UNMAP UNSAFE
+
+2014-07-15  tino
+
+	* [r10045] src/version.hpp: Bump binary grammar revision
+
+2014-07-14  tino
+
+	* [r10044] src/all_vislcg3.cpp: Eliminate CompositeTag
+	* [r10043] ChangeLog, TODO, src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_write.cpp, src/CMakeLists.txt, src/Cohort.cpp,
+	  src/CompositeTag.cpp, src/CompositeTag.hpp, src/Grammar.cpp,
+	  src/Grammar.hpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/Set.cpp, src/Set.hpp, src/Tag.hpp, src/TagTrie.hpp,
+	  src/TextualParser.cpp, src/TextualParser.hpp, src/main.cpp,
+	  src/version.hpp, test/T_Unification/expected.txt: Use a trie for
+	  tag matching (6% faster normal, 70% faster worst); Eliminate
+	  CompositeTag; Bump binary revision
+
+2014-07-13  tino
+
+	* [r10038] src/GrammarApplicator_matchSet.cpp: Unification of plain
+	  tags don't need special handling
+	* [r10037] src/Grammar.cpp, src/Set.hpp, src/Tag.hpp: Minor stuff
+
+2014-07-11  tino
+
+	* [r10036] scripts/profile-revisions-tally.php,
+	  scripts/profile-revisions.php, src/TextualParser.cpp: Flush;
+	  Profiling
+	* [r10035] src/Grammar.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/stdafx.hpp: Eliminate
+	  uint32Set in favour of uint32SortedVector
+	* [r10034] ChangeLog, src/CMakeLists.txt, src/version.hpp: Flat is
+	  good
+	* [r10033] src/BinaryGrammar_write.cpp, src/Grammar.cpp,
+	  src/Grammar.hpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.hpp,
+	  src/SingleWindow.cpp, src/SingleWindow.hpp, src/Window.hpp,
+	  src/flat_unordered_map.hpp, src/flat_unordered_set.hpp,
+	  src/stdafx.hpp: More flat unordered
+	* [r10032] src/Grammar.cpp, src/GrammarApplicator.cpp, src/Tag.hpp,
+	  src/flat_unordered_map.hpp, src/flat_unordered_set.hpp: New
+	  flat_unordered_map to hopefully reduce allocations
+	* [r10029] TODO, src/CohortIterator.cpp, src/CompositeTag.hpp,
+	  src/Grammar.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/Tag.hpp,
+	  src/TextualParser.cpp, src/sorted_vector.hpp, win32/libgen.c:
+	  Eliminate TagSet in favour of TagSortedVector
+
+2014-06-22  tino
+
+	* [r10016] ChangeLog, src/ApertiumApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp: Double cache
+	  sizes => double runtimes, so undo that
+
+2014-06-17  tino
+
+	* [r10007] ChangeLog, src/version.hpp: Forgot revision
+	* [r10006] src/ApertiumApplicator.cpp, src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_write.cpp, src/Cohort.hpp,
+	  src/FSTApplicator.cpp, src/Grammar.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/NicelineApplicator.cpp, src/PlaintextApplicator.cpp,
+	  src/Reading.cpp, src/Reading.hpp, src/Rule.hpp,
+	  src/TextualParser.cpp, src/libcg3.cpp, src/main.cpp,
+	  src/options.hpp, test/T_BasicSubstitute/expected.txt,
+	  test/T_BasicSubstitute/grammar.cg3: Allow modifiers i, r, ri on
+	  rule wordforms; Fix a bug where Substituted wordforms did not
+	  update the valid rules list
+	* [r10005] src/ApertiumApplicator.cpp: Better logic for printing /
+	* [r10004] ChangeLog, TODO, src/ApertiumApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/flat_unordered_set.hpp,
+	  src/version.hpp: cg-proc -t output ¬ before delayed/deleted
+	  readings; Embiggen some caches to eliminate collisions
+
+2014-06-10  tino
+
+	* [r9987] src/Rule.hpp, src/TextualParser.cpp: Detect ENCL_*
+	  overlap by counting bits
+	* [r9985] src/TextualParser.cpp: Throw an error for malformed /X
+	  positions
+
+2014-06-09  tino
+
+	* [r9984] manual/subreadings.xml: Document /*
+
+2014-06-07  tino
+
+	* [r9974] ChangeLog, src/ContextualTest.hpp,
+	  src/GrammarApplicator.hpp, src/TextualParser.cpp,
+	  src/version.hpp, test/T_SubReadings_CG/expected.txt,
+	  test/T_SubReadings_CG/grammar.cg3: Allow /* in contextual tests
+	  to look at any sub-reading
+
+2014-06-04  unhammer
+
+	* [r9959] emacs/cg.el: list of ADD/REMOVE/etc. only defined one
+	  place
+
+2014-05-30  tino
+
+	* [r9944] manual/installation.xml: Homebrew workaround
+
+2014-05-28  tino
+
+	* [r9942] debian, dist: Moved packaging scripts
+	* [r9941] ChangeLog, src/GrammarApplicator_runContextualTest.cpp,
+	  src/version.hpp: Fix @-N
+
+2014-05-27  tino
+
+	* [r9940] dist/build-debian-ubuntu.sh, dist/dist-debian-ubuntu.pl:
+	  Build script for nightly fully automatic publishing
+	* [r9939] ChangeLog, src/CMakeLists.txt, src/version.hpp: rpath
+	  changes for *nix to allow for relocatable packages on all
+	  platforms
+	* [r9938] src/CMakeLists.txt: Fix OS X @rpath to allow testing
+
+2014-05-26  tino
+
+	* [r9937] src/CMakeLists.txt: Fix OS X to use @rpath for finding
+	  libcg3-private.dylib
+
+2014-05-21  tino
+
+	* [r9934] dist/dist-debian-ubuntu.pl: Produce identical .tar.bz2
+	  across packaging changes
+	* [r9933] CMakeLists.txt, ChangeLog, dist/dist-debian-ubuntu.pl,
+	  src/version.hpp: Fix pkgconfig; Unlink before write
+	* [r9932] CMakeLists.txt, debian/cg3.install: Install cg.el to
+	  global cg3-mode.el
+	* [r9931] debian/control: Dependency resolution is weird
+
+2014-05-20  tino
+
+	* [r9930] ChangeLog, src/version.hpp: Version bump, 'cause
+	  Launchpad
+	* [r9929] debian/control, dist/dist-debian-ubuntu.pl: Version
+	  trickery
+	* [r9928] CMake/DebSourcePPA.cmake, CMakeLists.txt,
+	  dist/dist-debian-ubuntu.pl: Better Debian/Ubuntu packaging
+	  script; CMake 2.8.9+ required
+	* [r9927] CMakeLists.txt, ChangeLog, scripts/cg3-autobin.pl,
+	  scripts/cg3-autobin.pl.in, src/version.hpp, update-revision.pl:
+	  Set cg3-autobin.pl revision during build instead of manually
+	* [r9926] CMakeLists.txt, debian/control, debian/libcg3-0.install,
+	  debian/libcg3-0.symbols, debian/libcg3-dev.install,
+	  src/CMakeLists.txt: Multiarch support
+	* [r9925] CMakeLists.txt, ChangeLog, scripts/cg3-autobin.pl,
+	  src/Cohort.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runGrammar.cpp, src/Reading.cpp,
+	  src/version.hpp, test/T_RemCohort/expected.txt: Handle readings
+	  with multiple mappings and sub-readings; Drop Ubuntu 12.10 from
+	  PPA
+
+2014-05-19  tino
+
+	* [r9924] debian/control, debian/libcg3-0.symbols: Symbols
+	* [r9923] CMakeLists.txt, debian/changelog, debian/control,
+	  debian/libcg3-0.install, src/CMakeLists.txt, src/libcg3.cpp:
+	  CMake version, NO_SONAME, visibility
+	* [r9922] src/CMakeLists.txt: Split libcg3 further into a private
+	  and public part
+
+2014-05-12  tino
+
+	* [r9899] CMakeLists.txt, debian/cg3.install: Install man pages,
+	  now that they're up-to-date
+
+2014-05-10  tino
+
+	* [r9897] cg3.pc.in: Revert -0
+	* [r9896] cg3.pc.in, debian/changelog, debian/control, debian/docs,
+	  debian/watch: Debian fixes
+
+2014-05-08  tino
+
+	* [r9894] cmake.sh, manual/installation.xml,
+	  scripts/profile-revisions.php: Document that ldconfig is needed
+
+2014-05-07  tino
+
+	* [r9893] debian/control, debian/libcg3-0.lintian-overrides,
+	  src/CMakeLists.txt: Make soname match package name, since that
+	  depends on public C API version
+	* [r9892] ChangeLog, LICENSE, debian/cg3.install, debian/cg3.links,
+	  debian/cg3.lintian-overrides, debian/changelog, debian/control,
+	  debian/libcg3-0.install, debian/libcg3-0.lintian-overrides,
+	  debian/libcg3-0.postinst, debian/libcg3.install,
+	  debian/libcg3.postinst, manual/man, manual/man/cg-comp.1,
+	  manual/man/cg-conv.1, manual/man/cg-proc.1,
+	  manual/man/cg3-autobin.pl.1, manual/man/vislcg3.1,
+	  scripts/cg3-autobin.pl, src/CMakeLists.txt, src/cg-comp.1,
+	  src/cg-proc.1, src/version.hpp, src/vislcg3.1: Man pages,
+	  symlinks, overrides, oh my...
+
+2014-05-06  tino
+
+	* [r9891] debian, debian/cg3.install, debian/changelog,
+	  debian/compat, debian/control, debian/copyright,
+	  debian/libcg3-dev.install, debian/libcg3.install,
+	  debian/libcg3.postinst, debian/rules, debian/source,
+	  debian/source/format, src/CMakeLists.txt: Debian packaging is a
+	  nightmare
+	* [r9890] CMakeLists.txt: Force -fPIC for ancient setups
+	* [r9889] CMakeLists.txt, TODO, src/CMakeLists.txt: Build objects
+	  once and reuse for static/shared library
+
+2014-04-25  tino
+
+	* [r9873] src/stdafx.hpp: cycle.h doesn't know all platforms (such
+	  as ARM), so fall back on clock()
+
+2014-04-20  tino
+
+	* [r9867] todo.sh: Wipe TODO.list before regenerate
+
+2014-04-18  tino
+
+	* [r9864] CMakeLists.txt, ChangeLog, manual/installation.xml,
+	  scripts/cg3-autobin.pl, src/version.hpp: Ubuntu 14.04 has ICU 52,
+	  so depend on that instead of 4.8.
+
+2014-04-10  tino
+
+	* [r9853] cmake.sh: cmake.sh now accepts --prefix X and --prefix=X
+
+2014-04-08  tino
+
+	* [r9848] src/cg_proc.cpp: Clean up flags to be bool instead of
+	  int, and just use them directly.
+
+2014-04-02  tino
+
+	* [r9840] ChangeLog, manual/installation.xml,
+	  scripts/cg3-autobin.pl, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/TextualParser.cpp, src/version.hpp: Fix context S to actually
+	  test self, even if offset is non-zero
+
+2014-03-24  tino
+
+	* [r9815] ChangeLog, manual/dependencies.xml,
+	  scripts/cg3-autobin.pl, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/main.cpp,
+	  src/version.hpp, test/T_RegExp/grammar.cg3: Fix parsing non-UTF-8
+	  cmdline args; Fix readings' plain cache being used with special
+	  sets
+
+2014-03-11  tino
+
+	* [r9768] src/CMakeLists.txt: make test
+
+2014-03-07  tino
+
+	* [r9765] src/GrammarWriter.cpp: Remember subreadings and
+	  static-tags in textual writer
+	* [r9764] ChangeLog, TODO, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp,
+	  test/T_BasicDependency/grammar.cg3: Barriers now work for c*
+	  tests
+
+2014-03-06  unhammer
+
+	* [r9763] emacs/cg.el: todo
+
+2014-03-06  tino
+
+	* [r9760] ChangeLog, manual/rules.xml, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/Rule.hpp,
+	  src/SingleWindow.hpp, src/Strings.cpp, src/Strings.hpp,
+	  src/Window.cpp, src/version.hpp, test/T_Variables/expected.txt,
+	  test/T_Variables/input.txt: Set/RemVariable now optionally takes
+	  OUTPUT to commit the changes to the stream.
+
+2014-03-04  tino
+
+	* [r9759] ChangeLog, TODO, manual/dependencies.xml,
+	  scripts/cg3-autobin.pl, src/CMakeLists.txt,
+	  src/CohortIterator.cpp, src/CohortIterator.hpp,
+	  src/ContextualTest.hpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/TextualParser.cpp, src/version.hpp,
+	  test/T_BasicDependency/expected.txt,
+	  test/T_BasicDependency/grammar.cg3: Implement ancestor search
+	  with 'pp'; Made right/left operators work with p, *p, pp; CMake
+	  bails out of Boost is older than 1.48.0
+
+2014-02-18  tino
+
+	* [r9709] newsletters/2014-02-18.txt: Newsletter
+	* [r9708] ChangeLog, scripts/cg3-autobin.pl, src/version.hpp: CG-3
+	  Release 0.9.8.9708
+
+2014-02-17  tino
+
+	* [r9707] src/BinaryGrammar_read.cpp, src/BinaryGrammar_write.cpp,
+	  src/version.hpp: Track binary format separately from main
+	  revision - remember to bump CG3_FEATURE_REV when adding a new
+	  feature.
+
+2014-02-12  tino
+
+	* [r9705] CMakeLists.txt, ChangeLog, TODO, scripts/cg3-autobin.pl,
+	  src/ApertiumApplicator.cpp, src/version.hpp: Apertium unique_tags
+	  check; Remove /GR- for VC++
+
+2014-02-03  tino
+
+	* [r9692] CMakeLists.txt, scripts/cg3-autobin.pl,
+	  src/CMakeLists.txt, src/version.hpp: Disable TCMalloc for OS X
+
+2014-02-02  tino
+
+	* [r9690] ChangeLog, scripts/cg3-autobin.pl, src/version.hpp:
+	  Revision bump
+
+2014-01-29  tino
+
+	* [r9684] CMakeLists.txt: PPAs can now be built for Ubuntu 14.04
+
+2014-01-28  tino
+
+	* [r9668] CMakeLists.txt: Ubuntu 13.04 is EOL, so drop from PPA
+
+2014-01-22  tino
+
+	* [r9647] src/options.hpp: Default has been UTF-8 for ages - better
+	  say so here as well.
+	* [r9646] scripts/profile-revisions.php, vapply.sh, vparse.sh:
+	  NDEBUG
+
+2014-01-21  tino
+
+	* [r9645] CMakeLists.txt, ChangeLog, scripts/cg3-autobin.pl,
+	  src/ApertiumApplicator.cpp, src/CMakeLists.txt, src/Cohort.hpp,
+	  src/CompositeTag.cpp, src/ContextualTest.cpp, src/Grammar.cpp,
+	  src/Grammar.hpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/Reading.cpp,
+	  src/Rule.hpp, src/Set.cpp, src/Tag.cpp, src/TextualParser.cpp,
+	  src/flat_unordered_set.hpp, src/inlines.hpp, src/libcg3.cpp,
+	  src/version.hpp: Added flat_unordered_set to reduce memory usage;
+	  Set NDEBUG for Release builds; Bumped binary revision
+
+2014-01-20  tino
+
+	* [r9640] src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/interval_vector.hpp:
+	  Minor cleanup
+
+2014-01-14  tino
+
+	* [r9637] CMakeLists.txt, ChangeLog, scripts/cg3-autobin.pl,
+	  src/version.hpp: Explicitly depend on Boost 1.48.0 for Ubuntu
+	  12.04
+	* [r9635] ChangeLog, manual/grammar.xml, scripts/cg3-autobin.pl,
+	  src/Cohort.cpp, src/Cohort.hpp, src/CompositeTag.hpp,
+	  src/Grammar.cpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/NicelineApplicator.cpp,
+	  src/Reading.hpp, src/Set.cpp, src/Set.hpp, src/Tag.hpp,
+	  src/TextualParser.cpp, src/libcg3.cpp, src/sorted_vector.hpp,
+	  src/stdafx.hpp, src/version.hpp, test/T_Unification/expected.txt,
+	  test/T_Unification/grammar.cg3, test/T_Unification/input.txt: Fix
+	  unification (11% slower); Use more Boost flat_map/set and
+	  sorted_vector (8% faster)
+
+2014-01-09  tino
+
+	* [r9595] ChangeLog, scripts/cg3-autobin.pl, src/version.hpp:
+	  Revision bump
+	* [r9594] test/T_AnyMinusSome/run.pl, test/T_Barrier/run.pl,
+	  test/T_BasicAppend/run.pl, test/T_BasicContextTest/run.pl,
+	  test/T_BasicDelimit/run.pl, test/T_BasicDependency/run.pl,
+	  test/T_BasicIff/run.pl, test/T_BasicSelect/run.pl,
+	  test/T_CG2Compat/run.pl, test/T_CarefulBarrier/run.pl,
+	  test/T_DelayAndDelete/run.pl, test/T_Dependency_Loops/run.pl,
+	  test/T_Dependency_OutOfRange/run.pl,
+	  test/T_DontMatchEmptySet/run.pl, test/T_EndlessSelect/run.pl,
+	  test/T_External/run.pl, test/T_InputCommands/run.pl,
+	  test/T_InputMarkup/run.pl, test/T_JumpExecute/run.pl,
+	  test/T_MapAdd_Different/run.pl, test/T_MapThenRemove/run.pl,
+	  test/T_MapThenSelect/run.pl, test/T_MappingPrefix/run.pl,
+	  test/T_Movement/run.pl, test/T_MultipleSections/run.pl,
+	  test/T_NegatedContextTest/run.pl, test/T_NotContextTest/run.pl,
+	  test/T_NumericalTags/run.pl, test/T_OmniWithBarrier/run.pl,
+	  test/T_Omniscan/run.pl, test/T_OriginPassing/run.pl,
+	  test/T_Parentheses/run.pl, test/T_RegExp/run.pl,
+	  test/T_Relations/run.pl, test/T_RemCohort/run.pl,
+	  test/T_RemoveSingleTag/run.pl, test/T_ScanningTests/run.pl,
+	  test/T_SectionRanges/run.pl, test/T_Sections/run.pl,
+	  test/T_SetOp_FailFast/run.pl, test/T_SetOps/run.pl,
+	  test/T_SetParentChild/run.pl, test/T_SoftDelimiters/run.pl,
+	  test/T_SpaceInForms/run.pl, test/T_SubReadings_Apertium/run.pl,
+	  test/T_SubReadings_CG/run.pl, test/T_SubstituteNil/run.pl,
+	  test/T_Templates/run.pl, test/T_Trace/run.pl,
+	  test/T_Unification/run.pl, test/T_Variables/run.pl: No need for
+	  -b on diff any longer
+	* [r9593] src/GrammarApplicator.cpp,
+	  test/T_AnyMinusSome/expected.txt, test/T_AnyMinusSome/run.pl,
+	  test/T_Barrier/expected.txt, test/T_Barrier/run.pl,
+	  test/T_BasicContextTest/expected.txt,
+	  test/T_BasicContextTest/run.pl, test/T_BasicDelimit/expected.txt,
+	  test/T_BasicDelimit/run.pl, test/T_BasicDependency/expected.txt,
+	  test/T_BasicDependency/run.pl, test/T_BasicIff/expected.txt,
+	  test/T_BasicIff/run.pl, test/T_BasicSelect/expected.txt,
+	  test/T_BasicSelect/run.pl, test/T_CG2Compat/expected.txt,
+	  test/T_CG2Compat/run.pl, test/T_CarefulBarrier/expected.txt,
+	  test/T_CarefulBarrier/run.pl,
+	  test/T_Dependency_Loops/expected.txt,
+	  test/T_Dependency_Loops/run.pl,
+	  test/T_Dependency_OutOfRange/expected.txt,
+	  test/T_Dependency_OutOfRange/run.pl,
+	  test/T_DontMatchEmptySet/expected.txt,
+	  test/T_DontMatchEmptySet/run.pl,
+	  test/T_EndlessSelect/expected.txt, test/T_EndlessSelect/run.pl,
+	  test/T_External/expected.txt, test/T_External/run.pl,
+	  test/T_Include/expected.txt, test/T_InputCommands/expected.txt,
+	  test/T_InputCommands/run.pl, test/T_InputMarkup/expected.txt,
+	  test/T_InputMarkup/run.pl, test/T_JumpExecute/expected.txt,
+	  test/T_JumpExecute/run.pl, test/T_MapAdd_Different/expected.txt,
+	  test/T_MapAdd_Different/run.pl,
+	  test/T_MapThenRemove/expected.txt, test/T_MapThenRemove/run.pl,
+	  test/T_MapThenSelect/expected.txt, test/T_MapThenSelect/run.pl,
+	  test/T_MappingPrefix/expected.txt, test/T_MappingPrefix/run.pl,
+	  test/T_Movement/expected.txt, test/T_Movement/run.pl,
+	  test/T_MultipleSections/expected.txt,
+	  test/T_MultipleSections/run.pl,
+	  test/T_NegatedContextTest/expected.txt,
+	  test/T_NegatedContextTest/run.pl,
+	  test/T_NotContextTest/expected.txt, test/T_NotContextTest/run.pl,
+	  test/T_NumericalTags/expected.txt, test/T_NumericalTags/run.pl,
+	  test/T_OmniWithBarrier/expected.txt,
+	  test/T_OmniWithBarrier/run.pl, test/T_Omniscan/expected.txt,
+	  test/T_Omniscan/run.pl, test/T_OriginPassing/expected.txt,
+	  test/T_OriginPassing/run.pl, test/T_Parentheses/expected.txt,
+	  test/T_Parentheses/run.pl, test/T_RegExp/expected.txt,
+	  test/T_RegExp/run.pl, test/T_Relations/expected.txt,
+	  test/T_Relations/run.pl, test/T_RemoveSingleTag/expected.txt,
+	  test/T_RemoveSingleTag/run.pl, test/T_ScanningTests/expected.txt,
+	  test/T_ScanningTests/run.pl, test/T_SectionRanges/expected.txt,
+	  test/T_SectionRanges/run.pl, test/T_Sections/expected.txt,
+	  test/T_Sections/run.pl, test/T_SetOp_FailFast/expected.txt,
+	  test/T_SetOp_FailFast/run.pl, test/T_SetOps/expected.txt,
+	  test/T_SetOps/run.pl, test/T_SetParentChild/expected.txt,
+	  test/T_SetParentChild/run.pl, test/T_SoftDelimiters/expected.txt,
+	  test/T_SoftDelimiters/run.pl, test/T_SpaceInForms/expected.txt,
+	  test/T_SpaceInForms/run.pl, test/T_SubReadings_Apertium/run.pl,
+	  test/T_SubReadings_CG/expected.txt, test/T_SubReadings_CG/run.pl,
+	  test/T_SubstituteNil/expected.txt, test/T_SubstituteNil/run.pl,
+	  test/T_Templates/expected.txt, test/T_Templates/run.pl,
+	  test/T_Trace/expected.txt, test/T_Trace/run.pl,
+	  test/T_Variables/expected.txt, test/T_Variables/run.pl: Flip
+	  output order so there are no trailing spaces in readings
+	* [r9592] manual/cmdreference.xml, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.hpp,
+	  src/main.cpp, src/options.hpp: Eliminate --dep-humanize
+
+2014-01-08  tino
+
+	* [r9591] TODO, manual/cmdreference.xml, src/all_cg_conv.cpp,
+	  src/all_cg_proc.cpp, src/cg_proc.cpp: Remove more references to
+	  Matxin
+	* [r9590] ChangeLog, scripts/cg3-autobin.pl, src/CMakeLists.txt,
+	  src/FormatConverter.cpp, src/FormatConverter.hpp,
+	  src/MatxinApplicator.cpp, src/MatxinApplicator.hpp,
+	  src/NicelineApplicator.cpp, src/NicelineApplicator.hpp,
+	  src/PlaintextApplicator.cpp, src/PlaintextApplicator.hpp,
+	  src/cg_conv.cpp, src/cg_proc.cpp, src/main.cpp,
+	  src/options_conv.hpp, src/version.hpp: Removed Matxin; cg-conv
+	  can now output to Niceline and Plain Text formats (-N, -P)
+
+2014-01-07  tino
+
+	* [r9588] ChangeLog, scripts/cg3-autobin.pl, src/main.cpp,
+	  src/version.hpp: Output info to stdout if --version or --help,
+	  and stderr otherwise
+
+2014-01-05  tino
+
+	* [r9570] ChangeLog, TODO, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_reflow.cpp, src/stdafx.hpp,
+	  src/version.hpp: All dependency tests now pass, with and without
+	  --dep-delimit
+
+2014-01-04  tino
+
+	* [r9568] ChangeLog, scripts/cg3-autobin.pl,
+	  src/NicelineApplicator.cpp, src/cg_conv.cpp, src/version.hpp,
+	  update-revision.pl: cg-conv now handles less clean Niceline input
+	* [r9567] manual/manual.xml, src/ApertiumApplicator.cpp,
+	  src/ApertiumApplicator.hpp, src/BinaryGrammar.cpp,
+	  src/BinaryGrammar.hpp, src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_write.cpp, src/Cohort.cpp, src/Cohort.hpp,
+	  src/CohortIterator.cpp, src/CohortIterator.hpp,
+	  src/CompositeTag.cpp, src/CompositeTag.hpp,
+	  src/ContextualTest.cpp, src/ContextualTest.hpp,
+	  src/FSTApplicator.cpp, src/FSTApplicator.hpp,
+	  src/FormatConverter.cpp, src/FormatConverter.hpp,
+	  src/Grammar.cpp, src/Grammar.hpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/GrammarWriter.hpp, src/IGrammarParser.hpp,
+	  src/MatxinApplicator.cpp, src/MatxinApplicator.hpp,
+	  src/NicelineApplicator.cpp, src/NicelineApplicator.hpp,
+	  src/PlaintextApplicator.cpp, src/PlaintextApplicator.hpp,
+	  src/Reading.cpp, src/Reading.hpp, src/Rule.cpp, src/Rule.hpp,
+	  src/Set.cpp, src/Set.hpp, src/SingleWindow.cpp,
+	  src/SingleWindow.hpp, src/Strings.cpp, src/Strings.hpp,
+	  src/Tag.cpp, src/Tag.hpp, src/TextualParser.cpp,
+	  src/TextualParser.hpp, src/Window.cpp, src/Window.hpp,
+	  src/bloomish.hpp, src/cg3.h, src/cg_comp.cpp, src/cg_conv.cpp,
+	  src/cg_proc.cpp, src/inlines.hpp, src/interval_vector.hpp,
+	  src/istream.hpp, src/libcg3.cpp, src/macros.hpp, src/main.cpp,
+	  src/options.hpp, src/options_conv.hpp, src/sorted_vector.hpp,
+	  src/stdafx.hpp, src/test_libcg3.c, src/uextras.cpp,
+	  src/uextras.hpp, src/version.hpp: Yearly copyright refresh
+
+2013-12-30  tino
+
+	* [r9528] ChangeLog, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runGrammar.cpp, src/SingleWindow.cpp,
+	  src/version.hpp: Fix --dep-delimit
+	* [r9524] ChangeLog, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runGrammar.cpp, src/version.hpp: Fix
+	  --dep-delimit, again
+	* [r9522] ChangeLog, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/SingleWindow.cpp,
+	  src/version.hpp: Fix --dep-delimit to react at a reading level
+
+2013-12-24  tino
+
+	* [r9516] ChangeLog, scripts/cg3-autobin.pl, src/cg_proc.cpp,
+	  src/istream.hpp, src/version.hpp: Dirty fix: don't eat BOMs in
+	  the stream if null-flush is in effect.
+
+2013-12-10  tino
+
+	* [r9492] AUTHORS, CMake/DebSourcePPA.cmake, CMake/FindBoost.cmake,
+	  CMake/FindICU.cmake, CMakeLists.txt, COPYING, ChangeLog,
+	  Doxyfile, INSTALL, LICENSE, NEWS, README, TODO, all2unix.pl,
+	  cg3.g, cg3.pc.in, cmake.sh, compile-profile.sh, dist/Portfile,
+	  dist/dist-osx.pl, dist/osx/vislcg3, emacs/cg.el, get-boost.sh,
+	  include/cycle.h, include/exec-stream/exec-stream.cpp,
+	  include/exec-stream/exec-stream.h,
+	  include/exec-stream/posix/exec-stream-helpers.cpp,
+	  include/exec-stream/posix/exec-stream-helpers.h,
+	  include/exec-stream/posix/exec-stream-impl.cpp,
+	  include/exec-stream/win/exec-stream-helpers.cpp,
+	  include/exec-stream/win/exec-stream-helpers.h,
+	  include/exec-stream/win/exec-stream-impl.cpp, include/uoptions.h,
+	  license.icu.txt, make-naive.sh, manual/bibliography.xml,
+	  manual/binarygrammar.xml, manual/cgglossary.xml,
+	  manual/cgkeywords.xml, manual/chapterize.sh,
+	  manual/cmdreference.xml, manual/combine.sh,
+	  manual/compatibility.xml, manual/contexts.xml,
+	  manual/contributing.xml, manual/dependencies.xml,
+	  manual/drafts.xml, manual/externals.xml, manual/faq.xml,
+	  manual/generate.sh, manual/grammar.xml, manual/installation.xml,
+	  manual/intro.xml, manual/make-dist.sh, manual/manual.xml,
+	  manual/parentheses.xml, manual/pdf.sh, manual/probabilistic.xml,
+	  manual/relations.xml, manual/rules.xml, manual/sets.xml,
+	  manual/singlefile.sh, manual/streamcmds.xml,
+	  manual/streamformats.xml, manual/subreadings.xml,
+	  manual/tags.xml, manual/templates.xml, manual/validate.sh,
+	  manual/xsl-fo.sh, newsletters/2007-03-29.txt,
+	  newsletters/2007-12-04.txt, newsletters/2008-01-24.txt,
+	  newsletters/2008-03-06.txt, newsletters/2008-05-20.txt,
+	  newsletters/2008-07-15.txt, newsletters/2008-08-25.txt,
+	  newsletters/2008-09-11.txt, newsletters/2008-09-20.txt,
+	  newsletters/2008-11-10.txt, newsletters/2009-01-08.txt,
+	  newsletters/2009-02-21.txt, newsletters/2009-05-13.txt,
+	  newsletters/2009-06-30.txt, newsletters/2009-09-27.txt,
+	  newsletters/2010-03-18.txt, newsletters/2010-06-06.txt,
+	  newsletters/2010-09-22.txt, newsletters/2010-09-23.txt,
+	  newsletters/2010-11-11.txt, newsletters/2011-04-30.txt,
+	  newsletters/2011-08-01.txt, newsletters/2012-01-06.txt,
+	  newsletters/2012-07-02.txt, newsletters/2012-07-29.txt,
+	  newsletters/2013-06-19.txt, profile-apply.sh, profile-parse.sh,
+	  scripts/CG3_External.pm, scripts/auto-linux-wget.sh,
+	  scripts/cg3-autobin.pl, scripts/external.pl,
+	  scripts/external_text.pl, scripts/profile-revisions-tally.php,
+	  scripts/profile-revisions.php, scripts/wrapper.valgrind,
+	  src/ApertiumApplicator.cpp, src/ApertiumApplicator.hpp,
+	  src/BinaryGrammar.cpp, src/BinaryGrammar.hpp,
+	  src/BinaryGrammar_read.cpp, src/BinaryGrammar_write.cpp,
+	  src/CMakeLists.txt, src/Cohort.cpp, src/Cohort.hpp,
+	  src/CohortIterator.cpp, src/CohortIterator.hpp,
+	  src/CompositeTag.cpp, src/CompositeTag.hpp,
+	  src/ContextualTest.cpp, src/ContextualTest.hpp,
+	  src/FSTApplicator.cpp, src/FSTApplicator.hpp,
+	  src/FormatConverter.cpp, src/FormatConverter.hpp,
+	  src/Grammar.cpp, src/Grammar.hpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/GrammarWriter.hpp, src/IGrammarParser.hpp,
+	  src/MatxinApplicator.cpp, src/MatxinApplicator.hpp,
+	  src/NicelineApplicator.cpp, src/NicelineApplicator.hpp,
+	  src/PlaintextApplicator.cpp, src/PlaintextApplicator.hpp,
+	  src/Reading.cpp, src/Reading.hpp, src/Rule.cpp, src/Rule.hpp,
+	  src/Set.cpp, src/Set.hpp, src/SingleWindow.cpp,
+	  src/SingleWindow.hpp, src/Strings.cpp, src/Strings.hpp,
+	  src/Tag.cpp, src/Tag.hpp, src/TextualParser.cpp,
+	  src/TextualParser.hpp, src/Window.cpp, src/Window.hpp,
+	  src/all_cg_comp.cpp, src/all_cg_conv.cpp, src/all_cg_proc.cpp,
+	  src/all_vislcg3.cpp, src/bloomish.hpp, src/cg-comp.1,
+	  src/cg-proc.1, src/cg3.h, src/cg_comp.cpp, src/cg_conv.cpp,
+	  src/cg_proc.cpp, src/icu_uoptions.cpp, src/inlines.hpp,
+	  src/interval_vector.hpp, src/istream.hpp, src/libcg3.cpp,
+	  src/macros.hpp, src/main.cpp, src/options.hpp,
+	  src/options_conv.hpp, src/sorted_vector.hpp, src/stdafx.hpp,
+	  src/test_libcg3.c, src/uextras.cpp, src/uextras.hpp,
+	  src/version.hpp, src/vislcg3.1, test/Apertium/README,
+	  test/Apertium/T_AnyMinusSome/expected.txt,
+	  test/Apertium/T_AnyMinusSome/grammar.cg3,
+	  test/Apertium/T_AnyMinusSome/input.txt,
+	  test/Apertium/T_AnyMinusSome/run.pl,
+	  test/Apertium/T_Barrier/expected.txt,
+	  test/Apertium/T_Barrier/grammar.cg3,
+	  test/Apertium/T_Barrier/input.txt,
+	  test/Apertium/T_Barrier/run.pl,
+	  test/Apertium/T_BasicAppend/expected.txt,
+	  test/Apertium/T_BasicAppend/grammar.cg3,
+	  test/Apertium/T_BasicAppend/input.txt,
+	  test/Apertium/T_BasicAppend/run.pl,
+	  test/Apertium/T_BasicContextTest/expected.txt,
+	  test/Apertium/T_BasicContextTest/grammar.cg3,
+	  test/Apertium/T_BasicContextTest/input.txt,
+	  test/Apertium/T_BasicContextTest/run.pl,
+	  test/Apertium/T_BasicDelimit/expected.txt,
+	  test/Apertium/T_BasicDelimit/grammar.cg3,
+	  test/Apertium/T_BasicDelimit/input.txt,
+	  test/Apertium/T_BasicDelimit/run.pl,
+	  test/Apertium/T_BasicIff/expected.txt,
+	  test/Apertium/T_BasicIff/grammar.cg3,
+	  test/Apertium/T_BasicIff/input.txt,
+	  test/Apertium/T_BasicIff/run.pl,
+	  test/Apertium/T_BasicRemove/expected.txt,
+	  test/Apertium/T_BasicRemove/grammar.cg3,
+	  test/Apertium/T_BasicRemove/input.txt,
+	  test/Apertium/T_BasicRemove/run.pl,
+	  test/Apertium/T_BasicSelect/expected.txt,
+	  test/Apertium/T_BasicSelect/grammar.cg3,
+	  test/Apertium/T_BasicSelect/input.txt,
+	  test/Apertium/T_BasicSelect/run.pl,
+	  test/Apertium/T_BasicSubstitute/expected.txt,
+	  test/Apertium/T_BasicSubstitute/grammar.cg3,
+	  test/Apertium/T_BasicSubstitute/input.txt,
+	  test/Apertium/T_BasicSubstitute/run.pl,
+	  test/Apertium/T_CarefulBarrier/expected.txt,
+	  test/Apertium/T_CarefulBarrier/grammar.cg3,
+	  test/Apertium/T_CarefulBarrier/input.txt,
+	  test/Apertium/T_CarefulBarrier/run.pl,
+	  test/Apertium/T_CharsInWhiteSpace/expected.txt,
+	  test/Apertium/T_CharsInWhiteSpace/grammar.cg3,
+	  test/Apertium/T_CharsInWhiteSpace/input.txt,
+	  test/Apertium/T_CharsInWhiteSpace/run.pl,
+	  test/Apertium/T_CompositeSelect/expected.txt,
+	  test/Apertium/T_CompositeSelect/grammar.cg3,
+	  test/Apertium/T_CompositeSelect/input.txt,
+	  test/Apertium/T_CompositeSelect/run.pl,
+	  test/Apertium/T_DontMatchEmptySet/expected.txt,
+	  test/Apertium/T_DontMatchEmptySet/grammar.cg3,
+	  test/Apertium/T_DontMatchEmptySet/input.txt,
+	  test/Apertium/T_DontMatchEmptySet/run.pl,
+	  test/Apertium/T_EndlessSelect/expected.txt,
+	  test/Apertium/T_EndlessSelect/grammar.cg3,
+	  test/Apertium/T_EndlessSelect/input.txt,
+	  test/Apertium/T_EndlessSelect/run.pl,
+	  test/Apertium/T_Joiner/expected.txt,
+	  test/Apertium/T_Joiner/grammar.cg3,
+	  test/Apertium/T_Joiner/input.txt, test/Apertium/T_Joiner/run.pl,
+	  test/Apertium/T_MapAdd_Different/expected.txt,
+	  test/Apertium/T_MapAdd_Different/grammar.cg3,
+	  test/Apertium/T_MapAdd_Different/input.txt,
+	  test/Apertium/T_MapAdd_Different/run.pl,
+	  test/Apertium/T_MatchBaseform/expected.txt,
+	  test/Apertium/T_MatchBaseform/grammar.cg3,
+	  test/Apertium/T_MatchBaseform/input.txt,
+	  test/Apertium/T_MatchBaseform/run.pl,
+	  test/Apertium/T_MatchWordform/expected.txt,
+	  test/Apertium/T_MatchWordform/grammar.cg3,
+	  test/Apertium/T_MatchWordform/input.txt,
+	  test/Apertium/T_MatchWordform/run.pl,
+	  test/Apertium/T_MultiWords/expected.txt,
+	  test/Apertium/T_MultiWords/grammar.cg3,
+	  test/Apertium/T_MultiWords/input.txt,
+	  test/Apertium/T_MultiWords/run.pl,
+	  test/Apertium/T_MultipleSections/expected.txt,
+	  test/Apertium/T_MultipleSections/grammar.cg3,
+	  test/Apertium/T_MultipleSections/input.txt,
+	  test/Apertium/T_MultipleSections/run.pl,
+	  test/Apertium/T_MultiwordTagStaying/expected.txt,
+	  test/Apertium/T_MultiwordTagStaying/grammar.cg3,
+	  test/Apertium/T_MultiwordTagStaying/input.txt,
+	  test/Apertium/T_MultiwordTagStaying/run.pl,
+	  test/Apertium/T_NegatedContextTest/expected.txt,
+	  test/Apertium/T_NegatedContextTest/grammar.cg3,
+	  test/Apertium/T_NegatedContextTest/input.txt,
+	  test/Apertium/T_NegatedContextTest/run.pl,
+	  test/Apertium/T_RegExp_Map/expected.txt,
+	  test/Apertium/T_RegExp_Map/grammar.cg3,
+	  test/Apertium/T_RegExp_Map/input.txt,
+	  test/Apertium/T_RegExp_Map/run.pl,
+	  test/Apertium/T_RegExp_Select/expected.txt,
+	  test/Apertium/T_RegExp_Select/grammar.cg3,
+	  test/Apertium/T_RegExp_Select/input.txt,
+	  test/Apertium/T_RegExp_Select/run.pl,
+	  test/Apertium/T_RegExp_Substitute/expected.txt,
+	  test/Apertium/T_RegExp_Substitute/grammar.cg3,
+	  test/Apertium/T_RegExp_Substitute/input.txt,
+	  test/Apertium/T_RegExp_Substitute/run.pl,
+	  test/Apertium/T_RemoveSingleTag/expected.txt,
+	  test/Apertium/T_RemoveSingleTag/grammar.cg3,
+	  test/Apertium/T_RemoveSingleTag/input.txt,
+	  test/Apertium/T_RemoveSingleTag/run.pl,
+	  test/Apertium/T_ScanningTests/expected.txt,
+	  test/Apertium/T_ScanningTests/grammar.cg3,
+	  test/Apertium/T_ScanningTests/input.txt,
+	  test/Apertium/T_ScanningTests/run.pl,
+	  test/Apertium/T_Sections/expected.txt,
+	  test/Apertium/T_Sections/grammar.cg3,
+	  test/Apertium/T_Sections/input.txt,
+	  test/Apertium/T_Sections/run.pl,
+	  test/Apertium/T_SetOp_FailFast/expected.txt,
+	  test/Apertium/T_SetOp_FailFast/grammar.cg3,
+	  test/Apertium/T_SetOp_FailFast/input.txt,
+	  test/Apertium/T_SetOp_FailFast/run.pl,
+	  test/Apertium/T_SetOp_OR/expected.txt,
+	  test/Apertium/T_SetOp_OR/grammar.cg3,
+	  test/Apertium/T_SetOp_OR/input.txt,
+	  test/Apertium/T_SetOp_OR/run.pl,
+	  test/Apertium/T_SpaceInWord/expected.txt,
+	  test/Apertium/T_SpaceInWord/grammar.cg3,
+	  test/Apertium/T_SpaceInWord/input.txt,
+	  test/Apertium/T_SpaceInWord/run.pl,
+	  test/Apertium/T_SuperBlanks/expected.txt,
+	  test/Apertium/T_SuperBlanks/grammar.cg3,
+	  test/Apertium/T_SuperBlanks/input.txt,
+	  test/Apertium/T_SuperBlanks/run.pl,
+	  test/Apertium/T_SuperBlanksNewline/expected.txt,
+	  test/Apertium/T_SuperBlanksNewline/grammar.cg3,
+	  test/Apertium/T_SuperBlanksNewline/input.txt,
+	  test/Apertium/T_SuperBlanksNewline/run.pl,
+	  test/Apertium/T_SuperBlanksWithEscape/expected.txt,
+	  test/Apertium/T_SuperBlanksWithEscape/grammar.cg3,
+	  test/Apertium/T_SuperBlanksWithEscape/input.txt,
+	  test/Apertium/T_SuperBlanksWithEscape/run.pl,
+	  test/Apertium/T_Unification/expected.txt,
+	  test/Apertium/T_Unification/grammar.cg3,
+	  test/Apertium/T_Unification/input.txt,
+	  test/Apertium/T_Unification/run.pl,
+	  test/Apertium/T_UnknownWord/expected.txt,
+	  test/Apertium/T_UnknownWord/grammar.cg3,
+	  test/Apertium/T_UnknownWord/input.txt,
+	  test/Apertium/T_UnknownWord/run.pl, test/Apertium/clean.sh,
+	  test/Apertium/runall.pl, test/T_AnyMinusSome/expected.txt,
+	  test/T_AnyMinusSome/grammar.cg3, test/T_AnyMinusSome/input.txt,
+	  test/T_AnyMinusSome/run.pl, test/T_Barrier/expected.txt,
+	  test/T_Barrier/grammar.cg3, test/T_Barrier/input.txt,
+	  test/T_Barrier/run.pl, test/T_BasicAppend/expected.txt,
+	  test/T_BasicAppend/grammar.cg3, test/T_BasicAppend/input.txt,
+	  test/T_BasicAppend/run.pl, test/T_BasicContextTest/expected.txt,
+	  test/T_BasicContextTest/grammar.cg3,
+	  test/T_BasicContextTest/input.txt,
+	  test/T_BasicContextTest/run.pl, test/T_BasicDelimit/expected.txt,
+	  test/T_BasicDelimit/grammar.cg3, test/T_BasicDelimit/input.txt,
+	  test/T_BasicDelimit/run.pl, test/T_BasicDependency/expected.txt,
+	  test/T_BasicDependency/grammar.cg3,
+	  test/T_BasicDependency/input.txt, test/T_BasicDependency/run.pl,
+	  test/T_BasicIff/expected.txt, test/T_BasicIff/grammar.cg3,
+	  test/T_BasicIff/input.txt, test/T_BasicIff/run.pl,
+	  test/T_BasicSelect/expected.txt, test/T_BasicSelect/grammar.cg3,
+	  test/T_BasicSelect/input.txt, test/T_BasicSelect/run.pl,
+	  test/T_BasicSubstitute/expected.txt,
+	  test/T_BasicSubstitute/grammar.cg3,
+	  test/T_BasicSubstitute/input.txt, test/T_BasicSubstitute/run.pl,
+	  test/T_CG2Compat/expected.txt, test/T_CG2Compat/grammar.cg3,
+	  test/T_CG2Compat/input.txt, test/T_CG2Compat/run.pl,
+	  test/T_CarefulBarrier/expected.txt,
+	  test/T_CarefulBarrier/grammar.cg3,
+	  test/T_CarefulBarrier/input.txt, test/T_CarefulBarrier/run.pl,
+	  test/T_DelayAndDelete/expected.txt,
+	  test/T_DelayAndDelete/grammar.cg3,
+	  test/T_DelayAndDelete/input.txt, test/T_DelayAndDelete/run.pl,
+	  test/T_Dependency_Loops/expected.txt,
+	  test/T_Dependency_Loops/grammar.cg3,
+	  test/T_Dependency_Loops/input.txt,
+	  test/T_Dependency_Loops/run.pl,
+	  test/T_Dependency_OutOfRange/expected.txt,
+	  test/T_Dependency_OutOfRange/grammar.cg3,
+	  test/T_Dependency_OutOfRange/input.txt,
+	  test/T_Dependency_OutOfRange/run.pl,
+	  test/T_DontMatchEmptySet/expected.txt,
+	  test/T_DontMatchEmptySet/grammar.cg3,
+	  test/T_DontMatchEmptySet/input.txt,
+	  test/T_DontMatchEmptySet/run.pl,
+	  test/T_EndlessSelect/expected.txt,
+	  test/T_EndlessSelect/grammar.cg3, test/T_EndlessSelect/input.txt,
+	  test/T_EndlessSelect/run.pl, test/T_External/expected.txt,
+	  test/T_External/grammar.cg3, test/T_External/input.txt,
+	  test/T_External/run.pl, test/T_External/sets.inc,
+	  test/T_Include/expected.txt, test/T_Include/grammar.cg3,
+	  test/T_Include/input.txt, test/T_Include/rules.inc,
+	  test/T_Include/run.pl, test/T_Include/sets.inc,
+	  test/T_InputCommands/expected.txt,
+	  test/T_InputCommands/grammar.cg3, test/T_InputCommands/input.txt,
+	  test/T_InputCommands/run.pl, test/T_InputMarkup/expected.txt,
+	  test/T_InputMarkup/grammar.cg3, test/T_InputMarkup/input.txt,
+	  test/T_InputMarkup/run.pl, test/T_JumpExecute/expected.txt,
+	  test/T_JumpExecute/grammar.cg3, test/T_JumpExecute/input.txt,
+	  test/T_JumpExecute/run.pl, test/T_MapAdd_Different/expected.txt,
+	  test/T_MapAdd_Different/grammar.cg3,
+	  test/T_MapAdd_Different/input.txt,
+	  test/T_MapAdd_Different/run.pl,
+	  test/T_MapThenRemove/expected.txt,
+	  test/T_MapThenRemove/grammar.cg3, test/T_MapThenRemove/input.txt,
+	  test/T_MapThenRemove/run.pl, test/T_MapThenSelect/expected.txt,
+	  test/T_MapThenSelect/grammar.cg3, test/T_MapThenSelect/input.txt,
+	  test/T_MapThenSelect/run.pl, test/T_MappingPrefix/expected.txt,
+	  test/T_MappingPrefix/grammar.cg3, test/T_MappingPrefix/input.txt,
+	  test/T_MappingPrefix/run.pl, test/T_Movement/expected.txt,
+	  test/T_Movement/grammar.cg3, test/T_Movement/input.txt,
+	  test/T_Movement/run.pl, test/T_MultipleSections/expected.txt,
+	  test/T_MultipleSections/grammar.cg3,
+	  test/T_MultipleSections/input.txt,
+	  test/T_MultipleSections/run.pl,
+	  test/T_NegatedContextTest/expected.txt,
+	  test/T_NegatedContextTest/grammar.cg3,
+	  test/T_NegatedContextTest/input.txt,
+	  test/T_NegatedContextTest/run.pl,
+	  test/T_NotContextTest/expected.txt,
+	  test/T_NotContextTest/grammar.cg3,
+	  test/T_NotContextTest/input.txt, test/T_NotContextTest/run.pl,
+	  test/T_NumericalTags/expected.txt,
+	  test/T_NumericalTags/grammar.cg3, test/T_NumericalTags/input.txt,
+	  test/T_NumericalTags/run.pl, test/T_OmniWithBarrier/expected.txt,
+	  test/T_OmniWithBarrier/grammar.cg3,
+	  test/T_OmniWithBarrier/input.txt, test/T_OmniWithBarrier/run.pl,
+	  test/T_Omniscan/expected.txt, test/T_Omniscan/grammar.cg3,
+	  test/T_Omniscan/input.txt, test/T_Omniscan/run.pl,
+	  test/T_OriginPassing/expected.txt,
+	  test/T_OriginPassing/grammar.cg3, test/T_OriginPassing/input.txt,
+	  test/T_OriginPassing/run.pl, test/T_Parentheses/expected.txt,
+	  test/T_Parentheses/grammar.cg3, test/T_Parentheses/input.txt,
+	  test/T_Parentheses/run.pl, test/T_RegExp/expected.txt,
+	  test/T_RegExp/grammar.cg3, test/T_RegExp/input.txt,
+	  test/T_RegExp/run.pl, test/T_Relations/expected.txt,
+	  test/T_Relations/grammar.cg3, test/T_Relations/input.txt,
+	  test/T_Relations/run.pl, test/T_RemCohort/expected.txt,
+	  test/T_RemCohort/grammar.cg3, test/T_RemCohort/input.txt,
+	  test/T_RemCohort/run.pl, test/T_RemoveSingleTag/expected.txt,
+	  test/T_RemoveSingleTag/grammar.cg3,
+	  test/T_RemoveSingleTag/input.txt, test/T_RemoveSingleTag/run.pl,
+	  test/T_ScanningTests/expected.txt,
+	  test/T_ScanningTests/grammar.cg3, test/T_ScanningTests/input.txt,
+	  test/T_ScanningTests/run.pl, test/T_SectionRanges/expected.txt,
+	  test/T_SectionRanges/grammar.cg3, test/T_SectionRanges/input.txt,
+	  test/T_SectionRanges/run.pl, test/T_Sections/expected.txt,
+	  test/T_Sections/grammar.cg3, test/T_Sections/input.txt,
+	  test/T_Sections/run.pl, test/T_SetOp_FailFast/expected.txt,
+	  test/T_SetOp_FailFast/grammar.cg3,
+	  test/T_SetOp_FailFast/input.txt, test/T_SetOp_FailFast/run.pl,
+	  test/T_SetOps/expected.txt, test/T_SetOps/grammar.cg3,
+	  test/T_SetOps/input.txt, test/T_SetOps/run.pl,
+	  test/T_SetParentChild/expected.txt,
+	  test/T_SetParentChild/grammar.cg3,
+	  test/T_SetParentChild/input.txt, test/T_SetParentChild/run.pl,
+	  test/T_SoftDelimiters/expected.txt,
+	  test/T_SoftDelimiters/grammar.cg3,
+	  test/T_SoftDelimiters/input.txt, test/T_SoftDelimiters/run.pl,
+	  test/T_SpaceInForms/expected.txt,
+	  test/T_SpaceInForms/grammar.cg3, test/T_SpaceInForms/input.txt,
+	  test/T_SpaceInForms/run.pl,
+	  test/T_SubReadings_Apertium/expected.txt,
+	  test/T_SubReadings_Apertium/grammar.cg3,
+	  test/T_SubReadings_Apertium/input.txt,
+	  test/T_SubReadings_Apertium/run.pl,
+	  test/T_SubReadings_CG/expected.txt,
+	  test/T_SubReadings_CG/grammar.cg3,
+	  test/T_SubReadings_CG/input.txt, test/T_SubReadings_CG/run.pl,
+	  test/T_SubstituteNil/expected.txt,
+	  test/T_SubstituteNil/grammar.cg3, test/T_SubstituteNil/input.txt,
+	  test/T_SubstituteNil/run.pl, test/T_Templates/expected.txt,
+	  test/T_Templates/grammar.cg3, test/T_Templates/input.txt,
+	  test/T_Templates/run.pl, test/T_Trace/expected.txt,
+	  test/T_Trace/grammar.cg3, test/T_Trace/input.txt,
+	  test/T_Trace/run.pl, test/T_Unification/expected.txt,
+	  test/T_Unification/grammar.cg3, test/T_Unification/input.txt,
+	  test/T_Unification/run.pl, test/T_Variables/expected.txt,
+	  test/T_Variables/grammar.cg3, test/T_Variables/input.txt,
+	  test/T_Variables/run.pl, test/clean.sh, test/runall.pl, todo.sh,
+	  update-revision.pl, vapply.sh, vparse.sh, win32/getopt.c,
+	  win32/getopt.h, win32/libgen.c, win32/libgen.h: svn:eol-style=LF
+	* [r9491] scripts/profile-revisions.php, src/stdafx.hpp, vapply.sh:
+	  \r\n -> \n
+
+2013-12-09  tino
+
+	* [r9483] src/Grammar.cpp: Target:Rule code saved for later,
+	  #ifdef'd off
+
+2013-12-04  tino
+
+	* [r9467] ChangeLog, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp,
+	  test/T_RemCohort/expected.txt, test/T_RemCohort/grammar.cg3,
+	  test/T_RemCohort/input.txt: RemCohort now hands off enclosed
+	  cohorts
+
+2013-12-01  tino
+
+	* [r9454] CMakeLists.txt: cg3
+	* [r9453] ChangeLog, src/version.hpp, update-revision.pl: Use
+	  svn2cl to generate the ChangeLog
+
+2013-11-21  tino
+
+	* [r9406] manual/rules.xml, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/Strings.cpp,
+	  src/Strings.hpp, src/TextualParser.cpp, src/version.hpp,
+	  test/T_BasicAppend/expected.txt, test/T_BasicAppend/grammar.cg3,
+	  test/T_BasicAppend/run.pl: COPY now has an EXCEPT clause (WIP,
+	  only takes raw tags)
+
+2013-11-19  tino
+
+	* [r9401] src/ApertiumApplicator.cpp, src/FSTApplicator.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/MatxinApplicator.cpp,
+	  src/NicelineApplicator.cpp, src/PlaintextApplicator.cpp,
+	  src/Tag.cpp: Fix everything clang-analyzer complained about
+
+2013-11-18  tino
+
+	* [r9398] CMakeLists.txt, src/CMakeLists.txt, src/CompositeTag.hpp,
+	  src/Rule.hpp, src/Tag.hpp: CMake script cleanup
+
+2013-11-17  tino
+
+	* [r9397] test/T_RemCohort/run.pl, test/T_Unification/run.pl: diff
+	  -Z is not always available, so use -b
+	* [r9396] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runRules.cpp, src/sorted_vector.hpp,
+	  src/version.hpp, test/T_RemCohort/expected.txt,
+	  test/T_RemCohort/grammar.cg3, test/T_RemCohort/input.txt,
+	  test/T_RemCohort/run.pl: Rem- and AddCohort now properly updates
+	  the endtag marker <<<.
+
+2013-11-15  tino
+
+	* [r9378] scripts/cg3-autobin.pl, src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp, src/version.hpp,
+	  test/T_Unification/expected.txt, test/T_Unification/grammar.cg3,
+	  test/T_Unification/run.pl: If a test does not succeed, discard
+	  any captures performed by that test.
+
+2013-11-13  tino
+
+	* [r9374] scripts/cg3-autobin.pl, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/main.cpp, src/options.hpp,
+	  src/version.hpp, test/T_AnyMinusSome/input.txt,
+	  test/T_AnyMinusSome/run.pl: Added --unique-tags
+
+2013-11-12  tino
+
+	* [r9366] get-boost.sh: Boost 1.55.0
+
+2013-11-08  tino
+
+	* [r9354] src/options.hpp: --ordered description
+
+2013-10-31  tino
+
+	* [r9318] src/CMakeLists.txt: Don't make symlink
+
+2013-10-29  tino
+
+	* [r9313] src/TextualParser.cpp, src/istream.hpp: Sign compare fix
+	* [r9312] scripts/cg3-autobin.pl, src/TextualParser.cpp,
+	  src/istream.hpp, src/version.hpp, test/T_Include/grammar.cg3,
+	  test/T_Include/input.txt, test/T_Include/rules.inc,
+	  test/T_Include/run.pl, test/T_Include/sets.inc: Discard initial
+	  UTF BOMs from stdin and in grammars and in included grammars
+
+2013-10-23  tino
+
+	* [r9306] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp,
+	  test/T_BasicSubstitute/expected.txt,
+	  test/T_BasicSubstitute/grammar.cg3: Substitute can now replace
+	  wordforms with varstrings
+
+2013-10-21  tino
+
+	* [r9299] src/ApertiumApplicator.cpp, src/FSTApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runGrammar.cpp, src/NicelineApplicator.cpp,
+	  src/PlaintextApplicator.cpp, src/libcg3.cpp,
+	  test/T_BasicSubstitute/expected.txt,
+	  test/T_BasicSubstitute/grammar.cg3: WIP Substitute wordform
+	  replace with varstring
+	* [r9298] CMakeLists.txt, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/version.hpp,
+	  test/T_BasicSubstitute/expected.txt,
+	  test/T_BasicSubstitute/grammar.cg3,
+	  test/T_BasicSubstitute/run.pl: Substitute can now replace
+	  wordforms
+
+2013-10-17  tino
+
+	* [r9292] CMakeLists.txt: Add Saucy to PPA
+
+2013-10-11  unhammer
+
+	* [r9285] emacs/cg.el: byte-compile on old emacsen
+	* [r9284] emacs/cg.el: fix some compiler warnings (still requiring
+	  'cl until 24.3 available everywhere)
+	* [r9283] emacs/cg.el: fix header (package.el format)
+
+2013-10-09  tino
+
+	* [r9279] scripts/cg3-autobin.pl, src/GrammarApplicator.hpp,
+	  src/cg3.h, src/libcg3.cpp, src/stdafx.hpp, src/version.hpp: Added
+	  cg3_sentence_copy() to libcg3 to aid in passing a sentence from
+	  one applicator to another
+
+2013-10-03  tino
+
+	* [r9274] src/ApertiumApplicator.cpp, src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_write.cpp, src/CompositeTag.cpp,
+	  src/CompositeTag.hpp, src/Grammar.cpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/Set.cpp, src/TextualParser.cpp: Coding style cleanup, and
+	  more std::list to std::vector
+	* [r9273] scripts/cg3-autobin.pl, src/ApertiumApplicator.cpp,
+	  src/BinaryGrammar_read.cpp, src/Grammar.hpp,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/MatxinApplicator.cpp,
+	  src/Reading.hpp, src/Tag.cpp, src/Tag.hpp, src/inlines.hpp,
+	  src/libcg3.cpp, src/stdafx.hpp, src/version.hpp: Change the
+	  ordered tags_list in Reading to std::vector
+	* [r9272] scripts/cg3-autobin.pl, src/inlines.hpp, src/version.hpp:
+	  Fixed --section 2-2 regression
+
+2013-10-01  tino
+
+	* [r9265] scripts/cg3-autobin.pl, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.hpp, src/GrammarApplicator_runRules.cpp,
+	  src/main.cpp, src/options.hpp, src/version.hpp: Add --dry-run
+
+2013-10-01  unhammer
+
+	* [r9264] emacs/cg.el: minor bug in `cg-output-toggle-analyses',
+	  some doc
+	* [r9261] emacs/cg.el: `h' (cg-output-hide-analyses) in output
+	  buffer makes CG format look like plain sentences.
+	  
+	  Tags/analyses are still searchable, but hidden until searched
+	  for. `u' (cg-output-set-unhide) lets you set some exceptions to
+	  the hiding, or put (setq cg-output-unhide-regex "someregex") in
+	  ~/.emacs to save some default exception.
+
+2013-09-30  tino
+
+	* [r9258] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runRules.cpp, src/main.cpp,
+	  src/version.hpp, test/T_DelayAndDelete/expected.txt,
+	  test/T_DelayAndDelete/grammar.cg3,
+	  test/T_DelayAndDelete/input.txt, test/T_DelayAndDelete/run.pl:
+	  Fixed unsafe removal of magic readings. Could not produce a
+	  distilled test case that showed the problem.
+	* [r9254] scripts/cg3-autobin.pl, src/cg3.h, src/libcg3.cpp,
+	  src/version.hpp: libcg3 now knows about sub-readings
+
+2013-09-25  tino
+
+	* [r9249] CMakeLists.txt, scripts/cg3-autobin.pl, src/version.hpp:
+	  CMake Source and Binary dirs are separate
+	* [r9248] scripts/cg3-autobin.pl, src/BinaryGrammar.hpp,
+	  src/BinaryGrammar_read.cpp, src/BinaryGrammar_write.cpp,
+	  src/ContextualTest.cpp, src/ContextualTest.hpp, src/Grammar.cpp,
+	  src/Grammar.hpp, src/Rule.cpp, src/Tag.cpp,
+	  src/TextualParser.cpp, src/inlines.hpp, src/version.hpp,
+	  test/T_Templates/grammar.cg3: Eliminate duplicate contextual
+	  tests. This saves 5.18% allocations and 6.07% memory usage.
+	  Binary format changed to accomodate. This change also allows one
+	  to refer to later templates.
+	* [r9247] compile-profile.sh, profile-apply.sh, profile-parse.sh,
+	  scripts/profile-revisions.php, vapply.sh, vparse.sh: Scripts
+
+2013-09-25  unhammer
+
+	* [r9246] emacs/cg.el: remove outdated comment
+
+2013-09-25  tino
+
+	* [r9245] CMakeLists.txt, cmake.sh, compile-profile.sh,
+	  profile-apply.sh, vapply.sh, vparse.sh: Enabling C++11 makes
+	  grammar parsing 2.08% faster and rule applying 0.22% slower.
+
+2013-09-24  tino
+
+	* [r9244] scripts/cg3-autobin.pl, src/version.hpp,
+	  update-revision.pl: ...and make update-revision know about the
+	  rename.
+	* [r9243] CMakeLists.txt, src/ApertiumApplicator.cpp,
+	  src/ApertiumApplicator.h, src/ApertiumApplicator.hpp,
+	  src/BinaryGrammar.cpp, src/BinaryGrammar.h,
+	  src/BinaryGrammar.hpp, src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_write.cpp, src/CMakeLists.txt, src/Cohort.cpp,
+	  src/Cohort.h, src/Cohort.hpp, src/CohortIterator.cpp,
+	  src/CohortIterator.h, src/CohortIterator.hpp,
+	  src/CompositeTag.cpp, src/CompositeTag.h, src/CompositeTag.hpp,
+	  src/ContextualTest.cpp, src/ContextualTest.h,
+	  src/ContextualTest.hpp, src/FSTApplicator.cpp,
+	  src/FSTApplicator.hpp, src/FormatConverter.cpp,
+	  src/FormatConverter.h, src/FormatConverter.hpp, src/Grammar.cpp,
+	  src/Grammar.h, src/Grammar.hpp, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator.h, src/GrammarApplicator.hpp,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/GrammarWriter.h, src/GrammarWriter.hpp, src/IGrammarParser.h,
+	  src/IGrammarParser.hpp, src/MatxinApplicator.cpp,
+	  src/MatxinApplicator.h, src/MatxinApplicator.hpp,
+	  src/NicelineApplicator.cpp, src/NicelineApplicator.hpp,
+	  src/PlaintextApplicator.cpp, src/PlaintextApplicator.hpp,
+	  src/Reading.cpp, src/Reading.h, src/Reading.hpp, src/Rule.cpp,
+	  src/Rule.h, src/Rule.hpp, src/Set.cpp, src/Set.h, src/Set.hpp,
+	  src/SingleWindow.cpp, src/SingleWindow.h, src/SingleWindow.hpp,
+	  src/Strings.cpp, src/Strings.h, src/Strings.hpp, src/Tag.cpp,
+	  src/Tag.h, src/Tag.hpp, src/TextualParser.cpp,
+	  src/TextualParser.h, src/TextualParser.hpp, src/Window.cpp,
+	  src/Window.h, src/Window.hpp, src/all_cg_comp.cpp,
+	  src/all_cg_conv.cpp, src/all_cg_proc.cpp, src/all_vislcg3.cpp,
+	  src/cg_comp.cpp, src/cg_conv.cpp, src/cg_proc.cpp,
+	  src/icu_uoptions.cpp, src/inlines.h, src/inlines.hpp,
+	  src/istream.hpp, src/libcg3.cpp, src/macros.h, src/macros.hpp,
+	  src/main.cpp, src/options.h, src/options.hpp, src/stdafx.h,
+	  src/stdafx.hpp, src/uextras.cpp, src/uextras.h, src/uextras.hpp,
+	  src/version.h, src/version.hpp: C++ headers are .hpp, and show
+	  headers in IDEs
+	* [r9242] src/version.h: Missed a const
+	* [r9241] include/uoptions.h, src/CMakeLists.txt,
+	  src/icu_uoptions.h, src/libcg3.cpp, src/main.cpp, src/options.h,
+	  src/options_conv.hpp, src/version.h: Move uoptions.h to external,
+	  and inline it
+	* [r9240] src/cg_comp.cpp, src/cg_proc.cpp: basename() is char* on
+	  Posix...by the gods, C is so awful
+	* [r9239] src/cg_comp.cpp, src/cg_proc.cpp, win32/getopt.h,
+	  win32/libgen.c, win32/libgen.h: Various cleanup
+	* [r9238] CMakeLists.txt, include/exec-stream,
+	  include/exec-stream/exec-stream.cpp,
+	  include/exec-stream/exec-stream.h, include/exec-stream/posix,
+	  include/exec-stream/win, src/CMakeLists.txt,
+	  src/GrammarApplicator.h, src/exec-stream.cpp, src/exec-stream.h,
+	  src/posix, src/stdafx.h, src/uextras.cpp, src/win: Moved
+	  exec-stream to external
+	* [r9237] get-boost.sh, include/cycle.h, src/cycle.h, src/stdafx.h:
+	  Move cycle.h to signify external copyright
+	* [r9236] CMakeLists.txt, scripts/cg3-autobin.pl,
+	  src/TextualParser.h, src/version.h: CMake 2.8.0 (even Lucid has
+	  that); Use C++11 if available
+	* [r9235] scripts/cg3-autobin.pl, src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_write.cpp, src/ContextualTest.cpp,
+	  src/ContextualTest.h, src/Grammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/Rule.cpp, src/Rule.h, src/TextualParser.cpp, src/version.h:
+	  WIP towards duplicate context elimination
+
+2013-09-23  tino
+
+	* [r9233] TODO, scripts/cg3-autobin.pl, src/BinaryGrammar_read.cpp,
+	  src/ContextualTest.cpp, src/ContextualTest.h, src/Grammar.cpp,
+	  src/Grammar.h, src/Rule.cpp, src/Rule.h, src/TextualParser.cpp,
+	  src/TextualParser.h, src/version.h, test/runall.pl: Stable but
+	  WIP cleanup of ContextualTest allocations and duplicate
+	  elimination
+
+2013-09-18  tino
+
+	* [r9230] src/cg3.h: Appease the -pedantic overlords
+
+2013-09-18  ftyers
+
+	* [r9229] cg3.pc.in: remove versioning guff in cg3.pc.in
+
+2013-09-18  tino
+
+	* [r9228] src/CMakeLists.txt, src/libcg3.cpp: WIP library
+
+2013-09-17  tino
+
+	* [r9226] CMakeLists.txt, cg3.pc.in, src/CMakeLists.txt,
+	  vislcg3-0.9.pc.in: WIP pkg-config
+
+2013-09-17  ftyers
+
+	* [r9225] CMakeLists.txt: first pass
+	* [r9224] vislcg3-0.9.pc.in: add .pc.in file
+
+2013-09-06  tino
+
+	* [r9215] src/inlines.h: Line endings...
+	* [r9212] src/GrammarApplicator_runContextualTest.cpp,
+	  src/inlines.h: Cleaner range parser code
+
+2013-09-05  unhammer
+
+	* [r9209] emacs/cg.el: comments
+	* [r9208] emacs/cg.el: clear cache if pre-pipe variable changed
+	  (also s/tabs/spaces)
+
+2013-09-04  tino
+
+	* [r9205] manual/templates.xml, scripts/cg3-autobin.pl,
+	  src/TextualParser.cpp, src/version.h: More precise inline
+	  template abuse warnings; Only show them if compiling
+
+2013-09-02  tino
+
+	* [r9201] scripts/cg3-autobin.pl, src/ApertiumApplicator.cpp,
+	  src/MatxinApplicator.cpp, src/Tag.cpp, src/uextras.h,
+	  src/version.h: Minor string manipulation optimizations
+	* [r9200] scripts/cg3-autobin.pl, src/ApertiumApplicator.cpp,
+	  src/MatxinApplicator.cpp, src/uextras.h, src/version.h: Eliminate
+	  use of ux_substr() in favour of std::string's own .substr()
+	* [r9199] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runRules.cpp, src/TextualParser.cpp,
+	  src/uextras.cpp, src/uextras.h, src/version.h,
+	  test/T_Templates/grammar.cg3: Sub-readings now bypass some
+	  caching; Warn on pointless inline templates; Inline some ux
+	  functions
+
+2013-08-06  tino
+
+	* [r9159] scripts/cg3-autobin.pl, src/TextualParser.cpp,
+	  src/version.h: Fix parsing composite tags with space after
+	  opening (
+
+2013-07-18  unhammer
+
+	* [r9124] emacs/cg.el: better check for cache-emptying (cg or input
+	  variables changed) + after-check-secs
+	  
+	  Cache works when cg-per-buffer-input now. Check-after-change now
+	  waits 1 sec (configurable) before checking. Avoid error message
+	  if output window closed before check done.
+
+2013-07-17  unhammer
+
+	* [r9122] emacs/cg.el: C-c c toggles running cg-check after each
+	  change, pre-pipe is cached so this works fast
+
+2013-07-15  unhammer
+
+	* [r9119] emacs/cg.el: comment-face on all regular tags of ;-lines
+	  (was supposed to be in earlier commit)
+	* [r9118] emacs/cg.el: C-c C-n / C-c C-p to navigate errors (or
+	  trace hits) from the CG file
+	* [r9115] emacs/cg.el: common input buffer for all CG buffers (as
+	  default at least); some more fontification on cg-output
+
+2013-07-12  unhammer
+
+	* [r9113] emacs/cg.el: start mode on .cg3 files as that's the
+	  official suffix; ELPA-style commenting
+
+2013-07-04  unhammer
+
+	* [r9103] src/ApertiumApplicator.cpp,
+	  test/Apertium/T_SuperBlanksWithEscape,
+	  test/Apertium/T_SuperBlanksWithEscape/expected.txt,
+	  test/Apertium/T_SuperBlanksWithEscape/grammar.cg3,
+	  test/Apertium/T_SuperBlanksWithEscape/input.txt,
+	  test/Apertium/T_SuperBlanksWithEscape/run.pl: escaped chars in
+	  superblanks should stay put, not be printed before superblank
+
+2013-07-03  tino
+
+	* [r9102] scripts/cg3-autobin.pl, src/ApertiumApplicator.cpp,
+	  src/cg_conv.cpp, src/main.cpp, src/options_conv.hpp,
+	  src/version.h: Allow multiple mapping tags in a single Apertium
+	  reading; Remove Apertium duplicate tag workaround; Add cg-conv
+	  --prefix
+
+2013-07-02  unhammer
+
+	* [r9100] emacs/cg.el: file-name-base is new in emacs 24.3, shim;
+	  new keyword COPY
+
+2013-07-01  tino
+
+	* [r9097] TODO, scripts/cg3-autobin.pl, src/GrammarApplicator.cpp,
+	  src/TextualParser.cpp, src/version.h: Fix segfault when tracing
+	  removed cohorts that had dependency
+
+2013-06-26  tino
+
+	* [r9092] TODO, scripts/cg3-autobin.pl, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator_reflow.cpp, src/version.h,
+	  test/T_BasicSubstitute/run.pl: Allow duplicate tags again now
+	  that Substitute works with them
+	* [r9091] test/T_BasicSubstitute/expected.txt,
+	  test/T_BasicSubstitute/grammar.cg3,
+	  test/T_BasicSubstitute/run.pl:
+	* [r9090] test/T_BasicSubstitute/run.pl: Forgot test...
+	* [r9089] test/T_BasicSubstitute/expected.txt: Forgot test
+	* [r9088] CMakeLists.txt, src/GrammarApplicator_runRules.cpp,
+	  src/main.cpp, src/win/exec-stream-helpers.cpp,
+	  src/win/exec-stream-impl.cpp, test/T_BasicSubstitute/grammar.cg3,
+	  test/T_BasicSubstitute/input.txt, test/T_BasicSubstitute/run.pl:
+	  Substitute now uses the exact insert position even when --ordered
+	  - this fixes the regression of tag order issues
+
+2013-06-25  tino
+
+	* [r9087] make-naive.sh, src/all_cg_comp.cpp, src/all_cg_conv.cpp:
+	  Naive fix
+	* [r9086] make-naive.sh: Naive builder
+	* [r9085] src/all_cg_proc.cpp: Wipe Anchor.cpp
+
+2013-06-25  unhammer
+
+	* [r9084] emacs/cg.el: cg-check: don't overwrite regular
+	  compilation sentinel (led to modeline saying "Compiling" even
+	  when done) cg-output-mode: rebind `g' since `recompile' expects
+	  old args to work
+	* [r9083] emacs/cg.el: cg-post-pipe: like cg-pre-pipe
+	  cg-output-mode: n/p go next/prev error, i (or C-c C-i) opens edit
+	  input buffer
+
+2013-06-23  unhammer
+
+	* [r9073] emacs/cg.el: cg-check: let user specify cg-command and
+	  cg-extra-args cg-pre-pipe: no longer a safe-local-variable (it's
+	  executed …), typing ! once on opening a new cg file should not be
+	  too much hassle.
+
+2013-06-23  tino
+
+	* [r9072] scripts/cg3-autobin.pl, src/GrammarApplicator.cpp,
+	  src/GrammarApplicator_reflow.cpp, src/TextualParser.cpp,
+	  src/version.h: Re-enable duplicate tag elimination (which was
+	  causing the difference) and useless barrier elimination (which
+	  was innocent after all).
+
+2013-06-22  unhammer
+
+	* [r9071] emacs/cg.el: cg-check, bound to C-c C-c, inspired by
+	  cg3ide. Clickable errors and traces. Rebound cg-goto-rule to C-c
+	  g. Use C-c C-i to edit the input sent to cg-check (or send it
+	  using cg-pre-pipe). Use a line like
+	  
+	  # -*- cg-pre-pipe: "lt-proc foo.bin | cg-conv"; coding: utf-8 -*-
+	  
+	  in your cg file to set a per-file pipeline to run before the
+	  vislcg3 step.
+
+2013-06-21  tino
+
+	* [r9070] src/TextualParser.cpp: Undo change that caused
+	  differences where it should not have
+	* [r9069] TODO, scripts/cg3-autobin.pl, src/CMakeLists.txt,
+	  src/version.h: Use Install_Prefix, not Prefix_Path
+
+2013-06-20  tino
+
+	* [r9065] scripts/cg3-autobin.pl, src/TextualParser.cpp,
+	  src/version.h: Lower barrier abuse to a friendlier warning.
+
+2013-06-19  tino
+
+	* [r9063] manual/cmdreference.xml, manual/streamformats.xml,
+	  newsletters/2013-06-19.txt, scripts/cg3-autobin.pl,
+	  src/version.h: CG-3 Release 0.9.8.9063
+	* [r9062] README, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_reflow.cpp, src/PlaintextApplicator.cpp,
+	  src/exec-stream.cpp, src/version.h: cg-conv from plain text is
+	  slightly smarter
+	* [r9059] CMakeLists.txt:
+
+2013-06-18  tino
+
+	* [r9053] TODO, src/TextualParser.cpp: Fix potential segfault
+
+2013-06-17  tino
+
+	* [r9051] scripts/cg3-autobin.pl, src/ContextualTest.h,
+	  src/TextualParser.cpp, src/version.h: Error out if
+	  Barrier/CBarrier is used for a non-scanning test
+	* [r9046] dist/dist-osx.pl: ICU rewrite version bump
+
+2013-06-14  unhammer
+
+	* [r9043] emacs/cg.el: wops, don't want to underline "foo\"bar"
+
+2013-06-12  unhammer
+
+	* [r9041] emacs/cg.el: underline troublesome strings like "this
+	  "mess"right"here", highlight possible [xXlr] after [psc]
+
+2013-06-11  tino
+
+	* [r9040] src/GrammarApplicator_reflow.cpp: No longer eliminates
+	  duplicate tags.
+	* [r9039] scripts/cg3-autobin.pl, src/ApertiumApplicator.cpp,
+	  src/CMakeLists.txt, src/FSTApplicator.cpp, src/FSTApplicator.hpp,
+	  src/FormatConverter.cpp, src/FormatConverter.h,
+	  src/GrammarApplicator.cpp, src/MatxinApplicator.cpp,
+	  src/NicelineApplicator.cpp, src/TextualParser.cpp, src/version.h:
+	  Basic HFST/XFST handling. No longer eliminates duplicate tags in
+	  output.
+
+2013-06-07  tino
+
+	* [r9036] scripts/cg3-autobin.pl, src/ApertiumApplicator.h,
+	  src/CMakeLists.txt, src/FormatConverter.cpp,
+	  src/FormatConverter.h, src/NicelineApplicator.hpp,
+	  src/PlaintextApplicator.cpp, src/PlaintextApplicator.hpp,
+	  src/cg_conv.cpp, src/version.h: cg-conv handles plain-text in the
+	  dumbest possible way, which may be a good thing...
+	* [r9035] scripts/cg3-autobin.pl, src/NicelineApplicator.cpp,
+	  src/version.h: cg-conv now handles Niceline format with spaces in
+	  word/baseforms and either [] or "" baseforms.
+	* [r9034] scripts/cg3-autobin.pl, src/CMakeLists.txt,
+	  src/FormatConverter.cpp, src/FormatConverter.h,
+	  src/NicelineApplicator.cpp, src/NicelineApplicator.hpp,
+	  src/cg_conv.cpp, src/version.h: cg-conv now handles partial
+	  Niceline format (WIP)
+
+2013-06-06  tino
+
+	* [r9032] TODO, scripts/cg3-autobin.pl, src/ApertiumApplicator.cpp,
+	  src/ApertiumApplicator.h, src/FormatConverter.cpp,
+	  src/FormatConverter.h, src/GrammarApplicator.h,
+	  src/GrammarApplicator_runGrammar.cpp, src/MatxinApplicator.cpp,
+	  src/MatxinApplicator.h, src/cg_comp.cpp, src/cg_conv.cpp,
+	  src/cg_proc.cpp, src/istream.hpp, src/main.cpp, src/options.h,
+	  src/options_conv.hpp, src/version.h, test/runall.pl: WIP on
+	  making cg-conv much more useful
+
+2013-06-04  unhammer
+
+	* [r9029] emacs/cg.el: highlight pO (parent + (no-)pass-origin)
+
+2013-05-24  tino
+
+	* [r9009] APERTIUM_FORMAT, ChangeLog, Doxyfile, INSTALL,
+	  autogen.sh, compile-linux.sh, compile-mac.sh: Cleanup
+	* [r9008] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runRules.cpp, src/TextualParser.cpp,
+	  src/version.h: Check APPEND and ADDCOHORT first tag during
+	  compilation
+
+2013-05-21  tino
+
+	* [r9005] TODO, src/Grammar.cpp, src/main.cpp: Help to stdout if
+	  asked for; 'on line' instead of just 'line'; Less ToDo
+
+2013-05-17  tino
+
+	* [r8994] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/Reading.cpp,
+	  src/version.h: Using Select with mixed sub-reading levels is now
+	  safe.
+
+2013-05-16  tino
+
+	* [r8993] scripts/cg3-autobin.pl, src/ApertiumApplicator.cpp,
+	  src/GrammarApplicator_reflow.cpp, src/version.h: Apertium format
+	  should also preserve sub-readings.
+	* [r8991] scripts/cg3-autobin.pl, src/GrammarApplicator_reflow.cpp,
+	  src/version.h, test/T_SubReadings_CG/expected.txt,
+	  test/T_SubReadings_CG/input.txt: Now with less wanton
+	  destruction.
+	* [r8984] manual/cmdreference.xml, manual/installation.xml,
+	  scripts/cg3-autobin.pl, src/cg_conv.cpp, src/version.h: cg-conv
+	  -a -l to use LTR instead of RTL
+
+2013-05-14  tino
+
+	* [r8982] compile-profile.sh, scripts/cg3-autobin.pl,
+	  scripts/profile-revisions.php, src/CMakeLists.txt, src/version.h,
+	  vapply.sh, vparse.sh: Binary cg3 as symlink to vislcg3
+	* [r8981] CMakeLists.txt: PPA fixes (drop Lucid support)
+	* [r8980] CMake/DebSourcePPA.cmake, CMakeLists.txt,
+	  scripts/cg3-autobin.pl, src/version.h: PPA fixes
+	* [r8979] CMake/DebSourcePPA.cmake, CMakeLists.txt: cg3
+	* [r8978] CMakeLists.txt, scripts/cg3-autobin.pl, src/Grammar.cpp,
+	  src/version.h: Now with Ubuntu PPA at ppa:tinodidriksen/cg3
+
+2013-05-08  tino
+
+	* [r8974] scripts/cg3-autobin.pl, src/Grammar.cpp, src/version.h,
+	  test/T_Unification/run.pl: Optimize SET with only single-tag ORs
+	  to LISTs
+
+2013-04-29  tino
+
+	* [r8957] scripts/cg3-autobin.pl: cg3
+	* [r8956] TODO, scripts/cg3-autobin.pl: cg3
+
+2013-04-14  tino
+
+	* [r8897] TODO, scripts/cg3-autobin.pl, src/TextualParser.cpp,
+	  src/version.h, test/Apertium/T_Barrier/grammar.cg3,
+	  test/Apertium/T_BasicSubstitute/grammar.cg3,
+	  test/Apertium/T_CarefulBarrier/grammar.cg3,
+	  test/Apertium/T_ScanningTests/grammar.cg3,
+	  test/T_Barrier/grammar.cg3, test/T_BasicAppend/grammar.cg3,
+	  test/T_BasicContextTest/grammar.cg3,
+	  test/T_BasicDependency/grammar.cg3,
+	  test/T_BasicSubstitute/grammar.cg3, test/T_CG2Compat/grammar.cg3,
+	  test/T_CarefulBarrier/grammar.cg3,
+	  test/T_Dependency_Loops/grammar.cg3,
+	  test/T_Dependency_OutOfRange/grammar.cg3,
+	  test/T_JumpExecute/grammar.cg3, test/T_MapThenRemove/grammar.cg3,
+	  test/T_MapThenSelect/grammar.cg3,
+	  test/T_MappingPrefix/expected.txt,
+	  test/T_MappingPrefix/grammar.cg3, test/T_Movement/grammar.cg3,
+	  test/T_NumericalTags/expected.txt,
+	  test/T_NumericalTags/grammar.cg3, test/T_Omniscan/grammar.cg3,
+	  test/T_OriginPassing/grammar.cg3,
+	  test/T_Parentheses/expected.txt, test/T_Parentheses/grammar.cg3,
+	  test/T_RegExp/grammar.cg3, test/T_Relations/expected.txt,
+	  test/T_Relations/grammar.cg3, test/T_ScanningTests/grammar.cg3,
+	  test/T_SetOps/grammar.cg3, test/T_SetParentChild/grammar.cg3,
+	  test/T_SoftDelimiters/grammar.cg3,
+	  test/T_SpaceInForms/expected.txt,
+	  test/T_SpaceInForms/grammar.cg3,
+	  test/T_SubReadings_Apertium/grammar.cg3,
+	  test/T_SubReadings_CG/expected.txt,
+	  test/T_SubReadings_CG/grammar.cg3,
+	  test/T_SubstituteNil/grammar.cg3, test/T_Templates/grammar.cg3,
+	  test/T_Trace/expected.txt, test/T_Trace/grammar.cg3,
+	  test/T_Unification/expected.txt, test/T_Unification/grammar.cg3,
+	  test/T_Variables/grammar.cg3: Eliminated need for BEFORE-SECTIONS
+	  so rules before any declared section are assumed to be, well,
+	  before them...
+
+2013-04-04  tino
+
+	* [r8889] scripts/cg3-autobin.pl, src/Cohort.cpp, src/Cohort.h,
+	  src/GrammarApplicator_runRules.cpp, src/version.h,
+	  test/T_Relations/expected.txt, test/T_Relations/grammar.cg3,
+	  test/T_Relations/run.pl: Only trace if relation rule actually did
+	  anything.
+
+2013-04-02  tino
+
+	* [r8885] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runContextualTest.cpp, src/version.h: Clear
+	  dep_deep cache for OR'ed tests
+
+2013-03-14  tino
+
+	* [r8877] AUTHORS, manual/manual.xml, src/ApertiumApplicator.cpp,
+	  src/ApertiumApplicator.h, src/BinaryGrammar.cpp,
+	  src/BinaryGrammar.h, src/BinaryGrammar_read.cpp,
+	  src/BinaryGrammar_write.cpp, src/Cohort.cpp, src/Cohort.h,
+	  src/CohortIterator.cpp, src/CohortIterator.h,
+	  src/CompositeTag.cpp, src/CompositeTag.h, src/ContextualTest.cpp,
+	  src/ContextualTest.h, src/FormatConverter.cpp,
+	  src/FormatConverter.h, src/Grammar.cpp, src/Grammar.h,
+	  src/GrammarApplicator.cpp, src/GrammarApplicator.h,
+	  src/GrammarApplicator_matchSet.cpp,
+	  src/GrammarApplicator_reflow.cpp,
+	  src/GrammarApplicator_runContextualTest.cpp,
+	  src/GrammarApplicator_runGrammar.cpp,
+	  src/GrammarApplicator_runRules.cpp, src/GrammarWriter.cpp,
+	  src/GrammarWriter.h, src/IGrammarParser.h,
+	  src/MatxinApplicator.cpp, src/MatxinApplicator.h,
+	  src/Reading.cpp, src/Reading.h, src/Rule.cpp, src/Rule.h,
+	  src/Set.cpp, src/Set.h, src/SingleWindow.cpp, src/SingleWindow.h,
+	  src/Strings.cpp, src/Strings.h, src/Tag.cpp, src/Tag.h,
+	  src/TextualParser.cpp, src/TextualParser.h, src/Window.cpp,
+	  src/Window.h, src/bloomish.hpp, src/cg3.h, src/cg_comp.cpp,
+	  src/cg_conv.cpp, src/cg_proc.cpp, src/icu_uoptions.h,
+	  src/inlines.h, src/interval_vector.hpp, src/libcg3.cpp,
+	  src/macros.h, src/main.cpp, src/options.h, src/sorted_vector.hpp,
+	  src/stdafx.h, src/test_libcg3.c, src/uextras.cpp, src/uextras.h,
+	  src/version.h: Yearly copyright refresh.
+	* [r8876] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runGrammar.cpp, src/version.h: Fixed
+	  sub-readings breaking everything when they weren't real readings.
+
+2013-03-13  unhammer
+
+	* [r8875] emacs/cg.el: safer way to get x clipboard contents
+
+2013-03-12  tino
+
+	* [r8874] get-boost.sh, manual/compatibility.xml,
+	  manual/dependencies.xml,
+	  src/GrammarApplicator_runContextualTest.cpp, src/Reading.cpp,
+	  test/T_BasicDependency/expected.txt,
+	  test/T_BasicDependency/grammar.cg3: Document cc vs c*
+
+2013-01-24  tino
+
+	* [r8813] dist/Portfile: MacPorts
+	* [r8812] dist/Portfile: MacPorts
+
+2013-01-22  tino
+
+	* [r8810] TODO, manual/installation.xml, scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runContextualTest.cpp, src/version.h,
+	  test/T_BasicDependency/expected.txt,
+	  test/T_BasicDependency/grammar.cg3: Fixed parent-or-self tests to
+	  not only test self
+
+2012-12-19  tino
+
+	* [r8752] scripts/cg3-autobin.pl,
+	  src/GrammarApplicator_runGrammar.cpp, src/version.h: FLUSH now
+	  clears variables
+
+2012-12-10  tino
+
+	* [r8734] scripts/cg3-autobin.pl, src/GrammarApplicator_reflow.cpp,
+	  src/version.h: When the text contains , don't say a varstring
+	  wasn't created just because it is identical to no result.
+
+2012-12-09  tino
+
+	* [r8732] dist/dist-osx.pl: OS X dist script
+
+2012-11-24  tino
+
+	* [r8709] manual/installation.xml: cg3
+
+2012-11-22  tino
+
+	* [r8708] src/GrammarApplicator_runGrammar.cpp: ; in input does not
+	  mean end of line...
+

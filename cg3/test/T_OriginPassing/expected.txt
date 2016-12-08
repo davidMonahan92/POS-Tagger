@@ -1,0 +1,17 @@
+"<word>"
+	"word" one
+"<word>"
+	"word" two
+"<word>"
+	"word" three
+"<word>"
+	"word" four @not-right @passed-right @not-left @passed-left
+"<word>"
+	"word" five @not-reset-right @reset-right @not-reset-left @reset-left
+"<word>"
+	"word" six
+"<word>"
+	"word" seven
+"<word>"
+	"word" eight
+

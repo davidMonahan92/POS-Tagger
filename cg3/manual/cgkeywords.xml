@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="cgkeywords">
+  <title>Constraint Grammar Keywords</title>
+
+  <para>
+    <emphasis>You should avoid using these keywords as set names or similar.</emphasis>
+  </para>
+
+  <section id="keyword-add">
+    <title>ADD</title>
+    <indexterm>
+      <primary>ADD</primary>
+      <seealso>MAP</seealso>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will add the listed tags to the reading. Unlike MAP it will not block further MAP,
+      ADD, or REPLACE rules from operating on the reading.
+    </para>
+    <screen>
+      ADD (tags) targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-addcohort">
+    <title>ADDCOHORT</title>
+    <indexterm>
+      <primary>ADDCOHORT</primary>
+    </indexterm>
+    <para>
+      Inserts a new cohort before or after the target.
+    </para>
+    <screen>
+      ADDCOHORT ("&lt;wordform&gt;" "baseform" tags) BEFORE (@waffles) ;
+      ADDCOHORT ("&lt;wordform&gt;" "baseform" tags) AFTER (@waffles) ;
+    </screen>
+  </section>
+
+  <section id="keyword-addrelation">
+    <title>ADDRELATION</title>
+    <indexterm>
+      <primary>ADDRELATION</primary>
+    </indexterm>
+    <para>
+      ADDRELATION creates a one-way named relation from the current cohort to the found cohort.
+      The name must be an alphanumeric string with no whitespace.
+    </para>
+    <screen>
+      ADDRELATION (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-addrelations">
+    <title>ADDRELATIONS</title>
+    <indexterm>
+      <primary>ADDRELATIONS</primary>
+    </indexterm>
+    <para>
+      ADDRELATIONS creates two one-way named relation; one from the current cohort to the found cohort,
+      and one the other way. The names can be the same if so desired.
+    </para>
+    <screen>
+      ADDRELATIONS (name) (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-after-sections">
+    <title>AFTER-SECTIONS</title>
+    <indexterm>
+      <primary>AFTER-SECTIONS</primary>
+    </indexterm>
+    <para>
+      Same as SECTION, except it is only run a single time per window,
+      and only after all normal SECTIONs have run.
+    </para>
+  </section>
+
+  <section id="keyword-all">
+    <title>ALL</title>
+    <indexterm>
+      <primary>ALL</primary>
+    </indexterm>
+    <para>
+      An inline keyword put at the start of a contextual test to mandate that all cohorts found via the
+      dependency or relation must match the set. This is a more readable way of saying 'C'.
+    </para>
+    <screen>
+      SELECT targetset (ALL c (tag)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-and">
+    <title>AND</title>
+    <indexterm>
+      <primary>AND</primary>
+    </indexterm>
+    <para>
+      <emphasis>Deprecated: use "LINK 0" instead.</emphasis>
+      An inline keyword put between contextual tests as shorthand for "LINK 0".
+    </para>
+  </section>
+
+  <section id="keyword-append">
+    <title>APPEND</title>
+    <indexterm>
+      <primary>APPEND</primary>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will create and append a new reading from the listed tags.
+      <emphasis>Since this creates a raw reading you must include a baseform in the tag list.</emphasis>
+    </para>
+    <screen>
+      APPEND ("baseform" tags) targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-barrier">
+    <title>BARRIER</title>
+    <indexterm>
+      <primary>BARRIER</primary>
+    </indexterm>
+    <para>
+      An inline keyword part of a contextual test that will halt a scan if the barrier is encountered.
+      Only meaningful in scanning contexts.
+    </para>
+    <screen>
+      SELECT targetset (-1* ("someword") BARRIER (tag)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-before-sections">
+    <title>BEFORE-SECTIONS</title>
+    <indexterm>
+      <primary>BEFORE-SECTIONS</primary>
+    </indexterm>
+    <para>
+      Same as SECTION, except it is only run a single time per window,
+      and only before all normal SECTIONs have run.
+    </para>
+  </section>
+
+  <section id="keyword-cbarrier">
+    <title>CBARRIER</title>
+    <indexterm>
+      <primary>CBARRIER</primary>
+    </indexterm>
+    <para>
+      Careful version of <link linkend="keyword-barrier">BARRIER</link>.
+      Only meaningful in scanning contexts. See <link linkend="test-cbarrier">CBARRIER</link>.
+    </para>
+    <screen>
+      SELECT targetset (-1* ("someword") CBARRIER (tag)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-constraints">
+    <title>CONSTRAINTS</title>
+    <indexterm>
+      <primary>CONSTRAINTS</primary>
+    </indexterm>
+    <para>
+      <emphasis>Deprecated: use SECTION instead.</emphasis>
+      A section of the grammar that can contain SELECT, REMOVE, and IFF entries.
+    </para>
+  </section>
+
+  <section id="keyword-copy">
+    <title>COPY</title>
+    <indexterm>
+      <primary>COPY</primary>
+    </indexterm>
+    <para>
+      Duplicates a reading and adds tags to it. If you don't want to copy previously copied readings,
+      you will have to keep track of that yourself by adding a marker tag.
+    </para>
+    <screen>
+      COPY (¤copy tags) TARGET (target) - (¤copy) ;
+    </screen>
+  </section>
+
+  <section id="keyword-corrections">
+    <title>CORRECTIONS</title>
+    <indexterm>
+      <primary>CORRECTIONS</primary>
+    </indexterm>
+    <para>
+      <emphasis>Deprecated: use BEFORE-SECTIONS instead.</emphasis>
+      A section of the grammar that can contain APPEND and SUBSTITUTE entries.
+    </para>
+  </section>
+
+  <section id="keyword-delimit">
+    <title>DELIMIT</title>
+    <indexterm>
+      <primary>DELIMIT</primary>
+      <seealso>DELIMITERS</seealso>
+    </indexterm>
+    <para>
+      If it finds a reading which satisfies the target and the contextual tests, DELIMIT will
+      cut the disambituation window immediately after the cohort the reading is in. After delimiting
+      in this manner, CG-3 will bail out and disambiguate the newly formed window from the start.
+      <emphasis>
+        This should not be used instead of DELIMITERS unless you know what you are doing.
+      </emphasis>
+    </para>
+    <screen>
+      DELIMIT targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-delimiters">
+    <title>DELIMITERS</title>
+    <indexterm>
+      <primary>DELIMITERS</primary>
+      <seealso>SOFT-DELIMITERS</seealso>
+    </indexterm>
+    <para>
+      Sets a list of hard delimiters. If one of these are found the disambuation window is cut
+      immediately after the cohort it was found in.
+      If no delimiters are defined or the window exceeds the hard limit (defaults to 500 cohorts),
+      the window will be cut arbitarily.
+      Internally, this is converted to the magic set _S_DELIMITERS_.
+    </para>
+    <screen>
+      DELIMITERS = "&lt;$.&gt;" "&lt;$?&gt;" "&lt;$!&gt;" "&lt;$:&gt;" "&lt;$\;&gt;" ;
+    </screen>
+  </section>
+
+  <section id="keyword-end">
+    <title>END</title>
+    <indexterm>
+      <primary>END</primary>
+    </indexterm>
+    <para>
+      Denotes the end of the grammar. Nothing after this keyword is read.
+      <emphasis>
+        Deprecated: Remnant from older versions of CG;
+        the end of the file will do just fine.
+      </emphasis>
+    </para>
+  </section>
+
+  <section id="keyword-external">
+    <title>EXTERNAL</title>
+    <indexterm>
+      <primary>EXTERNAL</primary>
+    </indexterm>
+    <para>
+      Opens up a persistent pipe to the program and passes it the current window.
+    </para>
+    <screen>
+      EXTERNAL ONCE /usr/local/bin/waffles (V) (-1 N) ;
+      EXTERNAL ALWAYS program-in-path (V) (-1 N) ;
+      EXTERNAL ONCE "program with spaces" (V) (-1 N) ;
+    </screen>
+  </section>
+
+  <section id="keyword-if">
+    <title>IF</title>
+    <indexterm>
+      <primary>IF</primary>
+    </indexterm>
+    <para>
+      <emphasis>Deprecated: has no effect in CG-3.</emphasis>
+      An inline keyword put before the first contextual test of a rule.
+    </para>
+  </section>
+
+  <section id="keyword-iff">
+    <title>IFF</title>
+    <indexterm>
+      <primary>IFF</primary>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will behave as a SELECT rule.
+      If the tests are not satisfied it will behave as a REMOVE rule.
+    </para>
+    <screen>
+      IFF targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-include">
+    <title>INCLUDE</title>
+    <indexterm>
+      <primary>INCLUDE</primary>
+    </indexterm>
+    <para>
+      Loads and parses another grammar file as if it had been pasted in on the line of the INCLUDE statement.
+      <screen>
+        INCLUDE other-file-name ;
+      </screen>
+    </para>
+  </section>
+
+  <section id="keyword-link">
+    <title>LINK</title>
+    <indexterm>
+      <primary>LINK</primary>
+    </indexterm>
+    <para>
+      An inline keyword part of a contextual test that will chain to another contextual test
+      if the current is satisfied. The chained contextual test will operate from the current position
+      in the window, as opposed to the position of the original cohort that initiated the chain.
+      The chain can be extended to any depth.
+    </para>
+    <screen>
+      SELECT targetset (-1* ("someword") LINK 3 (tag)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-list">
+    <title>LIST</title>
+    <indexterm>
+      <primary>LIST</primary>
+    </indexterm>
+    <para>
+      Defines a new set based on a list of tags.
+    </para>
+    <screen>
+      LIST setname = tag othertag (mtag htag) ltag ;
+    </screen>
+  </section>
+
+  <section id="keyword-map">
+    <title>MAP</title>
+    <indexterm>
+      <primary>MAP</primary>
+      <seealso>ADD</seealso>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will add the listed tags to the reading and block further MAP,
+      ADD, or REPLACE rules from operating on the reading.
+    </para>
+    <screen>
+      MAP (tags) targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-mappings">
+    <title>MAPPINGS</title>
+    <indexterm>
+      <primary>MAPPINGS</primary>
+    </indexterm>
+    <para>
+      <emphasis>Deprecated: use BEFORE-SECTIONS instead.</emphasis>
+      A section of the grammar that can contain MAP, ADD, and REPLACE entries.
+    </para>
+  </section>
+
+  <section id="keyword-mapping-prefix">
+    <title>MAPPING-PREFIX</title>
+    <indexterm>
+      <primary>MAPPING-PREFIX</primary>
+      <seealso>MAP</seealso>
+    </indexterm>
+    <para>
+      Defines the single prefix character that should determine whether a tag is considered a mapping tag
+      or not. Defaults to @.
+    </para>
+    <screen>
+      MAPPING-PREFIX = @ ;
+    </screen>
+  </section>
+
+  <section id="keyword-move">
+    <title>MOVE</title>
+    <indexterm>
+      <primary>MOVE</primary>
+      <seealso>SWITCH</seealso>
+    </indexterm>
+    <para>
+      Moves cohorts and optionally all children of the cohort to a different position in the window.
+    </para>
+    <screen>
+      MOVE targetset (-1* ("someword")) AFTER (1* ("buffalo")) (-1 ("water")) ;
+      MOVE WITHCHILD (*) targetset (-1* ("someword")) BEFORE (1* ("buffalo")) (-1 ("water")) ;
+      MOVE targetset (-1* ("someword")) AFTER WITHCHILD (*) (1* ("buffalo")) (-1 ("water")) ;
+      MOVE WITHCHILD (*) targetset (-1* ("someword")) BEFORE WITHCHILD (*) (1* ("buffalo")) (-1 ("water")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-negate">
+    <title>NEGATE</title>
+    <indexterm>
+      <primary>NEGATE</primary>
+      <seealso>NOT</seealso>
+    </indexterm>
+    <para>
+      An inline keyword put at the start of a contextual test to invert the combined result of all
+      following contextual tests.
+      Similar to, but not the same as, NOT.
+    </para>
+    <screen>
+      SELECT targetset (NEGATE -1* ("someword") LINK NOT 1 (tag)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-none">
+    <title>NONE</title>
+    <indexterm>
+      <primary>NONE</primary>
+    </indexterm>
+    <para>
+      An inline keyword put at the start of a contextual test to mandate that none of the cohorts found via the
+      dependency or relation must match the set. This is a more readable way of saying 'NOT'.
+    </para>
+    <screen>
+      SELECT targetset (NONE c (tag)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-not">
+    <title>NOT</title>
+    <indexterm>
+      <primary>NOT</primary>
+      <seealso>NEGATE</seealso>
+    </indexterm>
+    <para>
+      An inline keyword put at the start of a contextual test to invert the result of it.
+      Similar to, but not the same as, NEGATE.
+    </para>
+    <screen>
+      SELECT targetset (NEGATE -1* ("someword") LINK NOT 1 (tag)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-null-section">
+    <title>NULL-SECTION</title>
+    <indexterm>
+      <primary>NULL-SECTION</primary>
+    </indexterm>
+    <para>
+      Same as SECTION, except it is not actually run.
+      Used for containing ANCHOR'ed lists of rules that you don't want run in the normal course of rule application.
+    </para>
+  </section>
+
+  <section id="keyword-options">
+    <title>OPTIONS</title>
+    <indexterm>
+      <primary>OPTIONS</primary>
+    </indexterm>
+    <para>
+      Global options that affect the grammar parsing.
+    </para>
+    <screen>
+      OPTIONS += no-inline-sets ;
+    </screen>
+  </section>
+
+  <section id="keyword-preferred-targets">
+    <title>PREFERRED-TARGETS</title>
+    <indexterm>
+      <primary>PREFERRED-TARGETS</primary>
+    </indexterm>
+    <para>
+      If the preferred targets are defined, this will influence SELECT, REMOVE, and IFF rules.
+      Normally, these rules will operate until one reading remains in the cohort.
+      If there are preferred targets, these rules are allowed to operate until there are no readings left,
+      after which the preferred target list is consulted to find a reading to "bring back from the dead"
+      and pass on as the final reading to survive the round.
+      <emphasis>
+        Due to its nature of defying the rule application order, this is bad voodoo.
+        I recommend only using this if you know what you are doing.
+      </emphasis>
+      <emphasis>This currently has no effect in CG-3, but will in the future.</emphasis>
+    </para>
+    <screen>
+      PREFERRED-TARGETS = tag othertag etctag ;
+    </screen>
+  </section>
+
+  <section id="keyword-remcohort">
+    <title>REMCOHORT</title>
+    <indexterm>
+      <primary>REMCOHORT</primary>
+    </indexterm>
+    <para>
+      If it finds a reading which satisfies the target and the contextual tests, REMCOHORT will
+      remove the cohort and all its readings from the current disambiguation window.
+    </para>
+    <screen>
+      REMCOHORT targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-remove">
+    <title>REMOVE</title>
+    <indexterm>
+      <primary>REMOVE</primary>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will delete the mached reading.
+    </para>
+    <screen>
+      REMOVE targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-remrelation">
+    <title>REMRELATION</title>
+    <indexterm>
+      <primary>REMRELATION</primary>
+    </indexterm>
+    <para>
+      Destroys one direction of a relation previously created with either
+      <link linkend="keyword-setrelation">SETRELATION</link> or
+      <link linkend="keyword-setrelations">SETRELATIONS</link>.
+    </para>
+    <screen>
+      REMRELATION (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-remrelations">
+    <title>REMRELATIONS</title>
+    <indexterm>
+      <primary>REMRELATIONS</primary>
+    </indexterm>
+    <para>
+      Destroys both directions of a relation previously created with either
+      <link linkend="keyword-setrelation">SETRELATION</link> or
+      <link linkend="keyword-setrelations">SETRELATIONS</link>.
+    </para>
+    <screen>
+      REMRELATIONS (name) (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-replace">
+    <title>REPLACE</title>
+    <indexterm>
+      <primary>REPLACE</primary>
+      <seealso>SUBSTITUTE</seealso>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will remove all existing tags from the reading, then add the listed tags to the reading
+      and block further MAP, ADD, or REPLACE rules from operating on the reading.
+    </para>
+    <screen>
+      REPLACE (tags) targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-section">
+    <title>SECTION</title>
+    <indexterm>
+      <primary>SECTION</primary>
+    </indexterm>
+    <para>
+      A section of the grammar that can contain all types of rule and set definition entries.
+    </para>
+  </section>
+
+  <section id="keyword-select">
+    <title>SELECT</title>
+    <indexterm>
+      <primary>SELECT</primary>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will delete all other readings except the matched one.
+    </para>
+    <screen>
+      SELECT targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-set">
+    <title>SET</title>
+    <indexterm>
+      <primary>SET</primary>
+    </indexterm>
+    <para>
+      Defines a new set based on operations between existing sets.
+    </para>
+    <screen>
+      SET setname = someset + someotherset - (tag) ;
+    </screen>
+  </section>
+
+  <section id="keyword-setchild">
+    <title>SETCHILD</title>
+    <indexterm>
+      <primary>SETCHILD</primary>
+    </indexterm>
+    <para>
+      Attaches the matching reading to the contextually targetted cohort as the parent.
+      The last link of the contextual test is used as target.
+    </para>
+    <screen>
+      SETCHILD targetset (-1* ("someword"))
+      &nbsp; TO (1* (step) LINK 1* (candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-setparent">
+    <title>SETPARENT</title>
+    <indexterm>
+      <primary>SETPARENT</primary>
+    </indexterm>
+    <para>
+      Attaches the matching reading to the contextually targetted cohort as a child.
+      The last link of the contextual test is used as target.
+    </para>
+    <screen>
+      SETPARENT targetset (-1* ("someword"))
+      &nbsp; TO (1* (step) LINK 1* (candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-setrelation">
+    <title>SETRELATION</title>
+    <indexterm>
+      <primary>SETRELATION</primary>
+    </indexterm>
+    <para>
+      Creates a one-way named relation from the current cohort to the found cohort.
+      The name must be an alphanumeric string with no whitespace.
+    </para>
+    <screen>
+      SETRELATION (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-setrelations">
+    <title>SETRELATIONS</title>
+    <indexterm>
+      <primary>SETRELATIONS</primary>
+    </indexterm>
+    <para>
+      Creates two one-way named relation; one from the current cohort to the found cohort,
+      and one the other way. The names can be the same if so desired.
+    </para>
+    <screen>
+      SETRELATIONS (name) (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="keyword-sets">
+    <title>SETS</title>
+    <indexterm>
+      <primary>SETS</primary>
+    </indexterm>
+    <para>
+      <emphasis>Deprecated: has no effect in CG-3.</emphasis>
+      A section of the grammar that can contain SET and LIST entries.
+    </para>
+  </section>
+
+  <section id="keyword-soft-delimiters">
+    <title>SOFT-DELIMITERS</title>
+    <indexterm>
+      <primary>SOFT-DELIMITERS</primary>
+      <seealso>DELIMITERS</seealso>
+    </indexterm>
+    <para>
+      Sets a list of soft delimiters. If a disambiguation window is approaching the soft-limit
+      (defaults to 300 cohorts), CG-3 will begin to look for a soft delimiter to cut the window after.
+      Internally, this is converted to the magic set _S_SOFT_DELIMITERS_.
+    </para>
+    <screen>
+      SOFT-DELIMITERS = "&lt;$,&gt;" ;
+    </screen>
+  </section>
+
+  <section id="keyword-static-sets">
+    <title>STATIC-SETS</title>
+    <indexterm>
+      <primary>STATIC-SETS</primary>
+    </indexterm>
+    <para>
+      A list of set names that need to be preserved at runtime to be used with
+      <link linkend="variable-strings">advanced variable strings</link>.
+    </para>
+    <screen>
+      STATIC-SETS = VINF ADV ;
+    </screen>
+  </section>
+
+  <section id="keyword-strict-tags">
+    <title>STRICT-TAGS</title>
+    <indexterm>
+      <primary>STRICT-TAGS</primary>
+    </indexterm>
+    <para>
+      A whitelist of allowed tags.
+    </para>
+    <screen>
+      STRICT-TAGS += N V ADJ ;
+    </screen>
+  </section>
+
+  <section id="keyword-substitute">
+    <title>SUBSTITUTE</title>
+    <indexterm>
+      <primary>SUBSTITUTE</primary>
+      <seealso>REPLACE</seealso>
+    </indexterm>
+    <para>
+      Singles out a reading from the cohort that matches the target, and if all contextual tests are
+      satisfied it will remove the tags from the search list, then add the listed tags to the reading.
+      <emphasis>
+        No guarantee is currently made as to where the replacement tags are inserted, but in the future
+        the idea is that the tags will be inserted in place of the last found tag from the search list.
+        This is a moot point for CG-3 as the tag order does not matter internally, but external tools may
+        expect a specific order.
+      </emphasis>
+    </para>
+    <screen>
+      SUBSTITUTE (search tags) (new tags) targetset (-1* ("someword")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-switch">
+    <title>SWITCH</title>
+    <indexterm>
+      <primary>SWITCH</primary>
+      <seealso>MOVE</seealso>
+    </indexterm>
+    <para>
+      Switches the position of two cohorts in the window.
+    </para>
+    <screen>
+      SWITCH targetset (-1* ("someword")) WITH (1* ("buffalo")) (-1 ("water")) ;
+    </screen>
+  </section>
+
+  <section id="keyword-target">
+    <title>TARGET</title>
+    <indexterm>
+      <primary>TARGET</primary>
+    </indexterm>
+    <para>
+      <emphasis>Deprecated: has no effect in CG-3.</emphasis>
+      An inline keyword put before the target of a rule.
+    </para>
+  </section>
+
+  <section id="keyword-template">
+    <title>TEMPLATE</title>
+    <indexterm>
+      <primary>TEMPLATE</primary>
+    </indexterm>
+    <para>
+      Sets up templates of alternative contextual tests which can later be referred to by multiple rules
+      or templates.
+    </para>
+    <screen>
+      TEMPLATE name = (1 (N) LINK 1 (V)) OR (-1 (N) LINK 1 (V)) ;
+      TEMPLATE other = (T:name LINK 1 (P)) OR (1 (C)) ;
+      SELECT (x) IF ((T:name) OR (T:other)) ;
+    </screen>
+  </section>
+
+  <section id="keyword-to">
+    <title>TO</title>
+    <indexterm>
+      <primary>TO</primary>
+      <seealso>SETPARENT</seealso>
+      <seealso>SETCHILD</seealso>
+    </indexterm>
+    <para>
+      An inline keyword put before the contextual target of a SETPARENT or SETCHILD rule.
+    </para>
+  </section>
+
+  <section id="keyword-unmap">
+    <title>UNMAP</title>
+    <indexterm>
+      <primary>UNMAP</primary>
+      <seealso>MAP</seealso>
+    </indexterm>
+    <para>
+      Removes the mapping tag of a reading and lets ADD and MAP target the reading again.
+      By default it will only act if the cohort has exactly one reading, but marking the rule UNSAFE
+      lets it act on multiple readings.
+    </para>
+    <screen>
+      UNMAP (TAG) ;
+      UNMAP UNSAFE (TAG) ;
+    </screen>
+  </section>
+
+</chapter>

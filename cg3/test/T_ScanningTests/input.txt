@@ -1,0 +1,17 @@
+"<word>"
+	"word" wanted first
+"<word>"
+	"word" wanted second
+"<word>"
+	"word" wanted third alsofindme
+"<word>"
+	"word" wanted fourth findme
+"<word>"
+	"word" wanted careful fifth
+	"word" notcareful
+"<word>"
+	"word" wanted sixth alsofindme 
+"<word>"
+	"word" wanted careful seventh alsofindme
+"<word>"
+	"word" wanted eighth

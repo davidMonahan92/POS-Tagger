@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="relations">
+  <title>Making use of Relations</title>
+
+  <para>
+    CG-3 can also work with generic relations. These are analogous to dependency relations,
+    but can have any name, overlap, are directional, and can point to multiple cohorts.
+  </para>
+
+  <section id="rel-addrelation">
+    <title>ADDRELATION, ADDRELATIONS</title>
+    <indexterm>
+      <primary>ADDRELATION</primary>
+    </indexterm>
+    <indexterm>
+      <primary>ADDRELATIONS</primary>
+    </indexterm>
+    <screen>
+      [wordform] ADDRELATION &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      [wordform] ADDRELATIONS &lt;name&gt; &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      ADDRELATION creates a one-way named relation from the current cohort to the found cohort.
+      The name must be an alphanumeric string with no whitespace.
+    </para>
+    <screen>
+      ADDRELATION (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+    <para>
+      ADDRELATIONS creates two one-way named relation; one from the current cohort to the found cohort,
+      and one the other way. The names can be the same if so desired.
+    </para>
+    <screen>
+      ADDRELATIONS (name) (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="rel-setrelation">
+    <title>SETRELATION, SETRELATIONS</title>
+    <indexterm>
+      <primary>SETRELATION</primary>
+    </indexterm>
+    <indexterm>
+      <primary>SETRELATIONS</primary>
+    </indexterm>
+    <screen>
+      [wordform] SETRELATION &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      [wordform] SETRELATIONS &lt;name&gt; &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      SETRELATION removes all previous relations with the name,
+      then creates a one-way named relation from the current cohort to the found cohort.
+      The name must be an alphanumeric string with no whitespace.
+    </para>
+    <screen>
+      SETRELATION (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+    <para>
+      SETRELATIONS removes all previous relations in the respective cohorts with the respective names,
+      then creates two one-way named relation; one from the current cohort to the found cohort,
+      and one the other way. The names can be the same if so desired.
+    </para>
+    <screen>
+      SETRELATIONS (name) (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="rel-remrelation">
+    <title>REMRELATION, REMRELATIONS</title>
+    <indexterm>
+      <primary>REMRELATION</primary>
+    </indexterm>
+    <indexterm>
+      <primary>REMRELATIONS</primary>
+    </indexterm>
+    <screen>
+      [wordform] REMRELATION &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+      [wordform] REMRELATIONS &lt;name&gt; &lt;name&gt; &lt;target&gt; [contextual_tests]
+          TO|FROM &lt;contextual_target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      REMRELATION destroys one direction of a relation previously created with either
+      <link linkend="rel-addrelation">ADDRELATION</link> or <link linkend="rel-setrelation">SETRELATION</link>.
+    </para>
+    <screen>
+      REMRELATION (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+    <para>
+      REMRELATIONS destroys both directions of a relation previously created with either
+      <link linkend="rel-addrelation">ADDRELATION</link> or <link linkend="rel-setrelation">SETRELATION</link>.
+    </para>
+    <screen>
+      REMRELATIONS (name) (name) targetset (-1* ("someword"))
+      &nbsp; TO (1* (@candidate)) (2 SomeSet) ;
+    </screen>
+  </section>
+
+  <section id="rel-input">
+    <title>Existing Relations in Input</title>
+    <para>
+      Relational attachments are in the forms of ID:id and R:name:id tags. The ID tags are assumed to give the cohort
+      a globally unique numeric ID, and this number is what the id from R tags refer to. The name part must be
+      alphanumeric and must not start with a number.
+    </para>
+    <para>
+      It is normal for ID tags to exist without R tags for one-way relations,
+      but any line with an R tag must have its ID along.
+    </para>
+    <para>
+      For example:
+      <screen>
+        "&lt;There&gt;"
+        &nbsp; "there" &lt;*&gt; ADV @F-SUBJ ID:1056
+        "&lt;once&gt;"
+        &nbsp; "once" ADV @ADVL
+        "&lt;was&gt;"
+        &nbsp; "be" &lt;SVC/N&gt; &lt;SVC/A&gt; V PAST SG1/3 VFIN IMP @FMV
+        "&lt;a&gt;"
+        &nbsp; "a" &lt;Indef&gt; ART DET CENTRAL SG @&gt;N
+        "&lt;man&gt;"
+        &nbsp; "man" N NOM SG @SC ID:1060 R:Beginning:1056
+        "&lt;$.&gt;"
+      </screen>
+    </para>
+  </section>
+
+  <section id="rel-contextual-tests">
+    <title>Contextual Tests</title>
+    <para>
+      Once you have relations to work with,
+      you can use that in subsequent contextual tests as seen below.
+      These positions can be combined with the window spanning options.
+    </para>
+
+    <section id="rel-ct-specific">
+      <title>Specific Relation</title>
+      <indexterm>
+        <primary>r:rel</primary>
+      </indexterm>
+      <para>
+        The 'r:rel' position asks for cohorts found via the 'rel' relation.
+        'rel' can be any name previously given via
+        <link linkend="rel-addrelation">ADDRELATION</link> or <link linkend="rel-setrelation">SETRELATION</link>.
+        Be aware that for combining positional options, 'r:rel' should be the last in the position;
+        'r:' will eat anything following it until it meets a space.
+      </para>
+      <screen>
+        (r:rel (ADJ))
+      </screen>
+    </section>
+
+    <section id="rel-ct-any">
+      <title>Any Relation</title>
+      <indexterm>
+        <primary>r:*</primary>
+      </indexterm>
+      <para>
+        The 'r:*' position asks for cohorts found via any relation.
+      </para>
+      <screen>
+        (r:* (ADJ))
+      </screen>
+    </section>
+
+    <section id="rel-ct-self">
+      <title>Self</title>
+      <indexterm>
+        <primary>S</primary>
+      </indexterm>
+      <para>
+        The 'S' option allows the test to look at the current target as well.
+        Used in conjunction with p, c, cc, s, or r to test self and the relations.
+      </para>
+      <screen>
+        (Sr:rel (ADJ))
+      </screen>
+    </section>
+
+    <section id="rel-ct-leftright">
+      <title>Left/right of, Left/rightmost</title>
+      <indexterm>
+        <primary>l</primary>
+      </indexterm>
+      <indexterm>
+        <primary>r</primary>
+      </indexterm>
+      <indexterm>
+        <primary>ll</primary>
+      </indexterm>
+      <indexterm>
+        <primary>rr</primary>
+      </indexterm>
+      <indexterm>
+        <primary>lll</primary>
+      </indexterm>
+      <indexterm>
+        <primary>rrr</primary>
+      </indexterm>
+      <indexterm>
+        <primary>llr</primary>
+      </indexterm>
+      <indexterm>
+        <primary>rrl</primary>
+      </indexterm>
+      <para>
+        The <link linkend="dep-ct-leftof">r, l, rr, ll, rrr, lll, rrl, llr options</link>
+        documented at Dependencies also work for Relations.
+      </para>
+      <screen>
+        (rrrr:rel (ADJ))
+        (lr:rel (ADJ))
+      </screen>
+    </section>
+
+    <section id="rel-ct-all">
+      <title>All Scan</title>
+      <indexterm>
+        <primary>ALL</primary>
+      </indexterm>
+      <para>
+        The 'ALL' option will require that all of the relations match the set.
+        For example, position 'ALL r:rel' requires that all of the 'rel' relations match the set.
+      </para>
+      <screen>
+        (ALL r:rel (ADJ))
+      </screen>
+    </section>
+
+    <section id="rel-ct-not">
+      <title>None Scan</title>
+      <indexterm>
+        <primary>NONE</primary>
+      </indexterm>
+      <para>
+        The 'NONE' option will require that none of the relations match the set.
+        For example, position 'NONE r:rel' requires that none of the 'rel' relations match the set.
+      </para>
+      <screen>
+        (NONE r:rel (ADJ))
+      </screen>
+    </section>
+  </section>
+
+</chapter>

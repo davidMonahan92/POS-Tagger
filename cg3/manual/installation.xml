@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="installation">
+  <title>Installation &amp; Updating</title>
+  <para>
+    These guidelines are primarily for Linux, although I develop on Windows
+    using <ulink url="http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop">Visual Studio 2013 Express for Windows Desktop</ulink>.
+  </para>
+
+  <section id="cmake">
+    <title>CMake Notes</title>
+    <para>
+      A few have wondered how one installs into a different folder than the default /usr/local when there is no --prefix option to CMake.
+      Either pass <code>--prefix=/your/folder/here</code> to <code>./cmake.sh</code>
+      or run <code>cmake -DCMAKE_INSTALL_PREFIX=/your/folder/here .</code> if you have already run cmake.sh.
+      CMake also supports the common <ulink url="http://www.cmake.org/Wiki/CMake_FAQ#Does_CMake.27s_.22make_install.22_support_DESTDIR.3F">DESTDIR environment variable</ulink>.
+    </para>
+    <para>
+      Also, you do not need to run cmake.sh at every build; make will detect stale files and re-run CMake as needed,
+      just like automake. The cmake.sh script is to force a completely clean rebuild.
+    </para>
+  </section>
+
+  <section id="ubuntu-debian">
+    <title>Ubuntu / Debian</title>
+    <para>
+      For any currently supported version of Debian/Ubuntu or compatible derivatives thereof (such as Linux Mint),
+      there is a <ulink url="http://apertium.projectjj.com/apt/">ready-made nightly repository</ulink>,
+      easily installable via
+      <screen>
+        wget http://apertium.projectjj.com/apt/install-nightly.sh -O - | sudo bash
+        sudo apt-get install cg3
+      </screen>
+      Rest of this page can be skipped.
+    </para>
+    <para>
+      Steps tested on a clean install of Ubuntu 12.10, but should work on any version.
+      It is assumed you have a working network connection.
+    </para>
+    <para>
+      Launch a Terminal from Applications -&gt; Accessories, and in that do
+      <screen>
+        sudo apt-get install g++ libicu-dev subversion cmake libboost-dev build-essential
+        # For TCMalloc, optional
+        sudo apt-get install libgoogle-perftools-dev
+        cd /tmp/
+        svn co http://visl.sdu.dk/svn/visl/tools/vislcg3/trunk vislcg3
+        cd vislcg3/
+        ./cmake.sh
+        make -j3
+        ./test/runall.pl
+        sudo make install
+        sudo ldconfig
+      </screen>
+      Rest of this page can be skipped.
+    </para>
+  </section>
+
+  <section id="fedora">
+    <title>Fedora / Red Hat / CentOS / OpenSUSE</title>
+    <para>
+      For any currently supported version of these RPM-based distros or compatible derivatives thereof, there is a
+      <ulink url="https://build.opensuse.org/project/show/home:TinoDidriksen:nightly">ready-made nightly repository</ulink>,
+      installable via e.g.
+      <screen>
+        su -
+        wget 'http://download.opensuse.org/repositories/home:/TinoDidriksen:/nightly/CentOS_7/home:TinoDidriksen:nightly.repo' -O /etc/yum.repos.d/td-nightly.repo
+        yum check-upgrade
+        yum install cg3
+      </screen>
+      See <ulink url="https://en.opensuse.org/openSUSE:Build_Service_Enduser_Info">openSUSE:Build_Service_Enduser_Info</ulink>
+      for how to use on other distros.
+      Rest of this page can be skipped.
+    </para>
+    <para>
+      Steps tested on a clean install of CentOS 6.3, but should work on any version.
+      It is assumed you have a working network connection.
+    </para>
+    <para>
+      Launch a Terminal from Applications -&gt; System Tools, and in that do
+      <screen>
+        su -
+        yum install gcc-c++ libicu-devel subversion cmake boost-devel make
+        # For TCMalloc, optional
+        yum install google-perftools-devel
+        cd /tmp/
+        svn co http://visl.sdu.dk/svn/visl/tools/vislcg3/trunk vislcg3
+        cd vislcg3/
+        ./cmake.sh
+        make -j3
+        ./test/runall.pl
+        make install
+        ldconfig
+      </screen>
+      Rest of this page can be skipped.
+    </para>
+  </section>
+
+  <section id="macosx">
+    <title>Mac OS X</title>
+
+    <section id="macosx-brew">
+      <title>Homebrew</title>
+      <para>
+        Launch a Terminal and in that do
+        <screen>
+          brew install homebrew/science/vislcg3
+        </screen>
+        Rest of this page can be skipped.
+      </para>
+      <para>
+        Or if you want to install from source, do
+        <screen>
+          brew install cmake
+          brew install boost
+          brew install icu4c
+          brew link icu4c
+          cd /tmp
+          svn co http://visl.sdu.dk/svn/visl/tools/vislcg3/trunk vislcg3
+          cd vislcg3/
+          ./cmake.sh
+          make -j3
+          ./test/runall.pl
+          make install
+        </screen>
+        Rest of this page can be skipped.
+        If you get errors that ICU cannot be found, you may have to add
+        -DCMAKE_INCLUDE_PATH=/usr/local/opt/icu4c/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/icu4c/lib
+        to the cmake.sh line.
+      </para>
+    </section>
+
+    <section id="macosx-ports">
+      <title>MacPorts</title>
+      <para>
+        Launch a Terminal and in that do
+        <screen>
+          sudo port install cmake
+          sudo port install boost
+          sudo port install icu
+          cd /tmp
+          svn co http://visl.sdu.dk/svn/visl/tools/vislcg3/trunk vislcg3
+          cd vislcg3/
+          ./cmake.sh --prefix=/opt/local
+          make -j3
+          ./test/runall.pl
+          sudo make install
+        </screen>
+        Rest of this page can be skipped.
+      </para>
+    </section>
+
+    <section id="macosx-other">
+      <title>Other</title>
+      <para>
+        Installing from source is very similar to Linux, but since the developer tools for OS X are so large,
+        we provide binaries from <ulink url="http://visl.sdu.dk/download/vislcg3/">the download folder</ulink>.
+        Look for files named *-osx.tar.gz. The archive contains the vislcg3, cg-comp, cg-proc, and cg-conv tools,
+        the ICU library binaries, and wrapper scripts to enable running CG-3 from a self-contained folder.
+      </para>
+    </section>
+
+  </section>
+
+  <section id="windows">
+    <title>Windows</title>
+    <para>
+      Installing from source is rather complicated due to lack of standard search paths for libraries, so
+      we provide binaries from <ulink url="http://visl.sdu.dk/download/vislcg3/">the download folder</ulink>.
+      Look for files named *-win32.zip. The archive contains the vislcg3, cg-comp, cg-proc, and cg-conv tools and
+      the ICU library DLLs. May also require installing the
+      <ulink url="http://www.microsoft.com/download/en/details.aspx?id=5555">VC++ 2010 redist</ulink>
+      or <ulink url="http://www.microsoft.com/download/en/details.aspx?id=5582">VC++ 2008 redist</ulink>.
+    </para>
+  </section>
+
+  <section id="installing_icu">
+    <title>Installing ICU</title>
+    <para>
+      <ulink url="http://icu-project.org/">International Components for Unicode</ulink> are required to compile and run VISL CG-3.
+      Only need to do this once, however it must be done unless you already have a recent
+      (newer or equal to <ulink url="http://icu-project.org/">ICU</ulink> 3.6) version installed. <ulink url="http://icu-project.org/">ICU</ulink> 3.4 may also work, but is
+      considerably slower. Latest info on <ulink url="http://icu-project.org/">ICU</ulink> can be found at <ulink url="http://icu-project.org/">http://icu-project.org/</ulink>.
+      I always develop and test with the latest version available.
+    </para>
+    <para>
+      Newer distributions may have a usable version of ICU available for install via the usual yum or apt managers.
+      Just make sure to get the developer package alongside the runtime libraries.
+    </para>
+    <para>
+      If you do not have ICU from your distribution, manual install is as follows.
+      These steps have been tested on all Red Hat based distributions from RH8 to Fedora 8.
+      Similar steps have been tested on Ubuntu 7.10, and Mac OS X 10.3 to 10.5 both PPC and Intel.
+      They may vary for your distribution.
+    </para>
+    <para>
+      As root:
+      <screen>
+        cd /tmp
+        wget -c \
+        &nbsp; '<ulink url="http://icu-project.org/download">http://download.icu-project.org/files/icu4c/53.1/icu4c-53_1-src.tgz</ulink>'
+        tar -zxvf icu4c-53_1-src.tgz
+        cd icu/source/
+        ./runConfigureICU Linux
+        make
+        make install
+        echo "/usr/local/lib" &gt;&gt; /etc/ld.so.conf
+        ldconfig
+      </screen>
+    </para>
+  </section>
+
+  <section id="compiling_cg3">
+    <title>Getting &amp; Compiling VISL CG-3</title>
+    <para>
+      This step requires you have <ulink url="http://subversion.tigris.org/">Subversion</ulink> installed.
+      Subversion binaries are very likely available for your distribution already;
+      try using <command>yum install subversion</command> or <command>apt-get install subversion</command> or whichever
+      package manager your distribution uses.
+    </para>
+    <para>
+      As any user in any folder where you can find it again:
+      <screen>
+        svn co \
+        &nbsp; <ulink url="http://visl.sdu.dk/svn/visl/tools/vislcg3/trunk/">http://visl.sdu.dk/svn/visl/tools/vislcg3/trunk</ulink> vislcg3
+        cd vislcg3/
+        ./cmake.sh
+        make
+        ./test/runall.pl
+        ... and if all tests succeed ...
+        make install
+      </screen>
+    </para>
+  </section>
+
+  <section id="updating_cg3">
+    <title>Updating VISL CG-3</title>
+    <para>
+      In the same folder you chose above, as the same user:
+      <screen>
+        $ svn up
+        $ make
+        $ ./test/runall.pl
+        ... and if all tests succeed ...
+        $ make install
+      </screen>
+    </para>
+  </section>
+
+  <section id="regressiontest">
+    <title>Regression Testing</title>
+    <para>
+      After successfully compiling the binary, you can run the regression test suite
+      with the command:
+      <screen>
+        ./test/runall.pl
+      </screen>
+    </para>
+    <para>
+      This will run a series of tests that should all exit with "Success Success".
+      If a test on your end exits with "Fail", please tar up that tests' folder and
+      send it to me alongside any ideas you may have as to why it failed.
+    </para>
+  </section>
+
+  <section id="cygwin">
+    <title>Cygwin</title>
+    <para>
+      While Cygwin can compile and run VISL CG-3 via the cmake toolchain, it cannot be recommended
+      as it is very slow (even when using GCC 4.3).
+      Instead, compile with Microsoft Visual C++ or use the latest precompiled binary.
+    </para>
+  </section>
+</chapter>

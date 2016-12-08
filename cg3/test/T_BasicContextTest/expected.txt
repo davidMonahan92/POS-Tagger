@@ -1,0 +1,7 @@
+"<word>" untouchable static tags
+	"word" wanted @good-not-link @seen-untouchable-good
+"<word>"
+	"word" notwanted @seen-untouchable-good
+	"word" maybe @seen-untouchable-good
+	"word" notmeeither @seen-untouchable-good
+

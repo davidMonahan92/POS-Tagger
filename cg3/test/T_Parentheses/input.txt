@@ -1,0 +1,44 @@
+"<there>"
+	"there" word <pleft>
+"<once>"
+	"once" word
+"<were>"
+	"are" word <pright>
+"<$(>"
+"<two>"
+	"two" word
+"<$[>"
+"<three>"
+	"three" word
+"<$]>"
+"<long>"
+	"long" word
+"<red>"
+	"red" word
+"<$(>"
+"<more>"
+	"more" word
+"<like>"
+	"like" word
+"<maroon>"
+	"maroon" word
+"<$(>"
+"<dark>"
+	"dark" word
+"<earthy>"
+	"earthy" word
+"<red>"
+	"red" word
+"<$]>"
+"<$)>"
+"<$,>"
+"<actually>"
+	"actual" word
+"<$)>"
+"<cars>"
+	"car" word
+"<${>"
+"<trucks>"
+	"truck" word
+"<$}>"
+"<$.>"

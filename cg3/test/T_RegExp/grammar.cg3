@@ -1,0 +1,36 @@
+DELIMITERS = "<$.>" ;
+STATIC-SETS = @at ASet ;
+
+LIST ASet = ".atc[hm]{2}.*"r ;
+LIST BSet = ".atc[HM]{2}.*"ri ;
+LIST CSet = "MaTcHmE"i ;
+
+LIST wanted = wanted other waffles ;
+LIST matchme = "MatchMe" "matchme" ;
+
+LIST bform = ".*"r ;
+LIST ibform = ".*"ri ;
+
+ADD (<%u$1%l%U$2%U$1>v) (".(at)(ch).*"r) ;
+ADD (@r) ASet ;
+ADD (@ri) BSet ;
+ADD (@i) CSet ;
+
+ADD (<{$$matchme}/%U{$$wanted}>v) $$wanted + $$matchme (0 (<{$$matchme}/%U{$$wanted}>=50>v)) ;
+
+ADD (VSTR:@$2$1) (".(at)(ch).*"r) (0 ("m$1$2me"v)) ;
+ADD (VSTR:other-@$2$1) (".(at)(ch).*"r) (0 (VSTR:@$2$1)) ;
+ADD (@gen-regex) (".(at)(ch).*"r) (0 (VSTR:".*$1$2.*"r)) ;
+
+LIST @at = @chat ;
+ADD (@vstr-set) (".(at)(ch).*"r) (0 (VSTR:SET:@$1)) ;
+
+ADD (@baseform-diff) $$bform (0 (*) - $$bform) ;
+ADD (@baseform-icdiff) $$ibform (0 (*) - $$ibform) ;
+ADD (@baseform-same) $$bform (NEGATE 0 (*) - $$bform) ;
+ADD (@baseform-icsame) $$ibform (NEGATE 0 (*) - $$ibform) ;
+
+ADD (@slashes) (/^@.*-SAM/ri) ;
+ADD (@icase) (/@BASEFORM-SAME/i) ;
+
+ADD (VSTR:@add-$1) ("(.*)orm"r f) ;

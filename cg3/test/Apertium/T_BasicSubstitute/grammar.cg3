@@ -1,0 +1,3 @@
+DELIMITERS = "<$.>" ;
+
+SUBSTITUTE (wanted) (substituted) (wanted) ;

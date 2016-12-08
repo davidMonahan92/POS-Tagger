@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="intro">
+  <title>Intro</title>
+
+  <section id="caveat">
+    <title>Caveat Emptor</title>
+    <para>
+      <emphasis>
+        This manual should be regarded as a guideline. Some of the features or functionality
+        described is either not implemented yet, or does not work exactly as advertised.
+        A good place to see what is and is not implemented is to run the regression test suite
+        as the test names are indicative of features. The individual tests are also good starting points
+        to find examples on how a specific feature works.
+      </emphasis>
+    </para>
+  </section>
+
+  <section id="whatis">
+    <title>What this is...</title>
+    <para>
+      This document describes the design, features, implementation, usability, etc
+      of an evolution in the <ulink url="http://en.wikipedia.org/wiki/Constraint_Grammar">constraint grammar</ulink> formalism.
+    </para>
+  </section>
+
+  <section id="naming">
+    <title>Naming</title>
+    <para>
+      I have called this version of CG "VISL CG-3" since it implements the functionality of the
+      VISL CG-2 variant of constraint grammar and is a
+      general update of the grammar format and parser features that warrants a version bump.
+      VISL CG-3 is feature-wise backwards compatible with CG-2 and VISLCG, and contains switches
+      to enforce their respective behavior in certain areas.
+    </para>
+  </section>
+
+  <section id="unicode">
+    <title>Unicode</title>
+    <para>
+      Even before any other designing and development had started, the desire to include
+      <ulink url="http://unicode.org/">Unicode</ulink> support was a strong requirement.
+      By default, the codepage for the grammar file, input stream, and output stream is
+      detected from the environment.
+      Internally and through switches there is full support
+      for Unicode and any other encoding known by the Unicode library.
+      I have chosen the <ulink url="http://icu-project.org/">International Components for Unicode</ulink>
+      library as it provides strong cross-platform Unicode support with built-in regular expressions.
+    </para>
+  </section>
+
+  <section id="discussion">
+    <title>Dicussion, Mailing Lists, Bug Reports, etc...</title>
+    <para>
+      All public discussion, feature requests, bug reports, and talk of related technologies happen in
+      the <ulink url="http://groups.google.com/group/constraint-grammar">Constraint Grammar via Google Groups</ulink>.
+    </para>
+  </section>
+</chapter>

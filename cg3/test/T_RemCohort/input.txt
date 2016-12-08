@@ -1,0 +1,18 @@
+"<word>"
+	"word" notwanted
+	"word" notmeeither
+"<word>"
+	"word" notwanted
+	"matchme" wanted
+	"word" notmeeither
+"<(>"
+	"("
+"<inside>"
+	"inside" inside
+"<)>"
+	")"
+"<word>"
+	"word" notwanted
+	"word" notmeeither
+"<last>"
+	"last" last cohort

@@ -1,0 +1,4 @@
+DELIMITERS = "<$.>" ;
+
+ADD (two) (*) (1** (alsofindme) LINK 1 (alsofindme)) ;
+ADD (one) (*) (1* (findme)) ;

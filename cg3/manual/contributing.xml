@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="contributing">
+  <title>Contributing &amp; Subversion Access</title>
+  <para>
+    The anonymous user does not have commit rights, and also cannot access any
+    other part of the repository. If you want commit rights to VISL CG-3, just
+    tell me...
+  </para>
+</chapter>

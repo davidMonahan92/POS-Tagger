@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE book SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<book>
+  <title>Constraint Grammar Manual</title>
+  <subtitle>3rd version of the CG formalism variant</subtitle>
+  <titleabbrev>VISL CG-3 Manual</titleabbrev>
+
+  <bookinfo>
+    <productname>VISL CG-3</productname>
+
+    <authorgroup>
+      <author>
+        <honorific>Mr</honorific>
+        <firstname>Tino</firstname>
+        <surname>Didriksen</surname>
+        <affiliation>
+          <orgname>
+            <ulink url="http://grammarsoft.com/">GrammarSoft ApS</ulink>
+          </orgname>
+          <address>
+            <email>mail@tinodidriksen.com</email>
+          </address>
+        </affiliation>
+      </author>
+    </authorgroup>
+
+    <copyright>
+      <year>2007-2014</year>
+      <holder>GrammarSoft ApS</holder>
+    </copyright>
+
+    <keywordset>
+      <keyword>Constraint Grammar</keyword>
+    </keywordset>
+  </bookinfo>
+
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="intro.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="license.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="installation.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="contributing.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="compatibility.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="cmdreference.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="streamformats.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="grammar.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="rules.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="contexts.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="parentheses.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="dependencies.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="relations.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="probabilistic.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="templates.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sets.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tags.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="subreadings.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="binarygrammar.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="externals.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="streamcmds.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="faq.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="cgglossary.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="cgkeywords.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="drafts.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="bibliography.xml" />
+
+  <index id="globalindex"/>
+
+</book>

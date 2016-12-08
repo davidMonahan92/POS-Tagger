@@ -1,0 +1,88 @@
+set(CMAKE_LEGACY_CYGWIN_WIN32 0)
+cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
+project(cg3 CXX C)
+
+# Release or Debug
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+set(CMAKE_MACOSX_RPATH ON)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
+
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/src/version.hpp" _cg3_VERSION_FILE)
+string(REGEX REPLACE ".*CG3_VERSION_MAJOR = ([0-9]+).*" "\\1" _cg3_VERSION_MAJOR ${_cg3_VERSION_FILE})
+string(REGEX REPLACE ".*CG3_VERSION_MINOR = ([0-9]+).*" "\\1" _cg3_VERSION_MINOR ${_cg3_VERSION_FILE})
+string(REGEX REPLACE ".*CG3_VERSION_PATCH = ([0-9]+).*" "\\1" _cg3_VERSION_PATCH ${_cg3_VERSION_FILE})
+string(REGEX REPLACE ".*CG3_REVISION = ([0-9]+).*" "\\1" REVISION ${_cg3_VERSION_FILE})
+set(VERSION "${_cg3_VERSION_MAJOR}.${_cg3_VERSION_MINOR}.${_cg3_VERSION_PATCH}.${REVISION}")
+
+# Because Fedora / CentOS / RHEL ...
+set(CG_LIBDIR "lib")
+if(LIB_INSTALL_DIR)
+	string(REGEX REPLACE "^${CMAKE_INSTALL_PREFIX}/" "" CG_LIBDIR ${LIB_INSTALL_DIR})
+elseif(LIB_SUFFIX)
+	set(CG_LIBDIR "${CG_LIBDIR}${LIB_SUFFIX}")
+endif()
+
+option(OPT_TCMALLOC "Set to OFF to disable linking against TCMalloc" ON)
+if(APPLE)
+	message(STATUS "Disabling TCMalloc for OS X")
+	set(OPT_TCMALLOC OFF)
+endif()
+
+if(MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /EHsc /MP")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /Ox /Ot /GL /GS-")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
+	set(CMAKE_C_FLAGS ${CMAKE_CXX_FLAGS})
+	set(CMAKE_C_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+else()
+	set(_FLAGS_COMMON "-Wall -Wextra -Wno-missing-field-initializers -Wno-deprecated -Wno-unused-parameter -fPIC")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_FLAGS_COMMON} -fvisibility-inlines-hidden")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${_FLAGS_COMMON}")
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0 -g3")
+	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
+
+	# Enable C++11 if possible
+	if((CMAKE_COMPILER_IS_GNUCXX AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 4.6) OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 3.1))
+		message(STATUS "Enabling C++11 for ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+	endif()
+
+	# Generate pkg-config file
+	set(prefix      ${CMAKE_INSTALL_PREFIX})
+	set(exec_prefix ${CMAKE_INSTALL_PREFIX})
+	set(libdir      ${CMAKE_INSTALL_PREFIX}/${CG_LIBDIR}/${CMAKE_LIBRARY_ARCHITECTURE})
+	set(includedir  ${CMAKE_INSTALL_PREFIX}/include)
+	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cg3.pc.in
+		${CMAKE_CURRENT_BINARY_DIR}/cg3.pc @ONLY)
+	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cg3.pc" DESTINATION "${CG_LIBDIR}/${CMAKE_LIBRARY_ARCHITECTURE}/pkgconfig")
+
+	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/manual/man/"
+		DESTINATION share/man/man1
+		FILES_MATCHING
+		PATTERN "*.1"
+		PATTERN ".svn" EXCLUDE)
+endif()
+
+if(WIN32)
+	add_definitions(-DUNICODE -D_UNICODE -D_SECURE_SCL=0 -D_ITERATOR_DEBUG_LEVEL=0 -D_CRT_SECURE_NO_DEPRECATE -DWIN32_LEAN_AND_MEAN -DVC_EXTRALEAN -DNOMINMAX)
+	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/win32")
+else()
+	set(POPEN_PLUS_C "${CMAKE_CURRENT_SOURCE_DIR}/include/posix/popen_plus.c" "${CMAKE_CURRENT_SOURCE_DIR}/include/posix/popen_plus.h")
+	include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/posix")
+endif()
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+enable_testing()
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/cg3-autobin.pl.in ${CMAKE_CURRENT_BINARY_DIR}/scripts/cg3-autobin.pl @ONLY)
+install(PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/scripts/cg3-autobin.pl" DESTINATION bin)
+
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/emacs/cg.el" DESTINATION share/emacs/site-lisp)

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE chapter SYSTEM "docbook-dtd-45/docbookx.dtd">
+
+<chapter id="drafts">
+  <title>Drafting Board</title>
+
+  <para>
+    Things that are planned but not yet implemented or not yet fully functional.
+  </para>
+
+  <section id="draft-match">
+    <title>MATCH</title>
+    <indexterm>
+      <primary>MATCH</primary>
+    </indexterm>
+    <screen>
+      [wordform] MATCH &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      Used for tracing and debugging, it will not alter the readings but will gather
+      information on why it matched, specifically what cohorts that fulfilled the tests.
+      Those numbers will be output in a format yet to be determined. Something along the
+      lines of M:548:1,3,4;2,1;9,9 where the numbers are absolute offsets within the window,
+      first cohort being the 1st one (0th cohort is the magic &gt;&gt;&gt;).
+      As such, 1,3,4 would denote that the first contextual test looked at
+      cohorts 1, 3, and 4 to validate itself, but not at cohort 2 (this can easily
+      happen if you have a (2 ADV LINK 1 V) test or similar). This reveals a great deal
+      about how the rule works.
+    </para>
+  </section>
+
+  <section id="draft-execute">
+    <title>EXECUTE</title>
+    <indexterm>
+      <primary>EXECUTE</primary>
+    </indexterm>
+    <screen>
+      [wordform] EXECUTE &lt;anchor_name&gt; &lt;anchor_name&gt; &lt;target&gt; [contextual_tests] ;
+    </screen>
+    <para>
+      These rules will allow you to mark named anchors and jump to them based on a context.
+      In this manner you can skip or repeat certain rules. JUMP will jump to a location in
+      the grammar and run rules from there till the end (or another JUMP which sends it to
+      a different location), while EXECUTE will run rules in between the two provided ANCHORs
+      and then return to normal.
+    </para>
+  </section>
+
+</chapter>
